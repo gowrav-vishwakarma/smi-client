@@ -1,7 +1,11 @@
 <template lang="pug">
-  div(style="width: 100%")
+div(style="width: 100%")
     question-single(v-for="(question, i) in questions" :question="question" :key="questions[i]._id")
     //- AuthDialog(:showDialog="showAuthDialog")
+    v-layout.pt-2(style="border-top: 1px solid")
+      v-flex(xs12)
+        v-btn.primary(@click="prevPage" :disabled="!hasPrevPage" :class="{disabled: !hasPrevPage,active: hasPrevPage}" :style="{'margin-right': '10px'}") Previous
+        v-btn.primary(@click="nextPage" :disabled="!hasNextPage" :class="{disabled: !hasNextPage,active: hasNextPage}" :style="{'margin-left': '10px'}") Next
 </template>
 
 <script lang="ts">
@@ -23,6 +27,10 @@ import { eventBus } from "@/mixins/event-bus";
 })
 export default class QuestionList extends Vue {
   questions: QuestionListResponseDTO[] | null = null;
+  hasPrevPage = false;
+  hasNextPage = false;
+  currentPage = 1;
+  questionsPerPage = 2;
   @Prop({ default: () => ({}) }) readonly filter!: FilterQuestionsDTO;
   // showAuthDialog = false;
   async mounted() {
@@ -33,7 +41,7 @@ export default class QuestionList extends Vue {
       await this.getQList(filterData);
     });
 
-    this.getQList({});
+    this.getQList({ page: this.currentPage, limit: this.questionsPerPage });
   }
 
   async getQList(filterData: any) {
@@ -43,10 +51,22 @@ export default class QuestionList extends Vue {
     }
 
     this.questions = await QuestionApiService.getQuestions(filterQuery);
+    this.hasNextPage = this.questions.length === this.questionsPerPage;
+    this.hasPrevPage = this.currentPage > 1;
   }
 
   authDialogCallback(value: any) {
     console.log("callback function", value);
+  }
+
+  nextPage() {
+    this.currentPage++;
+    this.getQList({ page: this.currentPage, limit: this.questionsPerPage });
+  }
+
+  prevPage() {
+    this.currentPage--;
+    this.getQList({ page: this.currentPage, limit: this.questionsPerPage });
   }
 }
 </script>

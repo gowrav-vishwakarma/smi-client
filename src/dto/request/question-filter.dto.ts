@@ -66,4 +66,7 @@ export class FilterQuestionsDTO {
   @IsOptional()
   @IsString()
   query?: string;
+
+  @IsNumber()
+  currentPage?: number;
 }

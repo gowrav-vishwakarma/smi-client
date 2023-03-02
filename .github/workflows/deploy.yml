@@ -9,27 +9,27 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout the code
-      uses: actions/checkout@v2
+      - name: Checkout the code
+        uses: actions/checkout@v2
 
-    - name: Install Node.js
-      uses: actions/setup-node@v2.4.0
-      with:
-        node-version: '14.x'
+      - name: Install Node.js
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: "14.x"
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    - name: Build
-      env:
-        VUE_APP_SERVER_URL: ${{ secrets.VUE_APP_SERVER_URL }}
-        VUE_APP_WS_URL: ${{ secrets.VUE_APP_SERVER_URL }}
-      run: npm run build
+      - name: Build
+        env:
+          VUE_APP_SERVER_URL: ${{ secrets.VUE_APP_SERVER_URL }}
+          VUE_APP_WS_URL: ${{ secrets.VUE_APP_SERVER_URL }}
+        run: npm run build
 
-    - name: Deploy
-      uses: SamKirkland/FTP-Deploy-Action@4.1.1
-      with:
-        server: ${{ secrets.CPANEL_SERVER }}
-        username: ${{ secrets.CPANEL_USERNAME }}
-        password: ${{ secrets.CPANEL_PASSWORD }}
-        local-dir: "./dist/"
+      - name: Deploy
+        uses: SamKirkland/FTP-Deploy-Action@4.3.3
+        with:
+          server: ${{ secrets.CPANEL_SERVER }}
+          username: ${{ secrets.CPANEL_USERNAME }}
+          password: ${{ secrets.CPANEL_PASSWORD }}
+          local-dir: "./dist/"

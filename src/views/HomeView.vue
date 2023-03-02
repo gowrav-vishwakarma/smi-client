@@ -1,7 +1,7 @@
 <template>
   <v-container style="width: 100%; max-width: 100%">
     <v-row>
-      <v-col cols="12" sm="2" md="2" lg="2">
+      <!-- <v-col cols="12" sm="2" md="2" lg="2">
         <v-sheet rounded="lg" min-height="268">
           <topic-list></topic-list>
         </v-sheet>
@@ -10,8 +10,8 @@
           Topics
           <topic-list getTopicList="true"></topic-list>
         </v-sheet>
-      </v-col>
-      <v-col cols="12" sm="7" md="7" lg="7">
+      </v-col> -->
+      <v-col cols="12" sm="9" md="9" lg="9">
         <question-list></question-list>
       </v-col>
       <v-col cols="12" sm="3" md="3" lg="3">

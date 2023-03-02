@@ -6,10 +6,8 @@
       .question-description-text
         .text-body-2.text--secondary.text-justify.question-description-text {{shortdetail}}
         v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")
-          v-card-body
             v-img(src="@/assets/logo.png" max-height="350" contain)
         v-card.question-description-video(color="primary lighten-3" flat v-if="question.video")
-          v-card-body
             video(width="320" height="240" controls)
               source(:src="question.video" type="video/webm")
     .d-flex.mt-3

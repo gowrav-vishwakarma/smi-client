@@ -7,6 +7,7 @@ import vuetify from "./plugins/vuetify";
 import VueToastify from "vue-toastify";
 
 Vue.use(VueToastify);
+// Vue.use(Progress);
 
 Vue.config.productionTip = false;
 

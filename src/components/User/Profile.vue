@@ -1,12 +1,17 @@
 <template lang="pug">
     v-container
-      v-card.mx-auto.mb-6
-        v-img(height="180px" style="overflow:visible;" cover src="https://cdn.vuetifyjs.com/images/cards/server-room.jpg")
+      v-card.mx-auto.mb-6.profileImageSection
+        v-img(height="180px" style="overflow:visible;" cover :src="coverImage")
           .d-flex
             v-avatar.ml-2(color="grey" size="150" rounded="50%" style="position: absolute;bottom:-20px;")
-              v-img(cover src="https://cdn.vuetifyjs.com/images/profiles/marcus.jpg")
-            v-btn.ml-auto(icon large elevation="2" )
+              v-img(cover :src="profileImage")
+            v-btn.ml-auto(icon large elevation="2" @click="editingProfileSection='uploadImage'")
               v-icon(dark) mdi-pencil
+        .d-flex.align-center.ml-auto(v-if="editingProfileSection=='uploadImage'" rounded style="width:80%")
+          v-file-input(label="Cover Image" v-model="uploadCoverImage" prepend-icon="mdi-camera")
+          v-file-input(label="Profile Image" v-model="uploadProfileImage" prepend-icon="mdi-camera")
+          v-btn(@click="saveProfile" color="primary") save
+          v-btn(@click="editingProfileSection=null,uploadCoverImage=null,uploadProfileImage=null" color="secondary" ) Reset
       v-row
         v-col(cols="8")
           div
@@ -195,6 +200,7 @@ import userExperience from "../../dto/user/experience.dto";
 import UserRating from "@/components/User/Rating.vue";
 import UserApiService from "@/services/user.api";
 import UserRatingAsSolver from "@/components/User/RatingAsSolver.vue";
+import { eventBus } from "@/mixins/event-bus";
 
 @Component({
   name: "UserProfile",
@@ -210,6 +216,8 @@ export default class UserProfileComponent extends Vue {
   //Editing Form
   editProfile = false;
   editingProfileSection: string | null = null;
+  uploadCoverImage: File | null = null;
+  uploadProfileImage: File | null = null;
 
   skillList: string[] = skills;
 
@@ -266,6 +274,24 @@ export default class UserProfileComponent extends Vue {
     };
   }
 
+  get coverImage() {
+    if (this.uploadCoverImage)
+      return URL.createObjectURL(this.uploadCoverImage);
+    else
+      return this.profile.coverImage
+        ? process.env.VUE_APP_S3_CDN_URL + this.profile.coverImage
+        : "https://cdn.vuetifyjs.com/images/cards/server-room.jpg";
+  }
+
+  get profileImage() {
+    if (this.uploadProfileImage)
+      return URL.createObjectURL(this.uploadProfileImage);
+    else
+      return this.profile.profileImage
+        ? process.env.VUE_APP_S3_CDN_URL + this.profile.profileImage
+        : "https://cdn.vuetifyjs.com/images/profiles/marcus.jpg";
+  }
+
   async mounted() {
     this.profile = await UserApiService.getProfile(
       this.$store.getters.loggedInUser._id
@@ -276,7 +302,6 @@ export default class UserProfileComponent extends Vue {
   }
 
   async saveProfile() {
-    console.log("save profile methods", this.editingProfileSection);
     this.editProfile = false;
 
     let postData: any;
@@ -322,12 +347,28 @@ export default class UserProfileComponent extends Vue {
           contactNo: this.profile.contactNo,
         };
         break;
-
+      case "uploadImage":
+        postData = {
+          userId: this.$store.getters.loggedInUser._id,
+        };
+        if (!this.uploadCoverImage && !this.uploadProfileImage) postData = null;
+        break;
       default:
+        postData = {
+          userId: this.$store.getters.loggedInUser._id,
+        };
         break;
     }
 
-    const data = await UserApiService.updateProfile(postData)
+    if (!postData) return;
+
+    eventBus.$emit("show-loader");
+
+    await UserApiService.updateProfile(
+      postData,
+      this.uploadCoverImage,
+      this.uploadProfileImage
+    )
       .then((res) => {
         console.log("response after saved", res);
       })
@@ -338,6 +379,7 @@ export default class UserProfileComponent extends Vue {
           console.log(err);
         }
       });
+    eventBus.$emit("hide-loader");
 
     this.editingProfileSection = null;
   }

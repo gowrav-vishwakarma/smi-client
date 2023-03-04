@@ -67,11 +67,39 @@ class UserAPIService extends APIService {
     return response;
   }
 
-  async updateProfile(updateValue: any): Promise<any> {
+  async updateProfile(
+    updateValue: any,
+    coverImage: File | null,
+    profileImage: File | null
+    // cover: Blob | null
+  ): Promise<any> {
+    console.log("update profile axios call from client side", updateValue);
+
+    const formData = new FormData();
+    Object.entries(updateValue).forEach(([key, value]) => {
+      let v = Array.isArray(value) ? value.join(",") : value;
+      if (typeof v === "object") v = JSON.stringify(v);
+
+      formData.append(key, v as string);
+    });
+
+    if (coverImage) {
+      // formData.append("coverImage", coverImage);
+      formData.append("images", coverImage, "coverImage");
+    }
+
+    if (profileImage) {
+      // formData.append("profileImage", profileImage);
+      formData.append("images", profileImage, "profileImage");
+    }
+
     const response = await this.axiosCall<any>({
       method: "POST",
-      url: `/users/updateme`,
-      data: updateValue,
+      url: "/users/updateme",
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
     return response;
   }

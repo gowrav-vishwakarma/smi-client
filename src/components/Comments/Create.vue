@@ -29,8 +29,10 @@ export default class CreateCommentComponent extends Vue {
   submitComment() {
     commentsAPIService
       .createComment(this.question._id, this.comment)
-      .then(() => {
-        this.comment = "";
+      .then((res) => {
+        console.log(res);
+
+        this.$emit("event-new-comment-created");
       });
   }
 }

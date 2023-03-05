@@ -83,8 +83,12 @@ export default class WSManager extends Vue {
             });
 
             newPayload.solutionOfferId = solutionOffer._id;
-            console.log("newPayload", newPayload);
             SocketEmit("acceptCall", newPayload);
+
+            /** call accepted buy offerer end user - so redirecting to solution-attempt page*/
+            this.$router.push(
+              "/solution-attempt/" + newPayload.solutionOfferId
+            );
           } else {
             SocketEmit("denyCall", newPayload);
           }
@@ -92,9 +96,29 @@ export default class WSManager extends Vue {
     });
 
     SocketOn("callAccepted", (payload) => {
-      // this.bufferAudioPlayer.stop();
-      console.log("payload Call Accepted client side at ws manager", payload);
+      console.log("callAccepted at single offer component", payload);
+      //temporary commenting condition
+      // if (
+      //   payload.offerId == this.offer._id &&
+      //   payload.questionId == this.question._id &&
+      //   (this.questionBelongsToMe || this.offerBelongsToMe)
+      // ) {
+      this.callReset();
+      // this.offerCallConnected = true;
+      this.$router.push("/solution-attempt/" + payload.solutionOfferId);
+      // }
     });
+
+    SocketOn("denyCall", (payload) => {
+      this.callReset();
+      console.log("call-denied", payload);
+    });
+
+    SocketOn("callDisconnected", (payload) => {
+      this.callReset();
+      console.log("callDisconnected", payload);
+    });
+
     // socket.on("call-received", ({ from, content }) => {
     //   if (this.$store.getters.onlineStatus === "busy") {
     //     this.sendBusy();
@@ -144,6 +168,12 @@ export default class WSManager extends Vue {
     socket.on("connect_error", (err) => {
       console.error(err);
     });
+  }
+
+  callReset() {
+    this.$vToastify.removeToast();
+    // this.callRingingPlayer.pause();
+    // this.callDialPlayer.pause();
   }
 
   playSound(forType: string) {

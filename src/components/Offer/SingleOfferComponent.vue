@@ -83,6 +83,10 @@ export default class SingleOfferComponent extends Vue {
   callRingingToastId!: any;
 
   mounted() {
+    /**
+     * moved this code to ws-manager
+     
+    
     SocketOn("denyCall", (payload) => {
       this.callReset();
       console.log("call-denied", payload);
@@ -104,11 +108,13 @@ export default class SingleOfferComponent extends Vue {
         this.$router.push("/solution-attempt/" + payload.solutionOfferId);
       }
     });
-
-    SocketOn("callDisconnected", (payload) => {
+      
+      SocketOn("callDisconnected", (payload) => {
       this.callReset();
       console.log("callDisconnected", payload);
     });
+    
+    */
   }
 
   callReset() {

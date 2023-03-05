@@ -4,10 +4,10 @@
     v-card.pa-0.ma-0.question-detail-card(flat @click="gotoDetails")
       h4.text-subtitle-1.question-heading( style="cursor:pointer") Q. {{question.title}}
       .question-description-text
-        .text-body-2.text--secondary.text-justify.question-description-text {{shortdetail}}
+        .text-body-2.text--secondary.text-justify.question-description-text.ml-5 {{shortdetail}}
         v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")
             v-img(src="@/assets/logo.png" max-height="350" contain)
-        v-card.d-flex.justify-center.question-description-video(color="primary lighten-3" flat v-if="question.video")
+        v-card.mt-2.d-flex.justify-center.question-description-video(color="primary lighten-3" flat v-if="question.video")
             video(width="320" height="240" :controls="videoControl")
               source(:src="question.video" type="video/webm")
     .d-flex.mt-3
@@ -67,7 +67,8 @@ export default class QuestionSingle extends Mixins(General) {
 
   @Prop({ default: false }) disableVotingAction: any;
 
-  @Prop({ default: false }) videoControl = false;
+  @Prop({ default: false }) videoControl!: boolean;
+
   gotoDetails() {
     this.$router.push("/question/" + this.question._id);
   }

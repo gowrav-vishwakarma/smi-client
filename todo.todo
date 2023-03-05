@@ -6,8 +6,8 @@
     Not that perfact
 - Comment up down has some issues                                                       Done
 
-- WebSocket receiver on 'online' dot, so every call is available on every call          
-    v-if: online dot if user online, then only socket is connected
+- WebSocket receiver on 'online' dot, so every call is available on every call          Done
+- v-if: online dot if user online, then only socket is connected                      
 
 - Update user status
     online, busy & offline
@@ -16,7 +16,7 @@
 - User profile
     Cover Image                                                                        Done
     Profile Image                                                                      Done
-    All other data
+    All other data                          
     Change password
 
 - User short profile component to show on hover

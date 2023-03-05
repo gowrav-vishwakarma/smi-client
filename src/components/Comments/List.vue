@@ -1,8 +1,8 @@
 <template lang="pug">
   v-sheet(v-if="questionComments")
-    comment-create(:question="question")
-    v-divider.mt-3
     comment-single(v-for="singleComment in questionComments" :comment="singleComment" :key="singleComment._id")
+    v-divider.mt-3
+    comment-create(:question="question" @event-new-comment-created="reloadData")
 </template>
 
 <script lang="ts">
@@ -27,7 +27,16 @@ export default class QuestionCommentsListComponent extends Mixins(General) {
   questionComments: any[] = [];
 
   async mounted() {
+    await this.fetQComments();
+  }
+
+  async fetQComments() {
     this.questionComments = await questionsApi.getComments(this.question._id);
+  }
+
+  reloadData() {
+    console.log("reloadData called");
+    this.fetQComments();
   }
 }
 </script>

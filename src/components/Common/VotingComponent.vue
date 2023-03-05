@@ -138,6 +138,9 @@ export default class VoteingComponent extends Vue {
 
     commentsApi.vote(this.comment._id, "up").then((res) => {
       if ((res.matchedCount && res.modifiedCount) || res.upsertedId) {
+        if (res.matchedCount && res.modifiedCount) {
+          this.comment.commentValue.totalVoteDownCount--;
+        }
         this.comment.commentValue.totalVoteCount++;
         this.comment.myVote = 1;
       }
@@ -152,7 +155,10 @@ export default class VoteingComponent extends Vue {
 
     commentsApi.vote(this.comment._id, "down").then((res) => {
       if ((res.matchedCount && res.modifiedCount) || res.upsertedId) {
-        this.comment.commentValue.totalVoteCount--;
+        if (res.matchedCount && res.modifiedCount) {
+          this.comment.commentValue.totalVoteCount--;
+        }
+        this.comment.commentValue.totalVoteDownCount++;
         this.comment.myVote = -1;
       }
     });

@@ -4,8 +4,9 @@
 
 - Vote up down has some issues:                                                         Done
     Not that perfact
+- Comment up down has some issues                                                       Done
 
-- WebSocket receiver on 'online' dot, so every call is available on every call
+- WebSocket receiver on 'online' dot, so every call is available on every call          
     v-if: online dot if user online, then only socket is connected
 
 - Update user status

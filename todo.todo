@@ -1,32 +1,42 @@
 - do not give video player on list component:                                           Done
     Easy to play vide and this will eat bandwidth faster
         Can we do video play in list to certain rank holder only?
-- Vote up down has some issues:
+
+- Vote up down has some issues:                                                         Done
     Not that perfact
+
 - WebSocket receiver on 'online' dot, so every call is available on every call
     v-if: online dot if user online, then only socket is connected
+
 - Update user status
     online, busy & offline
     only allowed to call to live user
+
 - User profile
-    Cover Image
-    Profile Image
+    Cover Image                                                                        Done
+    Profile Image                                                                      Done
     All other data
     Change password
+
 - User short profile component to show on hover
     On Question list/offerDetails
     On Offerer List
+
+
 - Pagination
     Home page
     My Questions
     My comments
     My Offers
+
 - User Rating
     as Solver
     as Questioner
     Updating properly ?
+
 - Remove facy features as of now
     No followup
-- Comment section
+
+- Comment section           
     Move Below comments list
     Reload comments list on comment add

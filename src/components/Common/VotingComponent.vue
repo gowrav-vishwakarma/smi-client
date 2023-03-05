@@ -106,6 +106,9 @@ export default class VoteingComponent extends Vue {
       if ((res.matchedCount && res.modifiedCount) || res.upsertedId) {
         this.question.questionValue.totalVoteCount++;
         this.question.myVote = 1;
+        if (res.matchedCount && res.modifiedCount) {
+          this.question.questionValue.totalVoteDownCount--;
+        }
       }
     });
   }
@@ -118,7 +121,10 @@ export default class VoteingComponent extends Vue {
 
     questionsApi.vote(this.question._id, "down").then((res) => {
       if ((res.matchedCount && res.modifiedCount) || res.upsertedId) {
-        this.question.questionValue.totalVoteCount--;
+        if (res.matchedCount && res.modifiedCount) {
+          this.question.questionValue.totalVoteCount--;
+        }
+        this.question.questionValue.totalVoteDownCount++;
         this.question.myVote = -1;
       }
     });

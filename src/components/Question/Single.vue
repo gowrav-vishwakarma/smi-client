@@ -1,14 +1,14 @@
 <template lang="pug">
   v-card.mb-2.pa-5.question-single-card(v-if="question")
     questioner-signature(:User="question.byUser")
-    v-card.pa-0.ma-0.question-detail-card(flat)
-      h4.text-subtitle-1.question-heading(@click="gotoDetails" style="cursor:pointer") Q. {{question.title}}
+    v-card.pa-0.ma-0.question-detail-card(flat @click="gotoDetails")
+      h4.text-subtitle-1.question-heading( style="cursor:pointer") Q. {{question.title}}
       .question-description-text
         .text-body-2.text--secondary.text-justify.question-description-text {{shortdetail}}
         v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")
             v-img(src="@/assets/logo.png" max-height="350" contain)
-        v-card.question-description-video(color="primary lighten-3" flat v-if="question.video")
-            video(width="320" height="240" controls)
+        v-card.d-flex.justify-center.question-description-video(color="primary lighten-3" flat v-if="question.video")
+            video(width="320" height="240" :controls="videoControl")
               source(:src="question.video" type="video/webm")
     .d-flex.mt-3
       .caption.grey--text.lighten-4 asked {{ humanized_time_span(question.createdAt) }}
@@ -67,8 +67,9 @@ export default class QuestionSingle extends Mixins(General) {
 
   @Prop({ default: false }) disableVotingAction: any;
 
+  @Prop({ default: false }) videoControl = false;
   gotoDetails() {
-    this.$router.push("question/" + this.question._id);
+    this.$router.push("/question/" + this.question._id);
   }
 
   get shortdetail() {

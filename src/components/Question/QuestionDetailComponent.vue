@@ -8,7 +8,7 @@
         question-offer-list.mt-3(:question="question")
       //- question section
       v-col.col-md-9.col-sm-12.col-xs-12
-        question-single(:question="question" :key="question._id" disableAnswerSection="true")
+        question-single(:question="question" :key="question._id" disableAnswerSection="true" videoControl=true)
         question-comments-list-component(:question="question")
         //- .ml-1
         //-   .text-h6 {{ question.title }}

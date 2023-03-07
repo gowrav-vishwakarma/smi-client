@@ -2,7 +2,7 @@
   v-container
     P Solution Attempt 
     div(style="height: 100vh")
-      vue-jitsi-meet(ref="jitsiRef" domain="meet.jit.si" :options="jitsiOptions" v-if="!showRatingDialog")
+      //- vue-jitsi-meet(ref="jitsiRef" domain="meet.jit.si" :options="jitsiOptions" v-if="!showRatingDialog")
     v-dialog(v-model="showRatingDialog" max-width="400")
       SolutionRatingForm
 </template>

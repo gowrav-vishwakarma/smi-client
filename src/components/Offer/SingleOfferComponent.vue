@@ -125,6 +125,8 @@ export default class SingleOfferComponent extends Vue {
 
   call() {
     // this.callRingingPlayer.play();
+    // to do check user is online or not
+    // to do set time duration also for 3 min
 
     this.$vToastify
       .prompt({

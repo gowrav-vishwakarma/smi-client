@@ -21,6 +21,8 @@ export default class ByUser {
 
   name!: string;
 
+  email!: string;
+
   languagesSpeaks!: string[];
 
   reputationAsQuestioner!: ReputationAsQuestioner;

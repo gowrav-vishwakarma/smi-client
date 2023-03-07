@@ -1,4 +1,5 @@
 import { IsMongoId } from "class-validator";
+import byUser from "@/dto/byUser.dto";
 
 export default class CreateSolutionAttemptDTO {
   @IsMongoId()
@@ -9,4 +10,8 @@ export default class CreateSolutionAttemptDTO {
 
   @IsMongoId()
   offererId!: string;
+
+  questioner!: any;
+  offerer!: any;
+  notes!: string;
 }

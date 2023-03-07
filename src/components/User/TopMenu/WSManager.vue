@@ -64,7 +64,7 @@ export default class WSManager extends Vue {
 
       this.$vToastify
         .prompt({
-          title: `${payload.offerer.name} calling`,
+          title: `${payload.from.name} calling`,
           body: `for "${payload.questionTitle}"`,
           answers: { Accept: true, Denied: false },
         })
@@ -75,11 +75,14 @@ export default class WSManager extends Vue {
           newPayload.to = payload.from._id;
           newPayload.from = payload.to;
           newPayload.callAccept = callAccept;
-          if (callAccept) {
+          if (callAccept && payload) {
             const solutionOffer = await solutionsApi.createSolutionAttempt({
               questionId: payload.questionId,
               questionerId: payload.from._id,
+              questioner: payload.from,
               offererId: payload.to,
+              offerer: payload.offerer,
+              notes: payload.eventDetail.name,
             });
 
             newPayload.solutionOfferId = solutionOffer._id;

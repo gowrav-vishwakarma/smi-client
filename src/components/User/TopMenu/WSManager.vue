@@ -79,9 +79,15 @@ export default class WSManager extends Vue {
             const solutionOffer = await solutionsApi.createSolutionAttempt({
               questionId: payload.questionId,
               questionerId: payload.from._id,
-              questioner: payload.from,
+              questioner: {
+                name: payload.from.name,
+                email: payload.from.email,
+              },
               offererId: payload.to,
-              offerer: payload.offerer,
+              offerer: {
+                name: payload.offerer.name,
+                ratingAsSolver: payload.offerer.ratingAsSolver,
+              },
               notes: payload.eventDetail.name,
             });
 

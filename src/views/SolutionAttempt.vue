@@ -1,10 +1,11 @@
 <template lang="pug">
   v-container
-    P Solution Attempt 
-    div(style="height: 100vh")
+    div(style="height: 100vh" v-if="solutionAttempt && solutionAttempt._id")
       //- vue-jitsi-meet(ref="jitsiRef" domain="meet.jit.si" :options="jitsiOptions" v-if="!showRatingDialog")
-    v-dialog(v-model="showRatingDialog" max-width="400")
-      SolutionRatingForm
+      v-dialog(v-model="showRatingDialog" max-width="400")
+        SolutionRatingForm(:solutionAttemptDetail="solutionAttempt")
+    div(v-else)
+      P Meeting finished | Something went wrong
 </template>
 
 <script lang="ts">
@@ -12,8 +13,8 @@ import { Component, Mixins, Ref } from "vue-property-decorator";
 import { General } from "@/mixins/general";
 // import { JitsiMeet } from "@mycure/vue-jitsi-meet";
 import SolutionRatingForm from "@/components/Common/SolutionRatingForm.vue";
-
 import JitsiMeet from "@/components/Multicorder/JitsiMeet.vue";
+import solutionApi from "@/services/solutions.api";
 
 @Component({
   name: "SolutionAttempt",
@@ -26,7 +27,9 @@ export default class SolutionAttempt extends Mixins(General) {
   // eslint-disable-next-line
   @Ref("jitsiRef") private jitsiRefComponent!: HTMLIFrameElement;
 
-  showRatingDialog = false;
+  showRatingDialog = true;
+
+  solutionAttempt: any | null = null;
 
   get jitsiOptions() {
     return {
@@ -80,12 +83,12 @@ export default class SolutionAttempt extends Mixins(General) {
     };
   }
 
-  mounted() {
-    // this.jitsi = new JitsiMeetExternalAPI("meet.jit.si", this.jitsiOptions);
-    // this.jitsiRef.addEventListener(
-    //   "video-conference-terminated",
-    //   this.onVideoConferenceLeft
-    // );
+  async mounted() {
+    if (this.$route.params && this.$route.params.solutionId) {
+      this.solutionAttempt = await solutionApi.getSolutionAttempt(
+        this.$route.params.solutionId
+      );
+    }
   }
 
   onIFrameLoad(event: any) {

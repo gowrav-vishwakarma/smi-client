@@ -13,6 +13,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import QuestionListResponseDTO from "@/dto/response/question-list-response.dto";
+import SolutionAttemptDetailResponseDTO from "@/dto/response/solutionattempt-detail-response.dto";
 import solutionsApi from "@/services/solutions.api";
 
 @Component({
@@ -23,19 +24,50 @@ export default class SolutionRatingForm extends Vue {
   @Prop({ default: null })
   readonly question!: QuestionListResponseDTO;
 
+  @Prop({ default: null })
+  readonly solutionAttemptDetail!: SolutionAttemptDetailResponseDTO;
+
   rating = 0;
   comment = "";
 
   get title() {
-    return "Rating For Questioner/Solver";
+    if (this.isOfferer) {
+      return "Rating For Solver";
+    } else return "Rating For Questioner";
+  }
+
+  get isOfferer() {
+    return (
+      this.$route.params.solutionId == this.solutionAttemptDetail._id &&
+      this.solutionAttemptDetail.offererId ==
+        this.$store.getters.loggedInUser._id
+    );
+  }
+
+  get isQuestioner() {
+    return (
+      this.$route.params.solutionId == this.solutionAttemptDetail._id &&
+      this.solutionAttemptDetail.questionerId ==
+        this.$store.getters.loggedInUser._id
+    );
   }
 
   submitRating() {
     solutionsApi.createSolutionRating({
-      rating: this.rating,
-      comment: this.comment,
       solutionAttemptId: this.$route.params.solutionId,
+      comment: this.comment,
+      rating: this.rating,
+      forOfferer: !this.isOfferer,
+      forQuestioner: !this.isQuestioner,
+      offererId: this.solutionAttemptDetail.offererId,
+      questionId: this.solutionAttemptDetail.questionId,
+      questionerId: this.solutionAttemptDetail.questionerId,
+      // solutionAttemptDetail: this.solutionAttemptDetail,
     });
+  }
+
+  mounted() {
+    console.log(this.solutionAttemptDetail, "inside rating form");
   }
 }
 </script>

@@ -16,12 +16,25 @@ class SolutionsAPIService extends APIService {
     rating: number;
     comment: string;
     solutionAttemptId: string;
+    forOfferer: boolean;
+    forQuestioner: boolean;
+    offererId: string;
+    questionId: string;
+    questionerId: string;
   }): Promise<any> {
-    console.log("Rating Data", ratingParam);
+    console.log("sending Rating Data", ratingParam);
+
     return await this.axiosCall<any>({
       method: "POST",
       url: "/solution-attempt/createrating",
       data: ratingParam,
+    });
+  }
+
+  async getSolutionAttempt(id: string): Promise<any> {
+    return await this.axiosCall<any>({
+      method: "GET",
+      url: `/solution-attempt/${id}`,
     });
   }
 }

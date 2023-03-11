@@ -1,6 +1,7 @@
 - Update user status
     online, busy & offline
     only allowed to call to live user
+    mark user busy when any meeting is started and handle next meeting accordingly
 
 - User profile
     All other data                          

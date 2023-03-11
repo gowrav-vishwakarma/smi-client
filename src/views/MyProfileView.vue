@@ -32,7 +32,7 @@ export default class MyProfileView extends Vue {
     Profile: "Profile",
     Questions: "My Questions",
     Offers: "My Offers",
-    Comments: " MyComments",
+    Comments: "MyComments",
     Settings: "Settings",
   };
 }

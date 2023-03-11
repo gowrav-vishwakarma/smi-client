@@ -28,7 +28,6 @@ import { AuthStoreModule } from "@/store";
 
   methods: {
     async logout() {
-      console.log("hello");
       await AuthStoreModule.resetCurrentUserAction();
     },
   },

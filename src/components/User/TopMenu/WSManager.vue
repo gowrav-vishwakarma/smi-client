@@ -61,6 +61,8 @@ export default class WSManager extends Vue {
 
     SocketOn("ringing", (payload) => {
       console.log("call-receive", payload);
+      // when ringing remove previous toast
+      this.$vToastify.removeToast();
 
       this.$vToastify
         .prompt({
@@ -118,14 +120,18 @@ export default class WSManager extends Vue {
       // }
     });
 
-    SocketOn("denyCall", (payload) => {
+    SocketOn("callDenied", (payload) => {
       this.callReset();
-      console.log("call-denied", payload);
     });
 
     SocketOn("callDisconnected", (payload) => {
       this.callReset();
       console.log("callDisconnected", payload);
+    });
+
+    SocketOn("callHanguped", (payload) => {
+      this.callReset();
+      console.log("call Hanguped", payload);
     });
 
     // socket.on("call-received", ({ from, content }) => {

@@ -34,6 +34,23 @@ create DTO for solutionAttemp schema
 
 
 
+info@maxbbps.com
+Shekar@456sw@!sc
+
+
+Incoming server (IMAP)
+imap.hostinger.com
+993
+
+
+Outgoing server (SMTP)
+smtp.hostinger.com
+465
+
+
+Incoming server (POP)
+pop.hostinger.com
+995
 
 ====== DONE ======
 

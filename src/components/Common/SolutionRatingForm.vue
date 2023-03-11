@@ -15,6 +15,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import QuestionListResponseDTO from "@/dto/response/question-list-response.dto";
 import SolutionAttemptDetailResponseDTO from "@/dto/response/solutionattempt-detail-response.dto";
 import solutionsApi from "@/services/solutions.api";
+import { eventBus } from "@/mixins/event-bus";
 
 @Component({
   name: "SolutionRatingForm",
@@ -32,8 +33,8 @@ export default class SolutionRatingForm extends Vue {
 
   get title() {
     if (this.isOfferer) {
-      return "Rating For Solver";
-    } else return "Rating For Questioner";
+      return "Rating For Questioner";
+    } else return "Rating For Solver";
   }
 
   get isOfferer() {
@@ -52,8 +53,9 @@ export default class SolutionRatingForm extends Vue {
     );
   }
 
-  submitRating() {
-    solutionsApi.createSolutionRating({
+  async submitRating() {
+    eventBus.$emit("show-loader");
+    await solutionsApi.createSolutionRating({
       solutionAttemptId: this.$route.params.solutionId,
       comment: this.comment,
       rating: this.rating,
@@ -64,6 +66,10 @@ export default class SolutionRatingForm extends Vue {
       questionerId: this.solutionAttemptDetail.questionerId,
       // solutionAttemptDetail: this.solutionAttemptDetail,
     });
+
+    eventBus.$emit("hide-loader");
+
+    this.$router.push("/question/" + this.solutionAttemptDetail.questionId);
   }
 
   mounted() {

@@ -55,6 +55,7 @@ export default class SingleOfferComponent extends Vue {
   readonly question!: any;
 
   blob = null;
+  callRinging = false;
 
   recorderOndataavailable(blob: any) {
     this.blob = blob;
@@ -83,14 +84,15 @@ export default class SingleOfferComponent extends Vue {
   callRingingToastId!: any;
 
   mounted() {
+    SocketOn("callDenied", (payload) => {
+      this.callRinging = false;
+      this.callReset();
+      this.$vToastify.error(`by ${this.offer.Offerer.name}`, "Call Decliened");
+    });
+
     /**
      * moved this code to ws-manager
      
-    
-    SocketOn("denyCall", (payload) => {
-      this.callReset();
-      console.log("call-denied", payload);
-    });
 
     SocketOn("callAccepted", (payload) => {
       console.log("callAccepted at single offer component", payload);
@@ -128,14 +130,34 @@ export default class SingleOfferComponent extends Vue {
     // to do check user is online or not
     // to do set time duration also for 3 min
 
+    if (this.callRinging) {
+      return;
+    }
+
+    this.callRinging = true;
     this.$vToastify
       .prompt({
         title: `calling ${this.offer.Offerer.name}`,
         body: `ringing ...`,
-        answers: { Hangup: true },
+        answers: { Disconnect: true },
       })
       .then((hangup: boolean) => {
         console.log(hangup);
+        if (hangup) {
+          this.callRinging = false;
+          SocketEmit("hangupCall", {
+            to: this.offer.Offerer._id,
+            from: this.$store.getters.loggedInUser,
+            offerer: this.offer.Offerer,
+            questionId: this.question._id,
+            questionTitle: this.question.title,
+            offerId: this.offer._id,
+            eventDetail: {
+              name: "HangupCall",
+              for: "Offer",
+            },
+          });
+        }
       });
 
     SocketEmit("initiateCall", {

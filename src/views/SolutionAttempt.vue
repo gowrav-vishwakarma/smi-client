@@ -1,7 +1,7 @@
 <template lang="pug">
-  v-container
+  v-container.smi-meeting-wrapper
     div(style="height: 100vh" v-if="solutionAttempt && solutionAttempt._id")
-      //- vue-jitsi-meet(ref="jitsiRef" domain="meet.jit.si" :options="jitsiOptions" v-if="!showRatingDialog")
+      vue-jitsi-meet(ref="jitsiRef" domain="meet.jit.si" :options="jitsiOptions" v-if="!showRatingDialog")
       v-dialog(v-model="showRatingDialog" max-width="400")
         SolutionRatingForm(:solutionAttemptDetail="solutionAttempt")
     div(v-else)
@@ -27,7 +27,7 @@ export default class SolutionAttempt extends Mixins(General) {
   // eslint-disable-next-line
   @Ref("jitsiRef") private jitsiRefComponent!: HTMLIFrameElement;
 
-  showRatingDialog = true;
+  showRatingDialog = false;
 
   solutionAttempt: any | null = null;
 
@@ -37,10 +37,11 @@ export default class SolutionAttempt extends Mixins(General) {
       width: "100%",
       noSSL: false,
       userInfo: {
-        email: "user@email.com",
-        displayName: this.$store.getters.loggedInUser._id,
+        email: this.$store.getters.loggedInUser.email,
+        displayName: this.$store.getters.loggedInUser.name,
       },
-      personID: "wedwds",
+      // personID: "wedwds",
+      personID: this.$store.getters.loggedInUser._id,
       configOverwrite: {
         disableDeepLinking: true,
         prejoinPageEnabled: false,
@@ -93,6 +94,7 @@ export default class SolutionAttempt extends Mixins(General) {
 
   onIFrameLoad(event: any) {
     console.log("callbackevent on iframe loaded callback function ", event);
+
     this.jitsiRefComponent.addEventListener(
       "participantJoined",
       this.onParticipantJoined
@@ -105,12 +107,20 @@ export default class SolutionAttempt extends Mixins(General) {
       "videoConferenceLeft",
       this.onParticipantLeft
     );
+
+    // let iframeObj = document.getElementsByClassName(
+    //   ".smi-meeting-wrapper iframe body"
+    // );
+    // console.log("selector", iframeObj);
   }
 
   onParticipantLeft(event: any) {
     console.log("callbackevent onParticipant Left roomName", event);
+    // this.$vToastify.success(event.displayName + " Left");
+
     this.showRatingDialog = true;
     // this.$router.push("/");
+    // this.$router.push("/question/" + this.solutionAttempt.questionId);
   }
 
   videoConferenceLeft(event: any) {
@@ -118,8 +128,18 @@ export default class SolutionAttempt extends Mixins(General) {
     this.showRatingDialog = true;
   }
 
-  onParticipantJoined() {
-    alert("participent joinded");
+  onParticipantJoined(event: any) {
+    console.log("Participent joined", event);
+    // alert("participent joinded");
+    this.$vToastify.success({
+      successDuration: 2000,
+      body: event.displayName + " Joined",
+    });
   }
 }
 </script>
+<style>
+.smi-meeting-wrapper .leftwatermark {
+  display: none !important;
+}
+</style>

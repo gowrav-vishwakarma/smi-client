@@ -23,13 +23,17 @@ export default class ByUserComponent extends Vue {
   @Prop({ default: null, required: true }) User!: ByUser;
 
   get reputation(): number {
-    const accpectedRatio =
-      this.User.reputationAsQuestioner.totalMarkedSolved /
-      this.User.reputationAsQuestioner.totalQuestionsAsked;
-    const accpectedRatioFixed = isNaN(accpectedRatio) ? 0 : accpectedRatio;
-    const rating =
-      this.User.reputationAsQuestioner.totalRatingsSum /
-      this.User.reputationAsQuestioner.totalRatingsCount;
+    // const accpectedRatio =
+    //   this.User.reputationAsQuestioner.totalMarkedSolved /
+    //   this.User.reputationAsQuestioner.totalQuestionsAsked;
+    // const accpectedRatioFixed = isNaN(accpectedRatio) ? 0 : accpectedRatio;
+    const rating = Math.round(
+      ((this.User.reputationAsQuestioner.totalRatingsSum /
+        this.User.reputationAsQuestioner.totalRatingsCount) *
+        10) /
+        10
+    );
+
     return isNaN(rating) ? 0 : rating;
     // const ratingFixed = isNaN(rating) ? 0 : rating;
     // return `Accpeted ${accpectedRatioFixed}% out of ${this.User.reputationAsQuestioner.totalQuestionsAsked} with ${ratingFixed} star rating`;

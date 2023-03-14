@@ -1,11 +1,13 @@
 <template lang="pug">
     v-card
-      v-alert(border="left" icon="mdi-fire" dense type="success" colored-border color="deep-purple accent-4")
-        .d-flex.justify-space-between
-            | {{offer.Offerer.name}}
-            v-icon(small @click="call" v-if="questionBelongsToMe && !offerCallConnected") mdi-phone
-            v-icon(small @click="callDisconnect" v-if="offerCallConnected") mdi-phone-cancel
-      //- videocall(:offer="offer" :question="question")
+      .d-flex.flex-column
+        //- v-alert(border="left" icon="mdi-fire" dense type="success" colored-border color="deep-purple accent-4")
+        SolverSignature(:User="offer.Offerer" enableRating="true" disableFollow="true")
+        v-card-text {{offer.notes}}
+        v-btn(blocked @click="call" v-if="questionBelongsToMe && !offerCallConnected")
+          v-icon(small ) mdi-phone
+          | connect
+        v-icon(@click="callDisconnect" v-if="offerCallConnected") mdi-phone-cancel
       v-card(flat v-if="offerCallConnected")
         div
           v-list-item(two-line)
@@ -36,12 +38,14 @@ import "reflect-metadata";
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
 // import MulticorderUI from "@/components/Multicorder/MulticorderUI.vue";
 // import videocall from "@/components/Multicorder/videocall.vue";
+import SolverSignature from "@/components/User/Signature/AsSolver.vue";
 
 @Component({
   name: "SingleOfferComponent",
   components: {
     // MulticorderUI,
     // videocall,
+    SolverSignature,
   },
 })
 export default class SingleOfferComponent extends Vue {

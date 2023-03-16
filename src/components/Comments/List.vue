@@ -27,16 +27,16 @@ export default class QuestionCommentsListComponent extends Mixins(General) {
   questionComments: any[] = [];
 
   async mounted() {
-    await this.fetQComments();
+    await this.getQComments();
   }
 
-  async fetQComments() {
+  async getQComments() {
     this.questionComments = await questionsApi.getComments(this.question._id);
   }
 
   reloadData() {
-    console.log("reloadData called");
-    this.fetQComments();
+    this.getQComments();
+    this.$emit("event-new-comment-created");
   }
 }
 </script>

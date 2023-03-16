@@ -7,8 +7,9 @@
         v-btn(blocked @click="call" v-if="questionBelongsToMe && !offerCallConnected")
           v-icon(small ) mdi-phone
           | connect
+        v-btn(v-else color="red lighten-4") waiting for approval
         v-icon(@click="callDisconnect" v-if="offerCallConnected") mdi-phone-cancel
-      v-card(flat v-if="offerCallConnected")
+      v-card( v-if="offerCallConnected")
         div
           v-list-item(two-line)
             v-list-item-content

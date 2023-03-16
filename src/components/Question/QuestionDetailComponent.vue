@@ -2,14 +2,14 @@
   v-container.grid-list-xs
     v-row.no-gutter
       //- offer section
-      v-col.col-md-3.col-sm-12.col-xs-12
+      v-col.col-md-4.col-sm-4.col-xs-4
         create-offer-component(:question="question" v-if="!isQuestionBelongsToLoginUser")
         div(v-else) Your Offered Solution by others
         question-offer-list.mt-3(:question="question")
       //- question section
-      v-col.col-md-9.col-sm-12.col-xs-12
+      v-col.col-md-8.col-sm-8.col-xs-8
         question-single(:question="question" :key="question._id" disableAnswerSection="true" videoControl=true)
-        question-comments-list-component(:question="question")
+        question-comments-list-component(:question="question" @event-new-comment-created="reloadData")
         //- .ml-1
         //-   .text-h6 {{ question.title }}
         //-   .caption.mt-2 {{ question.detail }}
@@ -57,6 +57,11 @@ export default class QuestionDetailComponent extends Mixins(General) {
       this.$store.getters.loggedInUser._id
       ? this.question.byUser._id == this.$store.getters.loggedInUser._id
       : false;
+  }
+
+  reloadData() {
+    console.log("event catch from child component");
+    this.question.questionValue.totalCommentsCount += 1;
   }
 }
 </script>

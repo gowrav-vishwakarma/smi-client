@@ -1,6 +1,6 @@
 <template lang="pug">
     div
-      v-card.d-flex.flex-column(flat tile)
+      v-card.d-flex.flex-column(tile)
           v-card-text Your answer/comment
             vue-editor.mt-2(v-model="comment")
           v-card-actions.pl-3.pr-3
@@ -31,7 +31,7 @@ export default class CreateCommentComponent extends Vue {
       .createComment(this.question._id, this.comment)
       .then((res) => {
         console.log(res);
-
+        this.comment = "";
         this.$emit("event-new-comment-created");
       });
   }

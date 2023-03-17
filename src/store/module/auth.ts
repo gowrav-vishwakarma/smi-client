@@ -14,6 +14,7 @@ export class CurrentUserI {
   accessToken!: string;
   userToppics!: string[];
   userLanguages!: string[];
+  onlineStatus: string | null = null;
 }
 
 export interface IAuthState {
@@ -36,9 +37,18 @@ export default class Auth extends VuexModule implements IAuthState {
     return this.currentUser ?? null;
   }
 
+  get userOnlineStatus(): string | null {
+    return this.currentUser?.onlineStatus ?? null;
+  }
+
   @Mutation
   setCurrentUser(currentUser: CurrentUserI) {
     this.currentUser = currentUser;
+  }
+
+  @Mutation
+  updateUserOnlineStatus(onlineStatus: string) {
+    if (this.currentUser) this.currentUser["onlineStatus"] = onlineStatus;
   }
 
   @Action
@@ -52,5 +62,10 @@ export default class Auth extends VuexModule implements IAuthState {
   @Action
   async resetCurrentUserAction() {
     await this.context.commit("setCurrentUser", null);
+  }
+
+  @Action
+  async updateUserOnlineStatusAction(status: string | null) {
+    await this.context.commit("updateUserOnlineStatus", status);
   }
 }

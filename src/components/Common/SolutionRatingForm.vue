@@ -16,6 +16,7 @@ import QuestionListResponseDTO from "@/dto/response/question-list-response.dto";
 import SolutionAttemptDetailResponseDTO from "@/dto/response/solutionattempt-detail-response.dto";
 import solutionsApi from "@/services/solutions.api";
 import { eventBus } from "@/mixins/event-bus";
+import { AuthStoreModule } from "@/store";
 
 @Component({
   name: "SolutionRatingForm",
@@ -68,6 +69,7 @@ export default class SolutionRatingForm extends Vue {
     });
 
     eventBus.$emit("hide-loader");
+    await AuthStoreModule.updateUserOnlineStatusAction(null);
 
     this.$router.push("/question/" + this.solutionAttemptDetail.questionId);
   }

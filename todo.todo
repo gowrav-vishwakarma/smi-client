@@ -1,11 +1,11 @@
 - Update user status
-    online, busy & offline
+    online, busy & offline: 
     only allowed to call to live user
     mark user busy when any meeting is started and handle next meeting accordingly
 
 - User profile
-    All other data                          
-    Change password in settings
+    All other data              ---     
+    Change password in settings --- done
 
 - User short profile component to show on hover
     On Question list/offerDetails

@@ -23,6 +23,7 @@ export class UserDetails {
 
   userToppics!: string[];
   userLanguages!: string[];
+  onlineStatus!: string;
 }
 
 export default class LoginResponseDTO {

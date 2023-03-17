@@ -4,13 +4,13 @@
           div
             v-tooltip(top)
               template( v-slot:activator="{ on, attrs }")
-                v-icon.mx-4(small @click="voteUp" v-bind="attrs" v-on="on") mdi-thumb-up
-                p.pa-0.ma-0.icon-text {{ currentVoteUpCount }} up
+                v-icon.mx-4(small @click="voteUp" v-bind="attrs" v-on="on" :color="voteUpColor") mdi-thumb-up
+                p.pa-0.ma-0.icon-text {{ currentVoteUpCount }} up 
               span happy with question, vote up
           div
             v-tooltip(top)
               template( v-slot:activator="{ on, attrs }")
-                v-icon.mx-4(small @click="voteDown" v-bind="attrs" v-on="on") mdi-thumb-down
+                v-icon.mx-4(small @click="voteDown" v-bind="attrs" v-on="on" :color="voteDownColor") mdi-thumb-down
                 p.pa-0.ma-0.icon-text {{ currentVoteDownCount }} down
               span unhappy with question, vote dowm
       auth-dialog(:showDialog.sync="AuthDialogState")
@@ -60,6 +60,22 @@ export default class VoteingComponent extends Vue {
       return this.question.myVote;
     } else {
       return this.comment.myVote;
+    }
+  }
+
+  get voteUpColor() {
+    if (this.myVote && this.myVote.vote == 1) {
+      return "primary";
+    } else {
+      return "";
+    }
+  }
+
+  get voteDownColor() {
+    if (this.myVote && this.myVote.vote == -1) {
+      return "red";
+    } else {
+      return "";
     }
   }
 

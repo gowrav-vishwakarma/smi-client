@@ -1,6 +1,6 @@
 <template lang="pug">
     .d-flex
-          .caption {{ question.questionValue.totalVoteCount }} Votes, {{ question.questionValue.totalCommentsCount }} Comments, {{ question.questionValue.totalOfferingCount }} Offers
+          .caption {{ question.questionValue.totalVoteCount + question.questionValue.totalVoteDownCount }} Votes, {{ question.questionValue.totalCommentsCount }} Comments, {{ question.questionValue.totalOfferingCount }} Offers
 </template>
 
 <script lang="ts">

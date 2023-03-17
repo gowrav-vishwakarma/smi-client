@@ -1,6 +1,7 @@
 <template lang="pug">
     div
       v-icon(small :color="isConnected ? 'green' : 'red'") mdi-circle
+      | {{this.$store.getters.userOnlineStatus}}
       div.extra-component
         //- div.call-dial-ringing
         //-   audio(ref="callDialPlayer")
@@ -15,6 +16,7 @@ import { Component, Vue, Ref } from "vue-property-decorator";
 import socket, { SocketOn, SocketEmit } from "@/services/socket";
 import { SocketAuthDTO, InitiateCallDTO } from "@/dto/ws.dto";
 import solutionsApi from "@/services/solutions.api";
+import { AuthStoreModule } from "@/store";
 
 import callDialToneMP3 from "@/assets/audio/callDialTone.mp3";
 const callDialTone: string = callDialToneMP3;
@@ -29,6 +31,8 @@ export default class WSManager extends Vue {
   audioContext: any = null;
   audioBuffer: any = null;
   // callDialTone: callDialToneMP3;
+
+  // userOnlineStatus = "Offline";
 
   mounted() {
     this.socketConnect();
@@ -51,6 +55,11 @@ export default class WSManager extends Vue {
       (data: any) => {
         socket.auth = { username };
         this.isConnected = true;
+
+        if (this.$store.getters.userOnlineStatus == null) {
+          AuthStoreModule.updateUserOnlineStatusAction("Online");
+          //call api to update user status
+        }
       },
       SocketAuthDTO
     );
@@ -106,7 +115,7 @@ export default class WSManager extends Vue {
         });
     });
 
-    SocketOn("callAccepted", (payload) => {
+    SocketOn("callAccepted", async (payload) => {
       console.log("callAccepted at single offer component", payload);
       //temporary commenting condition
       // if (
@@ -115,6 +124,8 @@ export default class WSManager extends Vue {
       //   (this.questionBelongsToMe || this.offerBelongsToMe)
       // ) {
       this.callReset();
+      // this.userOnlineStatus = "Busy";
+      await AuthStoreModule.updateUserOnlineStatusAction("BUSY");
       // this.offerCallConnected = true;
       this.$router.push("/solution-attempt/" + payload.solutionOfferId);
       // }

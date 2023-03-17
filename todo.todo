@@ -1,3 +1,15 @@
+New TODOS (17 march)
+
+-   User name and rating section confusing, make anchor tag for user name and question title for ease
+-   Show current filters over question list somewhere
+-   Show user profiles (public profile)
+-   remove share/ save for now
+-   Show call chat, screen share and video icons only enabled if user selected, Chat is always on
+-   In Offer list on question details page, show connect bbutton disabled (if user offline, busy. Show status here?)
+
+
+====
+
 - Update user status
     online, busy & offline
     only allowed to call to live user

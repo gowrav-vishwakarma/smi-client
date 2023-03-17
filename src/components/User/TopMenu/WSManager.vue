@@ -105,6 +105,7 @@ export default class WSManager extends Vue {
             newPayload.solutionOfferId = solutionOffer._id;
             SocketEmit("acceptCall", newPayload);
 
+            await AuthStoreModule.updateUserOnlineStatusAction("BUSY");
             /** call accepted buy offerer end user - so redirecting to solution-attempt page*/
             this.$router.push(
               "/solution-attempt/" + newPayload.solutionOfferId

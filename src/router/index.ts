@@ -36,6 +36,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/MyProfileView.vue"),
   },
   {
+    path: "/profile/:userId",
+    name: "profile/:userId",
+    component: () => import("../views/publicProfile.vue"),
+  },
+  {
     path: "/solution-attempt/:solutionId",
     name: "solution-attempt",
     component: () => import("../views/SolutionAttempt.vue"),

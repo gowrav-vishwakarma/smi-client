@@ -2,7 +2,7 @@
   v-card.mb-2.pa-5.question-single-card(v-if="question")
     questioner-signature(:User="question.byUser")
     v-card.pa-0.ma-0.question-detail-card(flat @click="gotoDetails")
-      h4.text-subtitle-1.question-heading( style="cursor:pointer") Q. {{question.title}}
+      h4.text-subtitle-1.question-heading.primary--text( style="cursor:pointer") Q. {{question.title}}
       .question-description-text
         .text-body-2.text--secondary.text-justify.question-description-text.ml-5 {{shortdetail}}
         v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")
@@ -19,8 +19,8 @@
         question-value-component(:question="question")
         .d-flex
           voting-component(v-if="!disableVotingAction" :question="question")
-          booking-component(v-if="!disableBookmarkAction" :question="question")
-          share-button(v-if="!disableShareAction" :question="question")
+          //- booking-component(v-if="!disableBookmarkAction" :question="question")
+          //- share-button(v-if="!disableShareAction" :question="question")
       .ml-auto(v-if="!disableAnswerSection")
         .d-flex
           solution-channels-component(v-if="question.solutionChannels" :solutionChannels="question.solutionChannels")

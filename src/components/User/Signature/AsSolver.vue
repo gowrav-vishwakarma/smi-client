@@ -9,7 +9,7 @@
             //-     v-img(alt="Q DP" src="@/assets/logo.png" transition="scale-transition" to="/")
             v-list-item-content.ml-1.pa-0(v-if="!disableName")
               v-list-item-title.ma-0 {{User.name}}
-                span.ml-4.primary--text(v-if="!disableFollow") . Follow
+                //- span.ml-4.primary--text(v-if="!disableFollow") . Follow
               v-list-item-subtitle
                 small {{User.description}}
       User-Rating-AsSolver(:User="User" v-if="enableRating")

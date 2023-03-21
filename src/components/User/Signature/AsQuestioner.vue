@@ -9,9 +9,9 @@
             //-     v-img(alt="Q DP" src="@/assets/logo.png" transition="scale-transition" to="/")
             v-list-item-content.ml-1.pa-0
               v-list-item-title.ma-0 {{User.name}}
-                span.ml-4.primary--text . Follow
+                span.ml-4.primary--text(style="cursor: pointer;" @click="viewProfile") view profile
               v-list-item-subtitle
-                small useless coder | after experience same as fresher
+                small {{User.post}}
       User-Rating(:User="User")
 </template>
 
@@ -47,14 +47,18 @@ export default class ByUserComponent extends Vue {
   // mounted() {
   //   console.log("user ", this.User);
   // }
+
+  viewProfile() {
+    this.$router.push("/profile/" + this.User._id);
+  }
 }
 </script>
 
 <style>
-.signature .questioner-avatar-card,
+/* .signature .questioner-avatar-card,
 .signature .questioner-rating-card {
   cursor: pointer;
-}
+} */
 
 .signature .questioner-rating-card .v-list-item {
   min-height: auto;

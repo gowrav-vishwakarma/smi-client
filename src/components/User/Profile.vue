@@ -5,7 +5,7 @@
           .d-flex
             v-avatar.ml-2(color="grey" size="150" rounded="50%" style="position: absolute;bottom:-20px;")
               v-img(cover :src="profileImage")
-            v-btn.ml-auto(icon large elevation="2" @click="editingProfileSection='uploadImage'")
+            v-btn.ml-auto(icon large elevation="2" @click="editingProfileSection='uploadImage'" v-if="makeProfileEditable")
               v-icon(dark) mdi-pencil
         .d-flex.align-center.ml-auto(v-if="editingProfileSection=='uploadImage'" rounded style="width:80%")
           v-file-input(label="Cover Image" v-model="uploadCoverImage" prepend-icon="mdi-camera")
@@ -16,7 +16,7 @@
         v-col(cols="8")
           div
             v-card(flat)
-              v-btn(color="primary" small icon rounted @click="editProfile=true, editingProfileSection='basicInfo'")
+              v-btn(color="primary" small icon rounted @click="editProfile=true, editingProfileSection='basicInfo'" v-if="makeProfileEditable")
                 v-icon mdi-pencil
               //- v-card-title(v-if="editProfile") 
                 //- v-text-field(v-model="profile.name" :hide-details="true" dense single-line :autofocus="true" v-if="editingProfileSection ==='basicInfo' ")
@@ -70,7 +70,7 @@
                   v-btn.ml-4(small rounted icon color="red" @click="editingProfileSection=null,editProfile=false"  )
                     v-icon mdi-delete
                 div(v-else)
-                  v-btn.ml-4(small rounted icon color="primary" @click="editProfile=false, editingProfileSection='skills'")
+                  v-btn.ml-4(small rounted icon color="primary" @click="editProfile=false, editingProfileSection='skills'" v-if="makeProfileEditable")
                     v-icon mdi-pencil
               v-combobox( v-model="profile.skills" :items="skillList" label="" multiple chips :autofocus="editingProfileSection == 'skills'?true:false"  v-if="editingProfileSection ==='skills'")
               div(v-else)
@@ -80,7 +80,7 @@
             v-form(ref="userExperienceForm")
               .d-flex
                 h5.mb-2(class="text-h5 font-weight-regular ") Experience
-                v-btn.ml-4(small icon color="primary" rounted @click="editingProfileSection='experience'")
+                v-btn.ml-4(small icon color="primary" rounted @click="editingProfileSection='experience'" v-if="makeProfileEditable")
                   v-icon mdi-plus
             div.mt-4
               v-card(v-if="editingProfileSection==='experience'" color="primary" dark)
@@ -147,7 +147,7 @@
             v-card-text
               User-Rating-As-Solver(v-if="profile.ratingAsSolver" :User="userAsSolver")           
           v-card.mt-4
-            v-btn.ml-4(small rounted icon color="primary" @click="editProfile=false, editingProfileSection='contact'" v-if="editingProfileSection==null")
+            v-btn.ml-4(small rounted icon color="primary" @click="editProfile=false, editingProfileSection='contact'" v-if="editingProfileSection==null && makeProfileEditable" )
               v-icon mdi-pencil
             v-btn.ml-4(small rounted icon color="primary" @click="saveProfile" v-if="editingProfileSection==='contact'")
               v-icon mdi-content-save
@@ -170,7 +170,7 @@
                   v-list-item-title {{profile.email}}
                   v-list-item-subtitle work
           v-card.mt-4
-            v-btn.ml-4(small rounted icon color="primary" @click="editProfile=false, editingProfileSection='social'" v-if="editingProfileSection==null")
+            v-btn.ml-4(small rounted icon color="primary" @click="editProfile=false, editingProfileSection='social'" v-if="editingProfileSection==null && makeProfileEditable")
               v-icon mdi-pencil
             v-btn.ml-4(small rounted icon color="primary" @click="saveProfile" v-if="editingProfileSection==='social'")
               v-icon mdi-content-save
@@ -192,7 +192,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from "vue-property-decorator";
+import { Component, Vue, Ref, Prop } from "vue-property-decorator";
 import { skills } from "@/services/staticValues";
 import userExperience from "../../dto/user/experience.dto";
 // import profileDto from "../../dto/user/profile.dto";
@@ -212,6 +212,9 @@ import { eventBus } from "@/mixins/event-bus";
 })
 export default class UserProfileComponent extends Vue {
   @Ref() userSkillForm!: HTMLFormElement;
+
+  @Prop()
+  makeProfileEditable = false;
 
   //Editing Form
   editProfile = false;
@@ -294,7 +297,9 @@ export default class UserProfileComponent extends Vue {
 
   async mounted() {
     this.profile = await UserApiService.getProfile(
-      this.$store.getters.loggedInUser._id
+      this.makeProfileEditable
+        ? this.$store.getters.loggedInUser._id
+        : this.$route.params.userId
     );
     if (!this.profile.experiences) {
       this.profile["experiences"] = this.userExperienceList;

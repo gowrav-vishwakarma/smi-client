@@ -3,12 +3,22 @@
       .d-flex.flex-column
         //- v-alert(border="left" icon="mdi-fire" dense type="success" colored-border color="deep-purple accent-4")
         SolverSignature(:User="offer.Offerer" enableRating="true" disableFollow="true")
+        
         v-card-text {{offer.notes}}
-        v-btn(blocked @click="call" v-if="questionBelongsToMe && !offerCallConnected")
-          v-icon(small ) mdi-phone
-          | connect
-        v-btn(v-else color="red lighten-4") waiting for approval
+
+        div(v-if="questionBelongsToMe" style="width:100%;")
+          v-btn(blocked @click="call" v-if="questionBelongsToMe && !offerCallConnected && solverOnlineStatus" style="width:100%;")
+            v-icon(small) mdi-phone
+            | connect
+          v-btn(blocked v-else-if="questionBelongsToMe && offerCallConnected" style="width:100%;")
+            v-icon(small) mdi-phone
+            | connected
+          v-btn(blocked v-else-if="questionBelongsToMe" style="width:100%;")
+            v-icon(small color="red") mdi-circle
+            | offline
+        v-btn( v-else color="red lighten-4") waiting for call
         v-icon(@click="callDisconnect" v-if="offerCallConnected") mdi-phone-cancel
+
       v-card( v-if="offerCallConnected")
         div
           v-list-item(two-line)
@@ -59,6 +69,9 @@ export default class SingleOfferComponent extends Vue {
   @Prop({ default: null })
   readonly question!: any;
 
+  @Prop({ default: null })
+  readonly solverOnlineStatusList!: string[];
+
   blob = null;
   callRinging = false;
 
@@ -77,6 +90,9 @@ export default class SingleOfferComponent extends Vue {
       : false;
   }
 
+  get solverOnlineStatus() {
+    return this.solverOnlineStatusList.includes(this.offer.offererId);
+  }
   //toMe here logged in user
   get questionBelongsToMe() {
     return this.$store.getters.loggedInUser
@@ -97,7 +113,7 @@ export default class SingleOfferComponent extends Vue {
 
     /**
      * moved this code to ws-manager
-     
+
 
     SocketOn("callAccepted", (payload) => {
       console.log("callAccepted at single offer component", payload);
@@ -115,12 +131,12 @@ export default class SingleOfferComponent extends Vue {
         this.$router.push("/solution-attempt/" + payload.solutionOfferId);
       }
     });
-      
+
       SocketOn("callDisconnected", (payload) => {
       this.callReset();
       console.log("callDisconnected", payload);
     });
-    
+
     */
   }
 

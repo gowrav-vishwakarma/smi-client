@@ -4,8 +4,11 @@
       v-card.solver-avatar-card(flat tile)
         v-list.pa-0
           v-list-item.pa-0.pl-1
-            v-badge(bordered bottom :color="solverOnlineStatus?'green lighten-1':'red lighten-1'" dot offset-x="10" offset-y="10")
+            v-badge(v-if="displayOnlineLayout" bordered bottom :color="solverOnlineStatus?'green lighten-1':'red lighten-1'" dot offset-x="10" offset-y="10")
               v-avatar( size="40" v-if="!disableAvatar" style="border:4px solid;" :color="solverOnlineStatus?'green lighten-1':'red'")
+                user-avatar(:user="User")
+            div(v-else)
+              v-avatar( size="40" v-if="!disableAvatar" style="border:2px solid;" )
                 user-avatar(:user="User")
             //-     v-img(alt="Q DP" src="@/assets/logo.png" transition="scale-transition" to="/")
             v-list-item-content.ml-1.pa-0(v-if="!disableName")
@@ -35,6 +38,7 @@ export default class UserSignatureAsSolver extends Vue {
   @Prop({ default: false }) disableAvatar!: false;
 
   @Prop({ default: false }) solverOnlineStatus!: false;
+  @Prop({ default: false }) displayOnlineLayout!: false;
 
   @Prop({ default: false }) disableName!: false;
   @Prop({ default: false }) enableRating!: false;

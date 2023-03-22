@@ -2,10 +2,8 @@
     v-card
       .d-flex.flex-column
         //- v-alert(border="left" icon="mdi-fire" dense type="success" colored-border color="deep-purple accent-4")
-        SolverSignature(:User="offer.Offerer" enableRating="true" disableFollow="true")
-        
+        SolverSignature(:User="offer.Offerer" enableRating="true" disableFollow="true" :solverOnlineStatus="solverOnlineStatus")
         v-card-text {{offer.notes}}
-
         div(v-if="questionBelongsToMe" style="width:100%;")
           v-btn(blocked @click="call" v-if="questionBelongsToMe && !offerCallConnected && solverOnlineStatus" style="width:100%;")
             v-icon(small) mdi-phone

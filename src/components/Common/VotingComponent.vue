@@ -6,18 +6,19 @@
               template( v-slot:activator="{ on, attrs }")
                 v-icon.mx-4(small @click="voteUp" v-bind="attrs" v-on="on" :color="voteUpColor") mdi-thumb-up
                 p.pa-0.ma-0.icon-text {{ currentVoteUpCount }} up 
-              span happy with question, vote up
+              span vote up
           div
             v-tooltip(top)
               template( v-slot:activator="{ on, attrs }")
                 v-icon.mx-4(small @click="voteDown" v-bind="attrs" v-on="on" :color="voteDownColor") mdi-thumb-down
                 p.pa-0.ma-0.icon-text {{ currentVoteDownCount }} down
-              span unhappy with question, vote dowm
+              span vote dowm
       auth-dialog(:showDialog.sync="AuthDialogState")
 </template>
 
 <script lang="ts">
 import QuestionListResponseDTO from "@/dto/response/question-list-response.dto";
+import CommentListResponseDTO from "@/dto/response/comment-list-response.dto";
 import commentsApi from "@/services/comments.api";
 import questionsApi from "@/services/questions.api";
 import { Component, Prop, Vue } from "vue-property-decorator";
@@ -35,7 +36,7 @@ export default class VoteingComponent extends Vue {
   readonly question!: QuestionListResponseDTO;
 
   @Prop({ default: null })
-  readonly comment!: any;
+  comment!: CommentListResponseDTO;
 
   AuthDialogState = false;
 
@@ -55,27 +56,51 @@ export default class VoteingComponent extends Vue {
     }
   }
 
-  get myVote() {
-    if (this.question) {
-      return this.question.myVote;
-    } else {
-      return this.comment.myVote;
-    }
-  }
+  // get myVote() {
+  //   if (this.question) {
+  //     return this.question.myVote;
+  //   } else {
+  //     return this.comment.myVote;
+  //   }
+  // }
 
   get voteUpColor() {
-    if (this.myVote && this.myVote.vote == 1) {
-      return "primary";
+    if (this.question) {
+      if (this.question.myVote && this.question.myVote.vote == 1) {
+        return "primary";
+      } else {
+        return "";
+      }
     } else {
-      return "";
+      // else for comment
+      console.log("this.comment.myVote", this.comment.myVote);
+      if (this.comment.myVote && this.comment.myVote.vote == 1) {
+        return "primary";
+      } else {
+        return "";
+      }
     }
+    // if (this.myVote && this.myVote.vote == 1) {
+    //   return "primary";
+    // } else {
+    //   return "";
+    // }
   }
 
   get voteDownColor() {
-    if (this.myVote && this.myVote.vote == -1) {
-      return "red";
+    if (this.question) {
+      if (this.question.myVote && this.question.myVote.vote == -1) {
+        return "red";
+      } else {
+        return "";
+      }
     } else {
-      return "";
+      // else for comment
+      if (this.comment.myVote && this.comment.myVote.vote == -1) {
+        return "red";
+      } else {
+        return "";
+      }
     }
   }
 
@@ -121,7 +146,11 @@ export default class VoteingComponent extends Vue {
       // checking if new vote or changing from up to down or viseversa
       if ((res.matchedCount && res.modifiedCount) || res.upsertedId) {
         this.question.questionValue.totalVoteCount++;
-        this.question.myVote.vote = 1;
+        if (!this.question.myVote) {
+          this.$set(this.question, "myVote", { vote: 1 });
+        } else {
+          this.question.myVote.vote = 1;
+        }
         if (res.matchedCount && res.modifiedCount) {
           this.question.questionValue.totalVoteDownCount--;
         }
@@ -141,7 +170,11 @@ export default class VoteingComponent extends Vue {
           this.question.questionValue.totalVoteCount--;
         }
         this.question.questionValue.totalVoteDownCount++;
-        this.question.myVote.vote = -1;
+        if (!this.question.myVote) {
+          this.$set(this.question, "myVote", { vote: -1 });
+        } else {
+          this.question.myVote.vote = -1;
+        }
       }
     });
   }
@@ -158,7 +191,12 @@ export default class VoteingComponent extends Vue {
           this.comment.commentValue.totalVoteDownCount--;
         }
         this.comment.commentValue.totalVoteCount++;
-        this.comment.myVote.vote = 1;
+        if (!this.comment.myVote) {
+          this.$set(this.comment, "myVote", { vote: 1 });
+        } else {
+          this.comment.myVote.vote = 1;
+        }
+        // this.comment.myVote.vote = 1;
       }
     });
   }
@@ -175,10 +213,22 @@ export default class VoteingComponent extends Vue {
           this.comment.commentValue.totalVoteCount--;
         }
         this.comment.commentValue.totalVoteDownCount++;
-        this.comment.myVote.vote = -1;
+        if (!this.comment.myVote) {
+          this.$set(this.comment, "myVote", { vote: -1 });
+        } else {
+          this.comment.myVote.vote = -1;
+        }
       }
     });
   }
+
+  // mounted() {
+  //   if (this.comment && this.comment.myVote == undefined) {
+  //     this.comment["myVote"] = {
+  //       vote: 0,
+  //     };
+  //   }
+  // }
 }
 </script>
 

@@ -1,6 +1,10 @@
 <template lang="pug">
     div.filter-component
-      v-text-field(@click:append.prevent="filterFormDialog=true"	 @keydown.enter.prevent="setFilter" v-model="queryString" class="mt-1 white--text lighten-4" prepend-inner-icon="mdi-magnify" append-icon="mdi-filter-multiple" hide-details="auto" clearable filled rounded)
+      .d-flex(style="align-items:center;" rounded)
+        v-text-field.filter-component-input(@click:append.prevent="filterFormDialog=true"	 @keydown.enter.prevent="setFilter" v-model="queryString" class="white--text" prepend-inner-icon="mdi-magnify" append-icon="mdi-filter-multiple" hide-details="auto" clearable filled rounded)
+          <template v-slot:append-outer v-if="isFilterSelected">
+            v-chip(small color="primary") {{isFilterSelected}} Filter
+          </template>
       v-dialog(v-model="filterFormDialog" width="600")
         v-card.pa-4
           Question-Filters(:callback="setFilter")
@@ -39,7 +43,29 @@ export default class FilterComponent extends Vue {
 
     this.filterFormDialog = false;
   }
+
+  
+    get isFilterSelected() {
+    let found = 0;
+    if (this.$store.getters.filters) {
+      for (const a in this.$store.getters.filters) {
+        if (
+          this.$store.getters.filters[a] != null &&
+          this.$store.getters.filters[a].length > 0
+        ) {
+          found += 1;
+        }
+      }
+      return found;
+    }
+    return found;
+  }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.filter-component-input{
+  background-color: #f1f1f1;
+  border-radius:28px !important;
+}
+</style>

@@ -27,7 +27,9 @@ export default class QuestionListResponseDTO {
 
   questionValue!: QuestionValue;
 
-  myVote?: number;
+  myVote!: {
+    vote: number;
+  };
 
   createdAt!: string;
 

@@ -121,7 +121,7 @@ export default class VoteingComponent extends Vue {
       // checking if new vote or changing from up to down or viseversa
       if ((res.matchedCount && res.modifiedCount) || res.upsertedId) {
         this.question.questionValue.totalVoteCount++;
-        this.question.myVote = 1;
+        this.question.myVote.vote = 1;
         if (res.matchedCount && res.modifiedCount) {
           this.question.questionValue.totalVoteDownCount--;
         }
@@ -141,7 +141,7 @@ export default class VoteingComponent extends Vue {
           this.question.questionValue.totalVoteCount--;
         }
         this.question.questionValue.totalVoteDownCount++;
-        this.question.myVote = -1;
+        this.question.myVote.vote = -1;
       }
     });
   }
@@ -158,7 +158,7 @@ export default class VoteingComponent extends Vue {
           this.comment.commentValue.totalVoteDownCount--;
         }
         this.comment.commentValue.totalVoteCount++;
-        this.comment.myVote = 1;
+        this.comment.myVote.vote = 1;
       }
     });
   }
@@ -175,7 +175,7 @@ export default class VoteingComponent extends Vue {
           this.comment.commentValue.totalVoteCount--;
         }
         this.comment.commentValue.totalVoteDownCount++;
-        this.comment.myVote = -1;
+        this.comment.myVote.vote = -1;
       }
     });
   }

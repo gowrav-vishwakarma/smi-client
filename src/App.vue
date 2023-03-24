@@ -32,6 +32,9 @@ export default class App extends Vue {
     eventBus.$on("hide-loader", () => {
       this.isLoading = false;
     });
+
+    // setting meta data title of page
+    document.title = "Solve My Issue";
   }
 }
 </script>

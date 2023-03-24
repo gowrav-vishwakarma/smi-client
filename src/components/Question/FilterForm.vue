@@ -41,7 +41,7 @@ export default class AskQuestionView extends Vue {
   progress = 0;
   blob = null;
   filterQuery = {
-    query: null,
+    query: "",
     topics: null,
     tags: [],
     languages: [],
@@ -74,6 +74,10 @@ export default class AskQuestionView extends Vue {
     //   }
     // );
     // this.$router.push("question/" + newfilterQuery._id);
+  }
+
+  mounted() {
+    this.filterQuery = this.$store.getters.filters;
   }
 }
 </script>

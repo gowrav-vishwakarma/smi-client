@@ -1,17 +1,77 @@
 <template>
   <div class="d-flex">
-    <ws-manager></ws-manager>
-    <!-- <v-btn text plain to="/ask-question">
-      <v-icon>mdi-plus</v-icon>
-      Ask Question
-    </v-btn> -->
-    <v-btn text plain to="/my-profile">
-      {{ $store.getters.loggedInUser.name }}
-    </v-btn>
-    <v-btn text plain @click="logout" v-if="$store.getters.isAuthenticated">
-      <v-icon> mdi-logout</v-icon>
-      logout
-    </v-btn>
+    <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn text color="primary" v-bind="attrs" v-on="on">
+          <ws-manager v-bind="attrs" v-on="on"></ws-manager>
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item
+          style="min-height: 28px"
+          @click="updateOnlineStatus('Online')"
+        >
+          <v-list-item-title class="text-center green--text">
+            Online
+          </v-list-item-title>
+        </v-list-item>
+        <v-list-item
+          style="min-height: 28px"
+          @click="updateOnlineStatus('Offline')"
+        >
+          <v-list-item-title class="text-center red--text">
+            Offline
+          </v-list-item-title>
+        </v-list-item>
+        <v-list-item
+          style="min-height: 28px"
+          @click="updateOnlineStatus('Busy')"
+        >
+          <v-list-item-title class="text-center orange--text">
+            Busy
+          </v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+
+    <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <!-- <v-badge bordered color="error" icon="mdi-cir" overlap left> -->
+        <v-btn text v-bind="attrs" v-on="on" class="pa-0">
+          {{ $store.getters.loggedInUser.name }}
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+        <!-- </v-badge> -->
+      </template>
+
+      <v-list>
+        <v-list-item class="pa-0">
+          <v-btn
+            text
+            plain
+            to="/my-profile"
+            v-if="$store.getters.isAuthenticated"
+            pa-0
+          >
+            <v-icon> mdi-account</v-icon>
+            Profile
+          </v-btn>
+        </v-list-item>
+        <v-list-item class="pa-0">
+          <v-btn
+            text
+            plain
+            @click="logout"
+            v-if="$store.getters.isAuthenticated"
+            pa-0
+            color="red"
+          >
+            <v-icon> mdi-logout</v-icon>
+            logout
+          </v-btn>
+        </v-list-item>
+      </v-list>
+    </v-menu>
   </div>
 </template>
 
@@ -29,6 +89,10 @@ import { AuthStoreModule } from "@/store";
   methods: {
     async logout() {
       await AuthStoreModule.resetCurrentUserAction();
+    },
+
+    updateOnlineStatus(status: string) {
+      AuthStoreModule.updateUserOnlineStatusAction(status);
     },
   },
 })

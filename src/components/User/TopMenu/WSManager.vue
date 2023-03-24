@@ -126,7 +126,7 @@ export default class WSManager extends Vue {
       // ) {
       this.callReset();
       // this.userOnlineStatus = "Busy";
-      await AuthStoreModule.updateUserOnlineStatusAction("BUSY");
+      await AuthStoreModule.updateUserOnlineStatusAction("Busy");
       // this.offerCallConnected = true;
       this.$router.push("/solution-attempt/" + payload.solutionOfferId);
       // }

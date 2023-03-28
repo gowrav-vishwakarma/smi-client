@@ -21,6 +21,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/RegisterView.vue"),
   },
   {
+    path: "/verification/:username/:authToken",
+    name: "verification",
+    component: () => import("../views/VerificationView.vue"),
+  },
+  {
     path: "/question/:id",
     name: "question",
     component: () => import("../views/QuestionDetailView.vue"),
@@ -44,6 +49,12 @@ const routes: Array<RouteConfig> = [
     path: "/solution-attempt/:solutionId",
     name: "solution-attempt",
     component: () => import("../views/SolutionAttempt.vue"),
+  },
+
+  {
+    path: "*",
+    name: "not-found",
+    component: () => import("../views/NotFound.vue"),
   },
 ];
 

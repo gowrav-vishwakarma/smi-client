@@ -103,6 +103,18 @@ class UserAPIService extends APIService {
     });
     return response;
   }
+
+  async verifyUser(verifyDetail: {
+    username: string;
+    authToken: string;
+  }): Promise<UserProfileDTO> {
+    const response = await this.axiosCall<UserProfileDTO>({
+      url: "/auth/verification",
+      method: "POST",
+      data: verifyDetail,
+    });
+    return response;
+  }
 }
 
 export default new UserAPIService();

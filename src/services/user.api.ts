@@ -1,6 +1,7 @@
 import LoginDTO from "@/dto/request/login.dto";
 import RegisterUserDTO from "@/dto/request/register.dto";
 import LoginResponseDTO from "@/dto/response/login-response.dto";
+import VerifyUserDTO from "@/dto/request/user-verify.dto";
 import UserProfileDTO from "@/dto/user/profile.dto";
 import QuestionDetailResponseDTO from "@/dto/response/question-detail-response.dto";
 import QuestionListResponseDTO from "@/dto/response/question-list-response.dto";
@@ -104,14 +105,20 @@ class UserAPIService extends APIService {
     return response;
   }
 
-  async verifyUser(verifyDetail: {
-    username: string;
-    authToken: string;
-  }): Promise<UserProfileDTO> {
+  async verifyUser(verifyDetail: VerifyUserDTO): Promise<UserProfileDTO> {
     const response = await this.axiosCall<UserProfileDTO>({
       url: "/auth/verification",
       method: "POST",
       data: verifyDetail,
+    });
+    return response;
+  }
+
+  async sendVerificationLink(username: string): Promise<any> {
+    const response = await this.axiosCall<any>({
+      url: "/auth/sendverification",
+      method: "POST",
+      data: { username: username },
     });
     return response;
   }

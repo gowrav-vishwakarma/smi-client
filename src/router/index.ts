@@ -21,7 +21,7 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/RegisterView.vue"),
   },
   {
-    path: "/verification/:username/:authToken",
+    path: "/verification/:username/:authtoken",
     name: "verification",
     component: () => import("../views/VerificationView.vue"),
   },

@@ -4,7 +4,14 @@
             div.text-subtitle-1 Verifying your email account
             div.text-h5 {{this.$route.params.username}}
             v-card-text
-                v-progress-linear(color="orange" indeterminate rounded height="10")
+                v-progress-linear(v-if="loader" color="orange" indeterminate rounded height="10")
+                div(v-else)
+                  div(v-if="verified")
+                    v-alert(type="success") your account has been verified
+                    v-btn(color="orange" to="/login") click to Login
+                  div(v-else="verified")
+                    v-alert(type="error") verification link expired
+                    v-btn(color="orange" @click="resendLink") resend verification link
 </template>
 
 <script lang="ts">
@@ -17,23 +24,33 @@ import UserAPIService from "../services/user.api";
 })
 export default class VerificationView extends Vue {
   loader = true;
+  verified = false;
+
   async mounted() {
-    if (
-      this.$route?.params != undefined ||
-      this.$route?.params?.username != undefined ||
-      this.$route?.params?.authToken != undefined
-    ) {
+    if (this.$route.params != undefined) {
       await UserAPIService.verifyUser({
         username: this.$route.params.username,
-        password: this.$route.params.authToken,
-      }).catch((err: any) => {
-        if (err.response?.status === 401) {
-          console.log("Username or password is incorrect");
-        } else {
-          console.log(err);
-        }
-      });
+        authtoken: this.$route.params.authtoken,
+      })
+        .then((res: any) => {
+          this.loader = false;
+          this.verified = true;
+        })
+        .catch((err: any) => {
+          this.loader = false;
+
+          if (err.response?.status === 401) {
+            console.log("verification link expired");
+          } else {
+            console.log(err);
+          }
+        });
     }
+  }
+
+  resendLink() {
+    console.log("todo resend verification link");
+    UserAPIService.sendVerificationLink(this.$route.params.username);
   }
 }
 </script>

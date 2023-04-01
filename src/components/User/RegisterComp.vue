@@ -72,7 +72,7 @@
 
         <!-- </v-col> -->
         <!-- </v-row> -->
-        <v-select
+        <v-combobox
           v-model="regForm.languages"
           :items="languages"
           single-line
@@ -82,7 +82,7 @@
           label="Languages Known (Speak, Write, Read)"
           multiple
           dense
-        ></v-select>
+        ></v-combobox>
 
         <v-select
           v-model="regForm.topics"

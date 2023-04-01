@@ -11,6 +11,7 @@
           outlined
           required
           class="field"
+          @input="wrongCredential = false"
         ></v-text-field>
 
         <v-text-field
@@ -22,7 +23,13 @@
           outlined
           class="field"
           @click:append="showPassword = !showPassword"
+          @input="wrongCredential = false"
         ></v-text-field>
+        <div v-if="wrongCredential">
+          <v-alert color="red" dark>
+            {{ error_message }}
+          </v-alert>
+        </div>
         <div class="field mt-4 mb-4 d-flex align-start justify-space-between">
           <span>
             <input type="checkbox" class="mr-1 ml-1" v-model="remember" />
@@ -77,6 +84,9 @@ export default class LoginComponent extends Vue {
       "E-mail must be valid",
   ];
 
+  wrongCredential = false;
+  error_message = "Username or password is incorrect";
+
   async login() {
     if (!this.valid) return;
 
@@ -84,6 +94,7 @@ export default class LoginComponent extends Vue {
       username: this.logForm.emailL,
       password: this.logForm.passwordL,
     }).catch((err: any) => {
+      this.wrongCredential = true;
       if (err.response?.status === 401) {
         console.log("Username or password is incorrect");
       } else {

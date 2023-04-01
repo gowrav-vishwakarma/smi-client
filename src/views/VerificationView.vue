@@ -9,6 +9,7 @@
                   div(v-if="verified")
                     v-alert(type="success") your account has been verified
                     v-btn(color="orange" to="/login") click to Login
+                    v-progress-circular(indeterminate color="primary")
                   div(v-else="verified")
                     v-alert(type="error") verification link expired
                     v-btn(color="orange" @click="resendLink") resend verification link
@@ -35,6 +36,10 @@ export default class VerificationView extends Vue {
         .then((res: any) => {
           this.loader = false;
           this.verified = true;
+
+          setTimeout(() => {
+            this.$router.push("/login"); // Replace '/new-page' with the URL you want to redirect to
+          }, 2 * 1000);
         })
         .catch((err: any) => {
           this.loader = false;

@@ -26,6 +26,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/VerificationView.vue"),
   },
   {
+    path: "/forget",
+    name: "forget",
+    component: () => import("../views/ForgetPassword.vue"),
+  },
+  {
     path: "/question/:id",
     name: "question",
     component: () => import("../views/QuestionDetailView.vue"),

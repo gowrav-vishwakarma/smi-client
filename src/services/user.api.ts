@@ -122,6 +122,15 @@ class UserAPIService extends APIService {
     });
     return response;
   }
+
+  async sendResetPasswordLink(emailId: string): Promise<any> {
+    const response = await this.axiosCall<any>({
+      url: "/auth/sendresetpasswordlink",
+      method: "POST",
+      data: { emailId: emailId },
+    });
+    return response;
+  }
 }
 
 export default new UserAPIService();

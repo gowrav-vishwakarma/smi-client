@@ -15,7 +15,7 @@ import ProfileComponent from "@/components/User/Profile.vue";
 import QuestionsComponent from "@/components/User/Questions.vue";
 import OffersComponent from "@/components/User/Offers.vue";
 import CommentsComponent from "@/components/User/Comments.vue";
-import SettingsComponent from "@/components/User/Settings.vue";
+import UpdatePasswordComponent from "@/components/User/UpdatePassword.vue";
 
 @Component({
   components: {
@@ -23,7 +23,7 @@ import SettingsComponent from "@/components/User/Settings.vue";
     QuestionsComponent,
     OffersComponent,
     CommentsComponent,
-    SettingsComponent,
+    UpdatePasswordComponent,
   },
 })
 export default class MyProfileView extends Vue {
@@ -33,7 +33,7 @@ export default class MyProfileView extends Vue {
     Questions: "My Questions",
     Offers: "My Offers",
     Comments: "MyComments",
-    Settings: "Settings",
+    UpdatePassword: "Settings",
   };
 }
 </script>

@@ -28,9 +28,9 @@ import { eventBus } from "@/mixins/event-bus";
 import { AuthStoreModule } from "@/store";
 
 @Component({
-  name: "UserSettings",
+  name: "UpdatePassword",
 })
-export default class UserSettingsComponent extends Vue {
+export default class UpdatePasswordComponent extends Vue {
   @Ref("changePasswordForm") private changePasswordForm!: HTMLFormElement;
 
   new_password = "";

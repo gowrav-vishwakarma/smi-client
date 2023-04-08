@@ -31,6 +31,12 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/ForgetPassword.vue"),
   },
   {
+    path: "/resetpassword/:username/:authtoken",
+    name: "resetpassword",
+    component: () => import("../views/ResetPasswordView.vue"),
+  },
+
+  {
     path: "/question/:id",
     name: "question",
     component: () => import("../views/QuestionDetailView.vue"),
@@ -54,6 +60,11 @@ const routes: Array<RouteConfig> = [
     path: "/solution-attempt/:solutionId",
     name: "solution-attempt",
     component: () => import("../views/SolutionAttempt.vue"),
+  },
+  {
+    path: "/updatepassword",
+    name: "updatepassword",
+    component: () => import("../components/User/UpdatePassword.vue"),
   },
 
   {

@@ -1,4 +1,5 @@
 import LoginDTO from "@/dto/request/login.dto";
+import LoginWithTokenDTO from "@/dto/request/login-withtoken.dto";
 import RegisterUserDTO from "@/dto/request/register.dto";
 import LoginResponseDTO from "@/dto/response/login-response.dto";
 import VerifyUserDTO from "@/dto/request/user-verify.dto";
@@ -17,6 +18,21 @@ class UserAPIService extends APIService {
         data: loginDetail,
       },
       LoginDTO,
+      LoginResponseDTO
+    );
+    return response;
+  }
+
+  async loginWithToken(
+    loginDetail: LoginWithTokenDTO
+  ): Promise<LoginResponseDTO> {
+    const response = await this.axiosCall<LoginResponseDTO>(
+      {
+        method: "POST",
+        url: "/auth/loginwithtoken",
+        data: loginDetail,
+      },
+      LoginWithTokenDTO,
       LoginResponseDTO
     );
     return response;

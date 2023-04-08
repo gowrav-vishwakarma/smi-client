@@ -14,7 +14,7 @@
           v-btn(@click="editingProfileSection=null,uploadCoverImage=null,uploadProfileImage=null" color="secondary" ) Reset
       v-row
         v-col(cols="8")
-          div
+          div.userProfile.mt-4
             v-card(flat)
               v-btn(color="primary" small icon rounted @click="editProfile=true, editingProfileSection='basicInfo'" v-if="makeProfileEditable")
                 v-icon mdi-pencil
@@ -60,7 +60,7 @@
                     v-spacer
                     v-btn(@click="editProfile = false") Cancel
                     v-btn(color="primary" @click="saveProfile") Save
-          v-container
+          div.userSkillContainer.mt-4
             v-form(ref="userSkillForm")
               .d-flex
                 h5.mb-2(class="text-h5 font-weight-regular ") Top Skills
@@ -73,10 +73,12 @@
                   v-btn.ml-4(small rounted icon color="primary" @click="editProfile=false, editingProfileSection='skills'" v-if="makeProfileEditable")
                     v-icon mdi-pencil
               v-combobox( v-model="profile.skills" :items="skillList" label="" multiple chips :autofocus="editingProfileSection == 'skills'?true:false"  v-if="editingProfileSection ==='skills'")
-              div(v-else)
-                v-card(flat).pa-2
+              div
+                v-card(flat v-if="profile.skills.length > 0").pa-2
                   v-chip.ma-1(v-for="(value, index) in profile.skills" :key="index") {{value}}
-          .userExperienceContainer
+                v-card(flat v-else).pa-2
+                  v-card-subtitle my skills not be updated at the moment
+          div.userExperienceContainer.mt-4
             v-form(ref="userExperienceForm")
               .d-flex
                 h5.mb-2(class="text-h5 font-weight-regular ") Experience
@@ -118,24 +120,28 @@
                     v-spacer
                     v-btn(@click="editProfile = false,editingProfileSection=null") Cancel
                     v-btn(color="success" @click="saveProfile") Save
-              v-card.mb-4(v-for="(experience, index) in profile.experiences" :key="index")
-                v-list-item.ma-0(three-line)
-                  v-list-item-content
-                    v-list-item-title  {{experience.companyName}}
-                    v-list-item-subtitle {{experience.post}}
-                      small.ml-4 . {{experience.jobType}}
-                    v-list-item-subtitle 
-                      .d-flex
-                        p {{experience.from}} - {{experience.to}}
-                        p.ml-auto {{experience.city}} {{experience.state}} {{experience.country}}
-                v-container.pa-0.ma-0(style='width="60% !important"')
+              div(v-if="profile.experiences.length")
+                v-card.mb-4(v-for="(experience, index) in profile.experiences" :key="index")
+                  v-list-item.ma-0(three-line)
+                    v-list-item-content
+                      v-list-item-title  {{experience.companyName}}
+                      v-list-item-subtitle {{experience.post}}
+                        small.ml-4 . {{experience.jobType}}
+                      v-list-item-subtitle 
+                        .d-flex
+                          p {{experience.from}} - {{experience.to}}
+                          p.ml-auto {{experience.city}} {{experience.state}} {{experience.country}}
+                  v-container.pa-0.ma-0(style='width="60% !important"')
+                    v-divider
+                  v-container
+                    v-list-item-title Role
+                      div(v-html="experience.role")
+                    v-list-item-title Description
+                      div(v-html="experience.description")
                   v-divider
-                v-container
-                  v-list-item-title Role
-                    div(v-html="experience.role")
-                  v-list-item-title Description
-                    div(v-html="experience.description")
-                v-divider
+              div(v-else)
+                v-card(flat).pa-2.mb-4
+                  v-card-subtitle my experience not be updated at the moment
 
         v-col(cols="4")
           v-card.mt-4
@@ -175,20 +181,19 @@
             v-btn.ml-4(small rounted icon color="primary" @click="saveProfile" v-if="editingProfileSection==='social'")
               v-icon mdi-content-save
             v-btn.ml-4(small rounted icon color="primary" @click="editProfile=false, editingProfileSection=null" v-if="editingProfileSection==='social'")
-              v-icon mdi-delete            
-            v-list
+              v-icon mdi-delete         
+            v-list(v-if="editingProfileSection=='social'")
               div(v-for="(profileId, name) in profile.socialProfile" :key="name")
                 v-list-item
                   v-list-item-icon
                     v-icon(color="indigo") mdi-{{name.toLowerCase()}}
-                  v-list-item-content(v-if="editingProfileSection=='social'")
+                  v-list-item-content()
                     v-text-field(v-model="profile.socialProfile[name]" :label="name")
-                  v-list-item-content(v-else)
-                    v-list-item-title {{profileId}}
-                    v-list-item-subtitle {{name}}
-                  //- v-list-item-icon
-                  //-   v-icon(small) mdi-pencil
-                v-divider(inset)
+            v-container.d-flex(style="flex-wrap:wrap;" v-else)
+              div(v-for="(profilelink, name) in profile.socialProfile" :key="name")
+                v-btn( target="_blank" v-if="profilelink" icon :href="profilelink")
+                  v-icon(v-if="name=='Stackoverflow' || name=='Website' " color="indigo" large) mdi-web
+                  v-icon(v-else color="indigo" large) mdi-{{name.toLowerCase()}}
 </template>
 
 <script lang="ts">

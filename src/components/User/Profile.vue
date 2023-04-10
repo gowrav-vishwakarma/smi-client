@@ -74,7 +74,7 @@
                     v-icon mdi-pencil
               v-combobox( v-model="profile.skills" :items="skillList" label="" multiple chips :autofocus="editingProfileSection == 'skills'?true:false"  v-if="editingProfileSection ==='skills'")
               div
-                v-card(flat v-if="profile.skills.length > 0").pa-2
+                v-card(flat v-if="profile.skills && profile.skills.length > 0").pa-2
                   v-chip.ma-1(v-for="(value, index) in profile.skills" :key="index") {{value}}
                 v-card(flat v-else).pa-2
                   v-card-subtitle my skills not be updated at the moment
@@ -120,7 +120,7 @@
                     v-spacer
                     v-btn(@click="editProfile = false,editingProfileSection=null") Cancel
                     v-btn(color="success" @click="saveProfile") Save
-              div(v-if="profile.experiences.length")
+              div(v-if="profile.experiences && profile.experiences.length")
                 v-card.mb-4(v-for="(experience, index) in profile.experiences" :key="index")
                   v-list-item.ma-0(three-line)
                     v-list-item-content
@@ -219,7 +219,11 @@ export default class UserProfileComponent extends Vue {
   @Ref() userSkillForm!: HTMLFormElement;
 
   @Prop()
-  makeProfileEditable = false;
+  createProfileEditable!: false;
+
+  get makeProfileEditable() {
+    return this.createProfileEditable;
+  }
 
   //Editing Form
   editProfile = false;

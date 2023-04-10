@@ -5,7 +5,7 @@ v-container(grid-list-xs="")
       | {{ lable }}
     v-tabs-items(v-model="tab")
       v-tab-item(v-for="(label, component) in availableTabs" :key="label")
-        component(:is="`${component}Component`" makeProfileEditable="true")
+        component(:is="`${component}Component`" createProfileEditable="true")
 </template>
 
 <script lang="ts">

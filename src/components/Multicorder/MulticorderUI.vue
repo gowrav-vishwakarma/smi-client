@@ -62,8 +62,9 @@
               mdi-icon
               x-small
               light
-              ><v-icon x-large color="red">mdi-play-circle</v-icon></v-btn
             >
+              <v-icon x-large color="red">mdi-play-circle</v-icon>
+            </v-btn>
             <v-btn
               class="mx-2"
               @click="downloadRecording"
@@ -100,48 +101,40 @@
             >
           </v-col>
           <v-col align="center">
-            <v-btn
-              v-show="controls == 'liveVideo'"
-              class="mx-2"
-              @click="videoRecord"
-              fab
-              mdi-icon
-              x-small
-              light
-              ><v-icon x-large color="red">mdi-record-circle</v-icon></v-btn
-            >
+            <v-btn v-show="controls == 'liveVideo'" @click="videoRecord">
+              <v-icon color="red">mdi-record-circle</v-icon>
+              <span>Start</span>
+            </v-btn>
+
             <v-btn
               v-show="controls == 'recordingVideo'"
-              class="mx-2"
               @click="videoStopRecording"
-              fab
-              mdi-icon
-              x-small
+              small
               light
-              ><v-icon x-large color="red">mdi-stop-circle</v-icon></v-btn
+              color="red"
             >
+              <v-icon color="white">mdi-stop-circle</v-icon>
+              <span>Stop</span>
+            </v-btn>
             <v-btn
               v-show="controls == 'recordingVideo'"
-              class="mx-2"
               @click="pause"
-              fab
-              mdi-icon
-              x-small
-              light
+              small
               v-if="!isPaused"
-              ><v-icon x-large>mdi-pause-circle</v-icon></v-btn
             >
+              <v-icon>mdi-pause-circle</v-icon>
+              <span color="white">Pause</span>
+            </v-btn>
             <v-btn
               v-show="controls == 'recordingVideo'"
               class="mx-2"
               @click="resume"
-              fab
-              mdi-icon
-              x-small
-              dark
+              small
               v-if="isPaused"
-              ><v-icon x-large>mdi-pause-circle</v-icon></v-btn
             >
+              <v-icon>mdi-play-circle</v-icon>
+              <span>Resume</span>
+            </v-btn>
           </v-col>
           <v-col cols="auto" align="center">
             <v-icon x-large @click="videoSnapshot(view)" color="teal"
@@ -253,7 +246,7 @@ export default {
       this.$emit("delete-recording", index);
     },
     onPlayerLoaded() {
-      //this.playRecording();
+      // this.playRecording();
     },
     videoRecord() {
       this.controls = "recordingVideo";

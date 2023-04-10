@@ -5,14 +5,6 @@
     </v-card-title>
     <v-card-text>
       <v-form ref="form" v-model="valid">
-        <v-autocomplete
-          v-model="question.topic"
-          :items="topics"
-          label="Topic"
-          required
-          :rules="[(v) => !!v || 'Topic is required']"
-        ></v-autocomplete>
-
         <v-text-field
           label="Question Title"
           v-model="question.title"
@@ -20,20 +12,37 @@
             (v) => !!v || 'Required',
             (v) => v.length <= 50 || 'Too long',
           ]"
+          outlined
+          dense
         ></v-text-field>
-        <v-subheader class="pa-0">Question Detail</v-subheader>
+
+        <div>Question Detail</div>
         <vue-editor v-model="question.detail"></vue-editor>
+
+        <v-autocomplete
+          v-model="question.topic"
+          :items="topics"
+          label="Question Topic Category"
+          required
+          :rules="[(v) => !!v || 'Topic is required']"
+          outlined
+          dense
+          class="mt-4"
+        ></v-autocomplete>
 
         <v-combobox
           v-model="question.tags"
           label="Tags"
           multiple
-          chips
+          small-chips
           clearable
           :delimiters="[',']"
           deletable-chips
+          outlined
+          dense
+          hint="you can associate multiple tags with your question. for multiple tag `type your tag name and end with comma(,) ie. tech, `"
         ></v-combobox>
-        <v-row>
+        <v-row class="mt-2">
           <v-col cols="12" sm="6">
             <v-card>
               <v-card-title primary-title>

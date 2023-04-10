@@ -2,12 +2,14 @@
   v-card.mb-2.pa-5.question-single-card(v-if="question")
     questioner-signature(:User="question.byUser")
     v-card.pa-0.ma-0.question-detail-card(flat @click="gotoDetails")
-      h4.text-subtitle-1.question-heading.primary--text( style="cursor:pointer") Q. {{question.title}}
+      .d-flex.justify-space-between
+        h4.text-subtitle-1.question-heading.primary--text( style="cursor:pointer") Q. {{question.title}}
+        v-icon(x-large color="red" size="100" v-if="question.video && !displayVideo") mdi-youtube
       .question-description-text
         .text-body-2.text--secondary.text-justify.question-description-text.ml-5 {{shortdetail}}
         v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")
             v-img(src="@/assets/logo.png" max-height="350" contain)
-        v-card.mt-2.d-flex.justify-center.question-description-video(color="primary lighten-3" flat v-if="question.video")
+        v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="question.video && displayVideo")
             video(width="320" height="240" :controls="videoControl" preload="none")
               source(:src="question.video" type="video/webm")
     .d-flex.mt-3
@@ -71,6 +73,10 @@ export default class QuestionSingle extends Mixins(General) {
 
   gotoDetails() {
     this.$router.push("/question/" + this.question._id);
+  }
+
+  get displayVideo() {
+    return this.videoControl;
   }
 
   get shortdetail() {

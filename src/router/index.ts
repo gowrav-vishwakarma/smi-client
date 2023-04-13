@@ -68,6 +68,13 @@ const routes: Array<RouteConfig> = [
   },
 
   {
+    path: "/docslayout",
+    name: "docslayout",
+    component: () => import("../views/LayoutDocs.vue"),
+    // component: () => import("../views/LayoutThree.vue"),
+  },
+
+  {
     path: "*",
     name: "not-found",
     component: () => import("../views/NotFound.vue"),

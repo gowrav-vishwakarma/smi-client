@@ -14,7 +14,7 @@
           v-checkbox(style="width:50%;" label="Audio Call" dense v-model="filterQuery.availableOnAudioCall")
         v-row
           v-col(cols="6")
-            v-btn(color="grey"  @click="filterFormSubmit" :disabled="!valid" block) Close
+            v-btn(color="grey"  @click="dialogClose" :disabled="!valid" block) Close
           v-col(cols="6")
             v-btn(color="primary" @click="filterFormSubmit" :disabled="!valid" block) Search
 </template>
@@ -74,6 +74,10 @@ export default class AskQuestionView extends Vue {
     //   }
     // );
     // this.$router.push("question/" + newfilterQuery._id);
+  }
+
+  dialogClose() {
+    this.callback(undefined);
   }
 
   mounted() {

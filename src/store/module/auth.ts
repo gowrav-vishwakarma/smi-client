@@ -17,6 +17,13 @@ export class CurrentUserI {
   onlineStatus: string | null = null;
 }
 
+// storing form data that is required authentication for submission
+export class draftActionFormI {
+  path: string | null = null;
+  formName: string | null = null;
+  formData: any;
+}
+
 export interface IAuthState {
   currentUser: CurrentUserI | null;
 }
@@ -24,6 +31,8 @@ export interface IAuthState {
 @Module({ name: "auth" })
 export default class Auth extends VuexModule implements IAuthState {
   currentUser: CurrentUserI | null = null;
+  loginSuccessRedirectUrl: string | null = null;
+  draftActionForm: draftActionFormI | null = null;
 
   get token(): string | undefined {
     return this.currentUser?.accessToken;
@@ -41,6 +50,30 @@ export default class Auth extends VuexModule implements IAuthState {
     return this.currentUser?.onlineStatus ?? null;
   }
 
+  get draftFormData(): draftActionFormI | null {
+    return this.draftActionForm;
+  }
+
+  get draftOfferYourSolution(): draftActionFormI | null {
+    if (
+      this.draftActionForm &&
+      this.draftActionForm.formName == "OfferYourSolution"
+    ) {
+      return this.draftActionForm;
+    }
+    return null;
+  }
+
+  get draftQuestionAnswerForm(): draftActionFormI | null {
+    if (
+      this.draftActionForm &&
+      this.draftActionForm.formName == "QuestionAnswerForm"
+    ) {
+      return this.draftActionForm;
+    }
+    return null;
+  }
+
   @Mutation
   setCurrentUser(currentUser: CurrentUserI) {
     this.currentUser = currentUser;
@@ -49,6 +82,16 @@ export default class Auth extends VuexModule implements IAuthState {
   @Mutation
   updateUserOnlineStatus(onlineStatus: string) {
     if (this.currentUser) this.currentUser["onlineStatus"] = onlineStatus;
+  }
+
+  @Mutation
+  setLoginSuccessRedirectUrl(url: string | null) {
+    this.loginSuccessRedirectUrl = url;
+  }
+
+  @Mutation
+  commitDraftForm(data: draftActionFormI | null) {
+    this.draftActionForm = data;
   }
 
   @Action
@@ -67,5 +110,15 @@ export default class Auth extends VuexModule implements IAuthState {
   @Action
   async updateUserOnlineStatusAction(status: string | null) {
     await this.context.commit("updateUserOnlineStatus", status);
+  }
+
+  @Action
+  async loginSuccessRedirectUrlAction(urlValue: string | null) {
+    await this.context.commit("setLoginSuccessRedirectUrl", urlValue);
+  }
+
+  @Action
+  async setDraftFormAction(formData: draftActionFormI | null) {
+    await this.context.commit("commitDraftForm", formData);
   }
 }

@@ -3,9 +3,10 @@
     v-row.no-gutter
       //- offer section
       v-col.col-md-4.col-sm-4.col-xs-4
-        create-offer-component(:question="question" v-if="!isQuestionBelongsToLoginUser")
-        div(v-else) Your Offered Solution by others
-        question-offer-list.mt-3(:question="question")
+        div(style="position:sticky;top:70px;")
+          create-offer-component(:question="question" v-if="!isQuestionBelongsToLoginUser")
+          div(v-else) Your Offered Solution by others
+          question-offer-list.mt-3(:question="question")
       //- question section
       v-col.col-md-8.col-sm-8.col-xs-8
         question-single(:question="question" :key="question._id" disableAnswerSection="true" videoControl="true")

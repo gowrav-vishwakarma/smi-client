@@ -160,6 +160,7 @@ export default class App extends Vue {
 
   askquestion() {
     if (!this.$store.getters.isAuthenticated) {
+      this.$store.commit("setLoginSuccessRedirectUrl", this.$route.path);
       this.AuthDialogState = true;
       return;
     }

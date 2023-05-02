@@ -15,15 +15,22 @@
           v-btn(color="primary" block rounded :disabled="myOffer" type="submit" ) {{caption}}
       v-card(v-else  :disabled="myOffer" )
         v-card-title {{caption}}, please wait
+      auth-dialog(:showDialog.sync="AuthDialogState")
+      
 </template>
 
 <script lang="ts">
 import questionsApi from "@/services/questions.api";
 import "reflect-metadata";
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
+import AuthDialog from "@/components/User/AuthDialog.vue";
+import { AuthStoreModule } from "@/store";
 
 @Component({
   name: "CreateOfferSolutionComponent",
+  components: {
+    AuthDialog,
+  },
 })
 export default class CreateOfferSolutionComponent extends Vue {
   @Ref("createOfferForm") private createOfferForm!: HTMLFormElement;
@@ -33,16 +40,30 @@ export default class CreateOfferSolutionComponent extends Vue {
   @Prop({ default: null })
   readonly question!: any;
 
+  AuthDialogState = false;
+
   offerFormValid = false;
   offerFormData = {
     offerAnswerDesc: null,
-    solutionChannelMode: [],
+    solutionChannelMode: ["chat", "Video", "ScreenShare"],
   };
 
   async createOffer() {
+    let isFormValid = this.createOfferForm.validate();
     // let xyz = this.createOfferForm.validate();
     // console.log(xyz);
-    let isFormValid = this.createOfferForm.validate();
+    if (!this.$store.getters.isAuthenticated) {
+      // todo store value into store
+      AuthStoreModule.setDraftFormAction({
+        path: this.$route.path,
+        formName: "OfferYourSolution",
+        formData: this.offerFormData,
+      });
+
+      this.$store.commit("setLoginSuccessRedirectUrl", this.$route.path);
+      this.AuthDialogState = true;
+      return;
+    }
 
     if (
       isFormValid &&
@@ -61,6 +82,8 @@ export default class CreateOfferSolutionComponent extends Vue {
           : "Interested",
         this.offerFormData.solutionChannelMode
       );
+
+      AuthStoreModule.setDraftFormAction(null);
     }
   }
 
@@ -70,6 +93,19 @@ export default class CreateOfferSolutionComponent extends Vue {
 
   get caption() {
     return this.question.myOffer ? "Already offered" : "Offer your solution";
+  }
+
+  mounted() {
+    if (
+      AuthStoreModule.draftOfferYourSolution &&
+      AuthStoreModule.draftOfferYourSolution.path == this.$route.path
+    ) {
+      // console.log(
+      //   "AuthStoreModule.draftOfferYourSolution",
+      //   AuthStoreModule.draftOfferYourSolution
+      // );
+      this.offerFormData = AuthStoreModule.draftOfferYourSolution.formData;
+    }
   }
 }
 </script>

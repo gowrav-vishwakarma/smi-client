@@ -116,7 +116,12 @@ export default class LoginComponent extends Vue {
       //   sortBy: "newest",
       // };
       //   this.$store.commit("updateFilters", filter);
-      this.$router.push("/");
+      if (AuthStoreModule.loginSuccessRedirectUrl != null) {
+        this.$router.push(AuthStoreModule.loginSuccessRedirectUrl);
+        await AuthStoreModule.setLoginSuccessRedirectUrl(null);
+      } else {
+        this.$router.push("/");
+      }
     }
   }
 }

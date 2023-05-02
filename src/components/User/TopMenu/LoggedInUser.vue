@@ -89,6 +89,7 @@ import { AuthStoreModule } from "@/store";
   methods: {
     async logout() {
       await AuthStoreModule.resetCurrentUserAction();
+      this.$router.push("/");
     },
 
     updateOnlineStatus(status: string) {

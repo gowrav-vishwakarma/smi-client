@@ -107,7 +107,7 @@ export default class LoginComponent extends Vue {
         accessToken: data.accessToken,
       };
       await AuthStoreModule.setCurrentUserAction(user);
-      console.log(AuthStoreModule.token);
+      // console.log(AuthStoreModule.token);
       // let filter = {
       //   // topics: user.topic,
       //   tags: [],

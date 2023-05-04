@@ -26,6 +26,9 @@
             class="field"
             required
             dense
+            :error="userExist"
+            @change="userExist = false"
+            :error-messages="emailErrorMessage"
           ></v-text-field>
 
           <!-- </v-col> -->
@@ -75,19 +78,18 @@
         <v-combobox
           v-model="regForm.languages"
           :items="languages"
-          single-line
           auto
           outlined
           class="field"
           label="Languages Known (Speak, Write, Read)"
           multiple
           dense
+          small-chips
         ></v-combobox>
 
         <v-select
           v-model="regForm.topics"
           :items="topics"
-          single-line
           auto
           outlined
           class="field"
@@ -122,8 +124,8 @@
 </template>
 
 <style>
-@import url("https://fonts.googleapis.com/css? family=Oxygen:300,400,700&display=swap");
-@import url("https://fonts.googleapis.com/css? family=Comfortaa&display=swap");
+/* @import url("https://fonts.googleapis.com/css? family=Oxygen:300,400,700&display=swap"); */
+/* @import url("https://fonts.googleapis.com/css? family=Comfortaa&display=swap"); */
 
 /* .head {
   font-family: "Inter", sans-serif;
@@ -172,6 +174,8 @@ export default class RegisterComponent extends Vue {
     topics: [],
     country: "",
   };
+  userExist = false;
+  emailErrorMessage: string[] = [];
   emailRules = [
     (v: string) =>
       /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
@@ -202,9 +206,15 @@ export default class RegisterComponent extends Vue {
       accountType: "INDIVIDUAL",
     };
 
-    UserAPIService.register(data).then((res) => {
-      this.$router.push("/login");
-    });
+    UserAPIService.register(data)
+      .then((res) => {
+        this.$router.push("/login");
+      })
+      .catch((error) => {
+        console.log("Error", error.response.data);
+        this.userExist = true;
+        this.emailErrorMessage.push(error.response.data.message);
+      });
   }
 }
 </script>

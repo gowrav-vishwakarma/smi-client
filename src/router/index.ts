@@ -20,8 +20,10 @@ const routes: Array<RouteConfig> = [
     name: "register",
     component: () => import("../views/RegisterView.vue"),
   },
+
   {
-    path: "/verification/:username/:authtoken",
+    // path: "/verification/:username/authtoken", // replace to second one becuase authtoken may contain /
+    path: "/verification/:username/*",
     name: "verification",
     component: () => import("../views/VerificationView.vue"),
   },

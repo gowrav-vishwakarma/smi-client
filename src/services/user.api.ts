@@ -3,6 +3,7 @@ import LoginWithTokenDTO from "@/dto/request/login-withtoken.dto";
 import RegisterUserDTO from "@/dto/request/register.dto";
 import LoginResponseDTO from "@/dto/response/login-response.dto";
 import VerifyUserDTO from "@/dto/request/user-verify.dto";
+import VerifyUserOtpDTO from "@/dto/request/user-otp-verify.dto";
 import UserProfileDTO from "@/dto/user/profile.dto";
 import QuestionDetailResponseDTO from "@/dto/response/question-detail-response.dto";
 import QuestionListResponseDTO from "@/dto/response/question-list-response.dto";
@@ -124,6 +125,15 @@ class UserAPIService extends APIService {
   async verifyUser(verifyDetail: VerifyUserDTO): Promise<UserProfileDTO> {
     const response = await this.axiosCall<UserProfileDTO>({
       url: "/auth/verification",
+      method: "POST",
+      data: verifyDetail,
+    });
+    return response;
+  }
+
+  async verifyUserOTP(verifyDetail: VerifyUserOtpDTO): Promise<UserProfileDTO> {
+    const response = await this.axiosCall<UserProfileDTO>({
+      url: "/auth/otpverification",
       method: "POST",
       data: verifyDetail,
     });

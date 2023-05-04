@@ -120,6 +120,42 @@
         >
       </p>
     </div>
+
+    <!-- <v-snackbar
+      v-model="verifySnack"
+      multi-line
+      centered
+      absolute
+      :timeout="-1"
+    >
+      Your account is created with us, please verify your email id
+      <template v-slot:action="{ attrs }">
+        <v-btn text v-bind="attrs" @click="verifySnack = false">
+          Verify Your Account
+        </v-btn>
+      </template>
+    </v-snackbar> -->
+
+    <v-dialog v-model="verifySnack" persistent max-width="320">
+      <v-card>
+        <v-card-title class="text-h5"> Verify your email Id </v-card-title>
+        <v-card-text>
+          Your account is created with us.
+          <div class="mt-1"></div>
+          We sended a verification code to your email Id:
+          <b>{{ this.regForm.email }}</b>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <!-- <v-btn color="green darken-1" text @click="dialog = false">
+            Disagree
+          </v-btn> -->
+          <v-btn color="orange " @click="redirectToCodeVerify">
+            Verify Your Accoount
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -194,6 +230,7 @@ export default class RegisterComponent extends Vue {
   topics = topics;
   languages = languages;
   countries = countries;
+  verifySnack = false;
 
   register() {
     var data: RegisterUserDTO = {
@@ -207,14 +244,28 @@ export default class RegisterComponent extends Vue {
     };
 
     UserAPIService.register(data)
-      .then((res) => {
-        this.$router.push("/login");
+      .then(() => {
+        this.$router.push(
+          "/verification/" + this.regForm.email + "/verifycode"
+        );
       })
       .catch((error) => {
-        console.log("Error", error.response.data);
+        // console.log("Error", error.response.data);
+        if (
+          error.response.data.statusCode == 406 &&
+          error.response.data.error == "Not Acceptable"
+        ) {
+          this.verifySnack = true;
+        }
+
         this.userExist = true;
         this.emailErrorMessage.push(error.response.data.message);
       });
+  }
+
+  redirectToCodeVerify() {
+    this.verifySnack = false;
+    this.$router.push("/verification/" + this.regForm.email + "/verifycode");
   }
 }
 </script>

@@ -33,7 +33,7 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/ForgetPassword.vue"),
   },
   {
-    path: "/resetpassword/:username/:authtoken",
+    path: "/resetpassword/:username/*",
     name: "resetpassword",
     component: () => import("../views/ResetPasswordView.vue"),
   },

@@ -24,12 +24,12 @@ export default class ResetPasswordView extends Vue {
   validate = false;
 
   async mounted() {
-    // console.log(this.$route.params.username);
+    console.log(this.$route.params);
     // call user api and validate token and redirect to setting page
 
     const data = await UserAPIService.loginWithToken({
       username: this.$route.params.username,
-      token: this.$route.params.authtoken,
+      token: this.$route.params.pathMatch,
     }).catch((err: any) => {
       // this.wrongCredential = true;
       if (err.response?.status === 401) {

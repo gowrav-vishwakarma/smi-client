@@ -13,21 +13,21 @@ export class FilterQuestionsDTO {
     if (typeof obj[key] === "string") return obj[key]?.split(",");
     return obj[key];
   })
-  topics?: string[];
+  topics?: string[] = [];
 
   @IsOptional()
   @Transform(({ obj, key }) => {
     if (typeof obj[key] === "string") return obj[key]?.split(",");
     return obj[key];
   })
-  tags?: string[];
+  tags?: string[] = [];
 
   @IsOptional()
   @Transform(({ obj, key }) => {
     if (typeof obj[key] === "string") return obj[key]?.split(",");
     return obj[key];
   })
-  languages?: string[];
+  languages?: string[] = [];
 
   @IsOptional()
   @IsBoolean()
@@ -65,7 +65,7 @@ export class FilterQuestionsDTO {
 
   @IsOptional()
   @IsString()
-  query?: string;
+  query?: string = "";
 
   @IsNumber()
   currentPage?: number;

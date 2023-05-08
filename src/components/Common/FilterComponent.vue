@@ -1,7 +1,7 @@
 <template lang="pug">
     div.filter-component
       .d-flex(style="align-items:center;" rounded)
-        v-text-field.filter-component-input(@click:append.prevent="filterFormDialog=true"	 @keydown.enter.prevent="setFilter" v-model="queryString" class="white--text" prepend-inner-icon="mdi-magnify" append-icon="mdi-filter-multiple" hide-details="auto" clearable filled rounded @click:clear="clearFilter")
+        v-text-field.filter-component-input(@click:append.prevent="filterFormDialog=true"	 @keydown.enter.prevent="setQueryFilter" v-model="queryString" class="white--text" prepend-inner-icon="mdi-magnify" append-icon="mdi-filter-multiple" hide-details="auto" clearable filled rounded @click:clear="clearFilter")
           <template v-slot:append-outer v-if="isFilterSelected">
             v-chip(small color="primary") {{isFilterSelected}} Filter
           </template>
@@ -14,6 +14,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { eventBus } from "@/mixins/event-bus";
 import QuestionFilters from "@/components/Question/FilterForm.vue";
+import { FilterQuestionsDTO } from "@/dto/request/question-filter.dto";
 
 @Component({
   name: "FilterComponent",
@@ -29,17 +30,21 @@ export default class FilterComponent extends Vue {
    *  type n enter search into question title & tags
    *
    */
-  setFilter(filters: any) {
-    if (this.queryString) {
-      let filter = {
-        query: this.queryString,
-      };
-      this.$store.commit("setFilters", filter);
-      eventBus.$emit("filterQuestions", filter);
-    } else if (filters != undefined) {
+  setFilter(filters: FilterQuestionsDTO) {
+    // if (this.queryString) {
+    //   let filter = {
+    //     query: this.queryString,
+    //   };
+    //   this.$store.commit("setFilters", filter);
+    //   eventBus.$emit("filterQuestions", filter);
+    // } else
+    
+    // if (filters != undefined) {
+      this.queryString = filters.query;
+      console.log("filters",filters);
       this.$store.commit("setFilters", filters);
       eventBus.$emit("filterQuestions", filters);
-    }
+    // }
 
     this.filterFormDialog = false;
   }
@@ -50,8 +55,16 @@ export default class FilterComponent extends Vue {
     eventBus.$emit("filterQuestions", undefined);
   }
 
+  setQueryFilter(){
+    this.setFilter(
+      {
+        query:this.queryString
+      }
+    )
+  }
+
   
-    get isFilterSelected() {
+  get isFilterSelected() {
     let found = 0;
     if (this.$store.getters.filters) {
       for (const a in this.$store.getters.filters) {
@@ -65,6 +78,12 @@ export default class FilterComponent extends Vue {
       return found;
     }
     return found;
+  }
+
+  mounted(){
+    if(this.$store.getters.filters){
+      this.queryString = this.$store.getters.filters.query;
+    }
   }
 }
 </script>

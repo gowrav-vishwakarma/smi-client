@@ -4,7 +4,7 @@
         v-text-field(label="Question Contains" placeholder="your search query" dense small outlined v-model="filterQuery.query" :rules="[(v) => v.length <= 80 || 'Too long']")
         v-autocomplete(v-model="filterQuery.topics" dense small multiple :items="topics" small-chips label="Topic" outlined)
         v-combobox(v-model="filterQuery.tags" dense small outlined label="Tags" multiple small-chips clearable :delimiters="[',']" deletable-chips)
-        v-autocomplete(:items="languageList" dense small v-model="filterQuery.languages" multiple label="Language" outlined)
+        //- v-autocomplete(:items="languageList" dense small v-model="filterQuery.languages" multiple label="Language" outlined)
         v-checkbox(label="questions having answer" dense small v-model="filterQuery.hasComments")
         div Available for solution
         .d-flex(style="align-items:center;flex-wrap:wrap;")
@@ -60,7 +60,7 @@ export default class AskQuestionView extends Vue {
     console.log("filterFormSubmit", this.filterQuery);
 
     if (this.callback) {
-      this.callback(this.filterQuery);
+      await this.callback(this.filterQuery);
     }
 
     // this.progress = 0;

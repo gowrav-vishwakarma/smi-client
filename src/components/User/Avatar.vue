@@ -1,9 +1,10 @@
 <template>
   <div>
     <!-- show img if user.img is available or show vue-garvatar with users email as prrop-->
+    <!-- <p>{{ user }} {{ user.profileImage }}</p> -->
     <img
-      v-if="user.avatar"
-      :src="user.avatar"
+      v-if="user && user.profileImage"
+      :src="profileImageUrl"
       alt="avatar"
       class="avatar"
       max-height="30"
@@ -11,7 +12,7 @@
     />
     <gravatar
       v-else
-      :email="user.email"
+      :email="user && user.email"
       :size="SIZE"
       :default="'identicon'"
     ></gravatar>
@@ -35,6 +36,15 @@ export default {
   },
   components: {
     Gravatar,
+  },
+
+  data() {
+    return {
+      profileImageUrl:
+        this.user && this.user.profileImage
+          ? process.env.VUE_APP_S3_CDN_URL + this.user.profileImage
+          : "https://cdn.vuetifyjs.com/images/profiles/marcus.jpg",
+    };
   },
 };
 </script>

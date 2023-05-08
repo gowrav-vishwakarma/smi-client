@@ -10,7 +10,8 @@
     :email="user && user.email"
     :size="SIZE"
     :default="'identicon'"
-  ></gravatar>
+  >
+  </gravatar>
   <!-- </div> -->
 </template>
 

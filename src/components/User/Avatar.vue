@@ -1,22 +1,17 @@
 <template>
-  <div>
-    <!-- show img if user.img is available or show vue-garvatar with users email as prrop-->
-    <!-- <p>{{ user }} {{ user.profileImage }}</p> -->
-    <img
-      v-if="user && user.profileImage"
-      :src="profileImageUrl"
-      alt="avatar"
-      class="avatar"
-      max-height="30"
-      max-width="30"
-    />
-    <gravatar
-      v-else
-      :email="user && user.email"
-      :size="SIZE"
-      :default="'identicon'"
-    ></gravatar>
-  </div>
+  <!-- <div> -->
+  <!-- show img if user.img is available or show vue-garvatar with users email as prrop-->
+  <!-- <p>{{ user }} {{ user.profileImage }}</p> -->
+
+  <img v-if="user && user.profileImage" :src="profileImageUrl" alt="Avatar" />
+
+  <gravatar
+    v-else
+    :email="user && user.email"
+    :size="SIZE"
+    :default="'identicon'"
+  ></gravatar>
+  <!-- </div> -->
 </template>
 
 <script>

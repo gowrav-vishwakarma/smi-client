@@ -4,7 +4,7 @@
       v-card.questioner-avatar-card(flat tile style="max-width:70%")
         v-list.pa-0
           v-list-item.pa-0.pl-1
-            v-avatar(color="primary" size="40")
+            v-avatar(color="primary" size="42px")
               user-avatar(:user="User")
             //-     v-img(alt="Q DP" src="@/assets/logo.png" transition="scale-transition" to="/")
             v-list-item-content.ml-1.pa-0

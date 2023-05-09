@@ -73,7 +73,7 @@ export default class VoteingComponent extends Vue {
       }
     } else {
       // else for comment
-      console.log("this.comment.myVote", this.comment.myVote);
+      // console.log("this.comment.myVote", this.comment.myVote);
       if (this.comment.myVote && this.comment.myVote.vote == 1) {
         return "primary";
       } else {

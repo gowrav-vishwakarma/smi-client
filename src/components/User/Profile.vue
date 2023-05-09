@@ -176,12 +176,13 @@
                   v-list-item-title {{profile.email}}
                   v-list-item-subtitle work
           v-card.mt-4
-            v-btn.ml-4(small rounted icon color="primary" @click="editProfile=false, editingProfileSection='social'" v-if="editingProfileSection==null && makeProfileEditable")
+            v-btn.ml-4(small text rounted color="primary" @click="editProfile=false, editingProfileSection='social'" v-if="editingProfileSection==null && makeProfileEditable")
               v-icon mdi-pencil
+              | social link
             v-btn.ml-4(small rounted icon color="primary" @click="saveProfile" v-if="editingProfileSection==='social'")
               v-icon mdi-content-save
             v-btn.ml-4(small rounted icon color="primary" @click="editProfile=false, editingProfileSection=null" v-if="editingProfileSection==='social'")
-              v-icon mdi-delete         
+              v-icon mdi-delete
             v-list(v-if="editingProfileSection=='social'")
               div(v-for="(profileId, name) in profile.socialProfile" :key="name")
                 v-list-item
@@ -377,6 +378,8 @@ export default class UserProfileComponent extends Vue {
     if (!postData) return;
 
     eventBus.$emit("show-loader");
+
+    console.log("postData", postData);
 
     await UserApiService.updateProfile(
       postData,

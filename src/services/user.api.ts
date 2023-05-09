@@ -93,33 +93,50 @@ class UserAPIService extends APIService {
   ): Promise<any> {
     console.log("update profile axios call from client side", updateValue);
 
-    const formData = new FormData();
-    Object.entries(updateValue).forEach(([key, value]) => {
-      let v = Array.isArray(value) ? value.join(",") : value;
-      if (typeof v === "object") v = JSON.stringify(v);
+    if (coverImage || profileImage) {
+      const formData = new FormData();
+      Object.entries(updateValue).forEach(([key, value]) => {
+        console.log("key", key);
 
-      formData.append(key, v as string);
-    });
+        let v = value;
+        if (Array.isArray(value) && typeof value[0] === "object") {
+          v = JSON.stringify(value);
+        } else if (Array.isArray(value)) {
+          v = value.join(",");
+        }
+        formData.append(key, v as string);
+      });
 
-    if (coverImage) {
-      // formData.append("coverImage", coverImage);
-      formData.append("images", coverImage, "coverImage");
+      if (coverImage) {
+        formData.append("images", coverImage, "coverImage");
+      }
+
+      if (profileImage) {
+        formData.append("images", profileImage, "profileImage");
+      }
+
+      const response = await this.axiosCall<any>({
+        method: "POST",
+        url: "/users/updateme",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      return response;
+    } else {
+      const formData = updateValue;
+      const response = await this.axiosCall<any>({
+        method: "POST",
+        url: "/users/updateme",
+        data: formData,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response;
     }
-
-    if (profileImage) {
-      // formData.append("profileImage", profileImage);
-      formData.append("images", profileImage, "profileImage");
-    }
-
-    const response = await this.axiosCall<any>({
-      method: "POST",
-      url: "/users/updateme",
-      data: formData,
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return response;
   }
 
   async verifyUser(verifyDetail: VerifyUserDTO): Promise<UserProfileDTO> {

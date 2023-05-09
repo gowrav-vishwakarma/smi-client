@@ -2,9 +2,9 @@
   <div class="d-flex">
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn text color="primary" v-bind="attrs" v-on="on">
+        <div text v-bind="attrs" v-on="on">
           <ws-manager v-bind="attrs" v-on="on"></ws-manager>
-        </v-btn>
+        </div>
       </template>
       <v-list>
         <v-list-item

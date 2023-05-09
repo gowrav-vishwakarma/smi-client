@@ -1,7 +1,8 @@
 <template lang="pug">
     div
-      v-icon(small :color="isConnected ? 'green' : 'red'") mdi-circle
-      | {{this.$store.getters.userOnlineStatus}}
+      v-btn(text :color="statusColor")
+        v-icon(small :color="statusColor") mdi-circle
+        | {{this.$store.getters.userOnlineStatus}} 
       div.extra-component
         //- div.call-dial-ringing
         //-   audio(ref="callDialPlayer")
@@ -56,10 +57,10 @@ export default class WSManager extends Vue {
         socket.auth = { username };
         this.isConnected = true;
 
-        if (this.$store.getters.userOnlineStatus == null) {
-          AuthStoreModule.updateUserOnlineStatusAction("Online");
-          //call api to update user status
-        }
+        // if (this.$store.getters.userOnlineStatus == null) {
+        AuthStoreModule.updateUserOnlineStatusAction("Online");
+        //call api to update user status
+        // }
       },
       SocketAuthDTO
     );
@@ -228,6 +229,14 @@ export default class WSManager extends Vue {
     }
   }
 
+  get statusColor() {
+    return this.isConnected && this.$store.getters.userOnlineStatus == "Busy"
+      ? "orange"
+      : this.isConnected && this.$store.getters.userOnlineStatus == "Online"
+      ? "green"
+      : "red";
+  }
+
   async playSoundWithNotification() {
     if (!this.audioBuffer) return;
 
@@ -242,7 +251,7 @@ export default class WSManager extends Vue {
 
     /**
      * Check if the browser supports notifications
-     * 
+     *
     if (!("Notification" in window)) {
       console.error("This browser does not support notifications.");
       return;

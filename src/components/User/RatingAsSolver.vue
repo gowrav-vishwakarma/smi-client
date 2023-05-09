@@ -41,7 +41,7 @@ export default class ByUserComponent extends Vue {
   }
 
   mounted() {
-    console.log("this.User inside rating as solver", this.User);
+    // console.log("this.User inside rating as solver", this.User);
   }
 }
 </script>

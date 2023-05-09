@@ -40,7 +40,7 @@ export default class ByUserComponent extends Vue {
   }
 
   mounted() {
-    console.log("this.User inside rating", this.User);
+    // console.log("this.User inside rating", this.User);
   }
 }
 </script>

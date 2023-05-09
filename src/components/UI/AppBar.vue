@@ -12,9 +12,12 @@
         to="/"
         bgcolor="primary"
       /> -->
-        <h3 alt="SMI Name" class="shrink mt-1 hidden-sm-and-down" contain>
+        <h3 alt="SMI Name" class="shrink mt-1" contain>
           <v-avatar color="orange" size="46" dark><small>Q/A</small></v-avatar>
-          <v-btn text :ripple="false" to="/" plain>Solve My Issue</v-btn>
+
+          <v-btn class="hidden-sm-and-down" text :ripple="false" to="/" plain
+            >Solve My Issue</v-btn
+          >
         </h3>
       </div>
       <v-spacer></v-spacer>
@@ -78,6 +81,9 @@
           <div style="width: 100%">
             <v-chip-group v-if="$store.getters.filters" style="width: 100%">
               <v-chip small color="orange white--text"> Filters: </v-chip>
+              <v-chip small v-if="$store.getters.filters.query">
+                {{ $store.getters.filters.query }}
+              </v-chip>
 
               <v-chip
                 small

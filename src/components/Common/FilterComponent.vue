@@ -1,7 +1,7 @@
 <template lang="pug">
     div.filter-component
       .d-flex(style="align-items:center;" rounded)
-        v-text-field.filter-component-input(@click:append.prevent="filterFormDialog=true"	 @keydown.enter.prevent="setQueryFilter" v-model="queryString" class="white--text" prepend-inner-icon="mdi-magnify" append-icon="mdi-filter-multiple" hide-details="auto" clearable filled rounded @click:clear="clearFilter")
+        v-text-field.filter-component-input(placeholder="search query" @click:append.prevent="filterFormDialog=true"	 @keydown.enter.prevent="setQueryFilter" v-model="queryString" class="white--text" prepend-inner-icon="mdi-magnify" append-icon="mdi-filter-multiple" hide-details="auto" clearable filled rounded @click:clear="clearFilter")
           <template v-slot:append-outer v-if="isFilterSelected">
             v-chip(small color="primary") {{isFilterSelected}} Filter
           </template>
@@ -39,12 +39,12 @@ export default class FilterComponent extends Vue {
     //   eventBus.$emit("filterQuestions", filter);
     // } else
     
-    // if (filters != undefined) {
+    if (filters != undefined) {
       this.queryString = filters.query;
       console.log("filters",filters);
       this.$store.commit("setFilters", filters);
       eventBus.$emit("filterQuestions", filters);
-    // }
+    }
 
     this.filterFormDialog = false;
   }

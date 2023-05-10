@@ -2,7 +2,7 @@ New TODO
 
     online status update with save into DB and trigger to all user
     Top Skill Dropdown data
-
+    question delete all video and images delete
 
 
 
@@ -104,26 +104,3 @@ pop.hostinger.com
 
 
 Record Your Screen btn clear
-
-
-
-
-
-server nest env file
-
-DATABASE="mongodb://localhost:27017/nest"
-
-AWS_BUCKET=“solvemyissue-user-data”
-AWS_ACCESS_KEY_ID=“AKIAQ5UZAYOURTU2STN6”
-AWS_SECRET_ACCESS_KEY=“I98+//S389IXof+PdbUYRq6yWtlWURjj61tot5zR”
-AWS_REGION=“ap-south-1”
-
-SENDGRID_API_KEY=
-CLIENT_URL=
-
-MAILER_HOST="smtp.hostinger.com"
-MAILER_PORT=465
-MAILER_SECURE=true
-MAILER_AUTH_USER=info@maxbbps.com
-MAILER_AUTH_PASSWORD=Shekar@456sw@!sc
-MAILER_FROM_EMAIL=info@maxbbps.com

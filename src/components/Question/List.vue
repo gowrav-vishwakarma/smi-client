@@ -35,13 +35,14 @@ export default class QuestionList extends Vue {
   // showAuthDialog = false;
   async mounted() {
     eventBus.$on("filterQuestions", async (filterData: any) => {
-      // Handle the event data
-      // console.log(filterData.query);
-      // this.filter.query = filterData;
       await this.getQList(filterData);
     });
 
-    this.getQList({ page: this.currentPage, limit: this.questionsPerPage });
+    this.getQList({
+      ...this.$store.getters.filters,
+      page: this.currentPage,
+      limit: this.questionsPerPage,
+    });
   }
 
   async getQList(filterData: any) {

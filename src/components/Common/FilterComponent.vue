@@ -75,6 +75,12 @@ export default class FilterComponent extends Vue {
           found += 1;
         }
       }
+
+      found += (
+      this.$store.getters.filters.availableOnAudioCall ||
+      this.$store.getters.filters.availableOnVideoCall ||
+      this.$store.getters.filters.availableOnScreenShare
+    )?1:0
       return found;
     }
     return found;

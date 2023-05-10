@@ -10,6 +10,9 @@
         div Available for solution
         .d-flex(style="align-items:center;flex-wrap:wrap;")
           v-checkbox(style="width:50%;" label="Chat" dense v-model="filterQuery.availableOnChatChannel")
+            //- <template v-slot:prepend>
+            //-   v-icon(color="primary" v-show="true") mdi-chat
+            //- </template>
           v-checkbox(style="width:50%;" label="Screen Share" dense v-model="filterQuery.availableOnScreenShare")
           v-checkbox(style="width:50%;" label="Video Call" dense v-model="filterQuery.availableOnVideoCall")
           v-checkbox(style="width:50%;" label="Audio Call" dense v-model="filterQuery.availableOnAudioCall")

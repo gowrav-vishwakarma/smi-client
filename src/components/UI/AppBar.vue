@@ -1,133 +1,50 @@
-<template>
-  <div>
-    <v-app-bar app color="white" flat>
-      <div class="d-flex align-center">
-        <!-- <v-img
-        alt="SMI Logo"
-        class="shrink mr-2"
-        contain
-        src="@/assets/logo.png"
-        transition="scale-transition"
-        width="40"
-        to="/"
-        bgcolor="primary"
-      /> -->
-        <h3 alt="SMI Name" class="shrink mt-1" contain>
-          <v-avatar color="orange" size="46" dark><small>Q/A</small></v-avatar>
+<template lang="pug">
+ div
+  v-app-bar(app='' color='white' flat='')
+    .d-flex.align-center
+      h3.shrink.mt-1(alt='SMI Name' contain='')
+        v-avatar(color='orange' size='46' dark='')
+          small Q/A
+        v-btn.hidden-sm-and-down(text='' :ripple='false' to='/' plain='') Solve My Issue
+    v-spacer
+    v-layout
+      filter-component
+    v-spacer
+    v-btn(rounded='' color='orange' v-if='!$store.getters.isAuthenticated' dark='' @click='askquestion')
+      v-icon  mdi-plus 
+      |         Ask Question
+    v-btn(rounded='' color='orange' v-else='' dark='' to='/ask-question')
+      v-icon  mdi-plus 
+      |         Ask Question
+    v-spacer
+    top-menu
+    auth-dialog(:showdialog.sync='AuthDialogState')
+    // selected filter options
+    template(v-slot:extension='' v-if='isFilterSelected')
+      v-container.d-flex.justify-space-between.grey.lighten-5.pa-0.mt-1(style='width: 100%; align-items: center')
+        div(style='width: 100%')
+          v-chip-group(v-if='$store.getters.filters' style='width: 100%')
+            v-chip(small='' color='orange white--text')  Filters: 
+            v-chip(small='' v-if='$store.getters.filters.query')
+              | {{ $store.getters.filters.query }}
+            //- v-chip(small='' v-for='t in $store.getters.filters.topics' :key="'t' + t")
+            //-   | {{ t }}
+            v-chip(small v-if="$store.getters.filters.topics.length")
+              span 
+                b topics: &nbsp;
+              span.v-chip__content(v-for='t in $store.getters.filters.topics' :key="'t' + t") {{ t }} &nbsp;
+            //- v-chip(small='' v-for='l in $store.getters.filters.languages' :key="'l' + l")
+            //-   | {{ l }}
+            v-chip(small v-if="$store.getters.filters.tags.length")
+              span 
+                b tags: &nbsp;
+              span.v-chip__content(v-for='t in $store.getters.filters.tags' :key="'t' + t") {{ t }} &nbsp;
+            v-chip(small v-if="solutionChannelFilterSelected")
+              solution-channels-component(:solutionChannels="solutionChannelFilter")
+        .mx-auto
+          v-chip(small='' color='red lighten-1 white--text' @click='clearFilter')
+            | Clear Filter
 
-          <v-btn class="hidden-sm-and-down" text :ripple="false" to="/" plain
-            >Solve My Issue</v-btn
-          >
-        </h3>
-      </div>
-      <v-spacer></v-spacer>
-      <v-layout>
-        <filter-component></filter-component>
-        <!-- <v-text-field
-        class="mt-1 white--text lighten-4"
-        prepend-inner-icon="mdi-magnify"
-        append-icon="mdi-filter-multiple"
-        hide-details="auto"
-        clearable
-        filled
-        rounded
-      >
-      </v-text-field> -->
-        <!-- <v-chip-group v-if="$store.getters.filters">
-          <v-chip
-            disabled
-            x-small
-            v-for="t in $store.getters.filters.topics"
-            :key="t"
-          >
-            {{ t }}
-          </v-chip>
-          <v-chip
-            disabled
-            x-small
-            v-for="l in $store.getters.filters.languages"
-            :key="l"
-          >
-            {{ l }}
-          </v-chip>
-        </v-chip-group> -->
-      </v-layout>
-      <v-spacer></v-spacer>
-
-      <v-btn
-        rounded
-        color="orange"
-        v-if="!$store.getters.isAuthenticated"
-        dark
-        @click="askquestion"
-      >
-        <v-icon> mdi-plus </v-icon>
-        Ask Question
-      </v-btn>
-      <v-btn rounded color="orange" v-else dark to="/ask-question">
-        <v-icon> mdi-plus </v-icon>
-        Ask Question
-      </v-btn>
-
-      <v-spacer></v-spacer>
-      <top-menu></top-menu>
-      <auth-dialog :showDialog.sync="AuthDialogState"></auth-dialog>
-
-      <template v-slot:extension v-if="isFilterSelected">
-        <v-container
-          class="d-flex justify-space-between grey lighten-5 pa-0 mt-1"
-          style="width: 100%; align-items: center"
-        >
-          <div style="width: 100%">
-            <v-chip-group v-if="$store.getters.filters" style="width: 100%">
-              <v-chip small color="orange white--text"> Filters: </v-chip>
-              <v-chip small v-if="$store.getters.filters.query">
-                {{ $store.getters.filters.query }}
-              </v-chip>
-
-              <v-chip
-                small
-                v-for="t in $store.getters.filters.topics"
-                :key="'t' + t"
-              >
-                {{ t }}
-              </v-chip>
-              <v-chip
-                small
-                v-for="l in $store.getters.filters.languages"
-                :key="'l' + l"
-              >
-                {{ l }}
-              </v-chip>
-              <v-chip
-                small
-                v-for="t in $store.getters.filters.tags"
-                :key="'t' + t"
-              >
-                {{ t }}
-              </v-chip>
-
-              <!-- <v-chip small color="primary white--text"> Clear Filter </v-chip> -->
-            </v-chip-group>
-          </div>
-          <div class="mx-auto">
-            <v-chip
-              small
-              color="red lighten-1 white--text"
-              @click="clearFilter"
-            >
-              Clear Filter
-            </v-chip>
-          </div>
-        </v-container>
-      </template>
-    </v-app-bar>
-    <!-- <v-sheet>
-      <v-app-bar>
-        <p>Rakesh</p>
-      </v-app-bar>
-    </v-sheet> -->
-  </div>
 </template>
 
 <script lang="ts">
@@ -136,6 +53,7 @@ import TopMenu from "@/components/User/TopMenu/index.vue";
 import AuthDialog from "@/components/User/AuthDialog.vue";
 import FilterComponent from "@/components/Common/FilterComponent.vue";
 import { eventBus } from "@/mixins/event-bus";
+import SolutionChannelsComponent from "@/components/Question/SolutionChannels.vue";
 
 @Component({
   name: "AppBar",
@@ -143,6 +61,7 @@ import { eventBus } from "@/mixins/event-bus";
     TopMenu,
     AuthDialog,
     FilterComponent,
+    SolutionChannelsComponent,
   },
 })
 export default class App extends Vue {
@@ -159,9 +78,31 @@ export default class App extends Vue {
           found += 1;
         }
       }
+      found +=
+        this.$store.getters.filters.availableOnAudioCall ||
+        this.$store.getters.filters.availableOnVideoCall ||
+        this.$store.getters.filters.availableOnScreenShare
+          ? 1
+          : 0;
       return found;
     }
     return found;
+  }
+
+  get solutionChannelFilter() {
+    return {
+      audioCall: this.$store.getters.filters.availableOnAudioCall,
+      videoCall: this.$store.getters.filters.availableOnVideoCall,
+      screenShare: this.$store.getters.filters.availableOnScreenShare,
+    };
+  }
+
+  get solutionChannelFilterSelected() {
+    return (
+      this.$store.getters.filters.availableOnAudioCall ||
+      this.$store.getters.filters.availableOnVideoCall ||
+      this.$store.getters.filters.availableOnScreenShare
+    );
   }
 
   askquestion() {

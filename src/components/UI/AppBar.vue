@@ -1,21 +1,26 @@
 <template lang="pug">
  div
   v-app-bar(app='' color='white' flat='')
-    .d-flex.align-center
-      h3.shrink.mt-1(alt='SMI Name' contain='')
+    router-link.d-flex.align-center(to="/" class="logo-link")
+      v-toolbar-title(to='/')
         v-avatar(color='orange' size='46' dark='')
-          small Q/A
-        v-btn.hidden-sm-and-down(text='' :ripple='false' to='/' plain='') Solve My Issue
+          small(style="font-weight:bold;") Q/A
+        small.hidden-sm-and-down(class="ml-2") Solve My Issue
+    //- .d-flex.align-center
+    //-   h3.shrink.mt-1(alt='SMI Name' contain='')
+    //-     v-avatar(color='orange' size='46' dark='')
+    //-       small Q/A
+    //-     v-btn.hidden-sm-and-down(text='' :ripple='false' to='/' plain='') Solve My Issue
     v-spacer
     v-layout
       filter-component
     v-spacer
     v-btn(rounded='' color='orange' v-if='!$store.getters.isAuthenticated' dark='' @click='askquestion')
       v-icon  mdi-plus 
-      |         Ask Question
+      span.hidden-sm-and-down Ask Question
     v-btn(rounded='' color='orange' v-else='' dark='' to='/ask-question')
       v-icon  mdi-plus 
-      |         Ask Question
+      span.hidden-sm-and-down Ask Question
     v-spacer
     top-menu
     auth-dialog(:showdialog.sync='AuthDialogState')
@@ -40,11 +45,13 @@
                 b tags: &nbsp;
               span.v-chip__content(v-for='t in $store.getters.filters.tags' :key="'t' + t") {{ t }} &nbsp;
             v-chip(small v-if="solutionChannelFilterSelected")
-              solution-channels-component(:solutionChannels="solutionChannelFilter")
+              v-icon(small class="icon mr-2" color="green" v-if="$store.getters.filters.availableOnAudioCall") mdi-phone-incoming
+              v-icon(small class="icon mr-2" color="green" v-if="$store.getters.filters.availableOnChatChannel") mdi-chat
+              v-icon(small v-if="$store.getters.filters.availableOnScreenShare" color="green" class="mr-2") mdi-monitor
+              v-icon(small color="green" class="mr-2" v-if="$store.getters.filters.availableOnVideoCall") mdi-video
         .mx-auto
           v-chip(small='' color='red lighten-1 white--text' @click='clearFilter')
             | Clear Filter
-
 </template>
 
 <script lang="ts">
@@ -53,7 +60,7 @@ import TopMenu from "@/components/User/TopMenu/index.vue";
 import AuthDialog from "@/components/User/AuthDialog.vue";
 import FilterComponent from "@/components/Common/FilterComponent.vue";
 import { eventBus } from "@/mixins/event-bus";
-import SolutionChannelsComponent from "@/components/Question/SolutionChannels.vue";
+// import SolutionChannelsComponent from "@/components/Question/SolutionChannels.vue";
 
 @Component({
   name: "AppBar",
@@ -61,7 +68,7 @@ import SolutionChannelsComponent from "@/components/Question/SolutionChannels.vu
     TopMenu,
     AuthDialog,
     FilterComponent,
-    SolutionChannelsComponent,
+    // SolutionChannelsComponent,
   },
 })
 export default class App extends Vue {
@@ -119,3 +126,9 @@ export default class App extends Vue {
   }
 }
 </script>
+<style>
+.logo-link {
+  text-decoration: none; /* Remove underline */
+  color: black !important; /* Inherit color from parent */
+}
+</style>

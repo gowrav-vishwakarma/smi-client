@@ -2,7 +2,7 @@
     div
       v-btn(text :color="statusColor")
         v-icon(small :color="statusColor") mdi-circle
-        | {{this.$store.getters.userOnlineStatus}} 
+        span.hidden-sm-and-down {{this.$store.getters.userOnlineStatus}} 
       div.extra-component
         //- div.call-dial-ringing
         //-   audio(ref="callDialPlayer")

@@ -17,7 +17,13 @@
         ></v-text-field>
 
         <div>Question Detail</div>
-        <vue-editor v-model="question.detail"></vue-editor>
+        <vue-editor
+          :editorToolbar="editorToolbar"
+          v-model="question.detail"
+        ></vue-editor>
+        <div v-if="showDetailError" class="v-messages theme--light error--text">
+          Please enter some content.
+        </div>
 
         <v-autocomplete
           v-model="question.topic"
@@ -42,6 +48,17 @@
           dense
           hint="you can associate multiple tags with your question. for multiple tag `type your tag name and end with comma(,) ie. tech, `"
         ></v-combobox>
+        <v-autocomplete
+          v-model="question.scope"
+          :items="['Private', 'Public']"
+          label="Question Visibility"
+          required
+          :rules="[(v) => !!v || 'Question Visibility is required']"
+          outlined
+          dense
+          class="mt-4"
+        ></v-autocomplete>
+
         <v-row class="mt-2">
           <v-col cols="12" sm="6">
             <v-card>
@@ -98,7 +115,7 @@
 
 <script lang="ts">
 import { topics, languages } from "@/services/staticValues";
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 import { VueEditor } from "vue2-editor";
 import MulticorderUI from "@/components/Multicorder/MulticorderUI.vue";
@@ -126,9 +143,38 @@ export default class AskQuestionView extends Vue {
       audioCall: true,
       videoCall: true,
     },
+    scope: "Public",
   };
   topics: string[] = topics;
-  valid: false = false;
+  valid = false;
+  showDetailError = false;
+
+  editorToolbar = [
+    [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    [
+      { align: "" },
+      { align: "center" },
+      { align: "right" },
+      { align: "justify" },
+    ],
+    ["blockquote", "code-block"],
+    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    ["link"], // temp remove image and video it has a hook for image upload also ["link", "image", "video"],
+    ["clean"], // remove formatting button
+  ];
+
+  @Watch("question.detail")
+  onMyFieldChanged(newValue: string) {
+    if (newValue.trim() === "") {
+      this.showDetailError = true;
+    } else {
+      this.showDetailError = false;
+      this.valid = true;
+    }
+  }
 
   deleteRecording(index: number) {
     if (index === 0) this.blob = null;
@@ -139,6 +185,11 @@ export default class AskQuestionView extends Vue {
   }
 
   async createQuestion() {
+    if (this.question.detail.trim() === "") {
+      this.showDetailError = true;
+      this.valid = false;
+      return;
+    }
     this.progress = 0;
     var data = this.question;
     data.languages = this.$store.getters.loggedInUser.userLanguages;

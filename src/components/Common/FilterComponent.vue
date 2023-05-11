@@ -58,6 +58,7 @@ export default class FilterComponent extends Vue {
   setQueryFilter(){
     this.setFilter(
       {
+        ...this.$store.getters.filters,
         query:this.queryString
       }
     )

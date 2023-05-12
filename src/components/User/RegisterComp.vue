@@ -108,7 +108,14 @@
           label="Country"
           dense
         ></v-select>
-        <v-btn class="lgnbtn mt-2" block @click="register" color="orange" dark>
+        <v-btn
+          class="lgnbtn mt-2"
+          block
+          @click="register"
+          color="orange"
+          dark
+          :loading="loader"
+        >
           Register
         </v-btn>
       </v-form>
@@ -195,6 +202,7 @@ import { Component, Vue } from "vue-property-decorator";
 
 import UserAPIService from "../../services/user.api";
 import RegisterUserDTO from "../../dto/request/register.dto";
+// import { eventBus } from "@/mixins/event-bus";
 
 @Component
 export default class RegisterComponent extends Vue {
@@ -231,8 +239,11 @@ export default class RegisterComponent extends Vue {
   languages = languages;
   countries = countries;
   verifySnack = false;
+  loader = false;
 
-  register() {
+  async register() {
+    this.loader = true;
+
     var data: RegisterUserDTO = {
       email: this.regForm.email,
       name: this.regForm.name,
@@ -243,8 +254,10 @@ export default class RegisterComponent extends Vue {
       accountType: "INDIVIDUAL",
     };
 
-    UserAPIService.register(data)
+    await UserAPIService.register(data)
       .then(() => {
+        this.loader = false;
+
         this.$router.push(
           "/verification/" + this.regForm.email + "/verifycode"
         );
@@ -261,6 +274,8 @@ export default class RegisterComponent extends Vue {
         this.userExist = true;
         this.emailErrorMessage.push(error.response.data.message);
       });
+
+    this.loader = false;
   }
 
   redirectToCodeVerify() {

@@ -5,6 +5,7 @@
       .d-flex.justify-space-between
         h4.text-subtitle-1.question-heading.primary--text( style="cursor:pointer") Q. {{question.title}}
         v-icon(x-large color="red" size="100" v-if="question.video && !displayVideo") mdi-youtube
+        v-icon(v-if="question.scope=='Private'" color="red") mdi-lock
       .question-description-text
         .text-body-2.text--secondary.text-justify.question-description-text.ml-5 {{shortdetail}}
         v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")

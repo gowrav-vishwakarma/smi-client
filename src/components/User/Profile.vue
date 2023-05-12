@@ -4,7 +4,8 @@
         v-img(height="180px" style="overflow:visible;" cover :src="coverImage")
           .d-flex
             v-avatar.ml-2(color="grey" size="150" rounded="50%" style="position: absolute;bottom:-20px;")
-              v-img(cover :src="profileImage")
+              v-img(cover v-if="profileImage" :src="profileImage")
+              v-icon(v-else style="font-size:100px;") mdi-account
             v-btn.ml-auto(icon large elevation="2" @click="editingProfileSection='uploadImage'" v-if="makeProfileEditable")
               v-icon(dark) mdi-pencil
         .d-flex.align-center.ml-auto(v-if="editingProfileSection=='uploadImage'" rounded style="width:80%")
@@ -302,7 +303,8 @@ export default class UserProfileComponent extends Vue {
     else
       return this.profile.profileImage
         ? process.env.VUE_APP_S3_CDN_URL + this.profile.profileImage
-        : "https://cdn.vuetifyjs.com/images/profiles/marcus.jpg";
+        : "";
+    // : "https://cdn.vuetifyjs.com/images/profiles/marcus.jpg";
   }
 
   async mounted() {

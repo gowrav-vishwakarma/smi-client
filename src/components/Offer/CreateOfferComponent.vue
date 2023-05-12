@@ -83,23 +83,25 @@ export default class CreateOfferSolutionComponent extends Vue {
         alert("You have already offered your solution");
         return;
       }
-      await questionsApi.createOffer(
-        this.question.questionerId,
-        this.question._id,
-        this.offerFormData.offerAnswerDesc
-          ? this.offerFormData.offerAnswerDesc
-          : "Interested",
-        this.offerFormData.solutionChannelMode
-      );
+      await questionsApi
+        .createOffer(
+          this.question.questionerId,
+          this.question._id,
+          this.offerFormData.offerAnswerDesc
+            ? this.offerFormData.offerAnswerDesc
+            : "Interested",
+          this.offerFormData.solutionChannelMode
+        )
+        .then((res) => {
+          eventBus.$emit("offer-submitted");
+          AuthStoreModule.setDraftFormAction(null);
+          this.createOfferForm.reset();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
       //
-      eventBus.$emit("offer-submitted");
-      // this.snackbar = true;
-      // this.$set(this.question, "myOffer", {
-      //   notes: this.offerFormData.offerAnswerDesc,
-      // });
-      AuthStoreModule.setDraftFormAction(null);
-      this.createOfferForm.reset();
     }
 
     this.loading = false;

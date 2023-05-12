@@ -40,7 +40,7 @@ export default class VerificationView extends Vue {
   verificationotp = "";
   snackbar = false;
   snackbarColor = "success";
-  snackbarMessage = "youe email id verified successfully";
+  snackbarMessage = "your email id verified successfully";
   snackbarTimeout = "1000";
 
   async mounted() {

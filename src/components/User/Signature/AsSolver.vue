@@ -8,11 +8,11 @@
               v-avatar( size="40" v-if="!disableAvatar" style="border:4px solid;" :color="solverOnlineStatus?'green lighten-1':'red'")
                 user-avatar(:user="User")
             div(v-else)
-              v-avatar( size="40" v-if="!disableAvatar" style="border:2px solid;" )
+              v-avatar( size="40" v-if="!disableAvatar" style="border:2px solid;")
                 user-avatar(:user="User")
             //-     v-img(alt="Q DP" src="@/assets/logo.png" transition="scale-transition" to="/")
             v-list-item-content.ml-1.pa-0(v-if="!disableName")
-              v-list-item-title.ma-0 {{User.name}}
+              v-list-item-title(@click="redirectToProfile").ma-0 {{User.name}}
                 //- span.ml-4.primary--text(v-if="!disableFollow") . Follow
               v-list-item-subtitle
                 small {{User.post}}
@@ -45,5 +45,9 @@ export default class UserSignatureAsSolver extends Vue {
   @Prop({ default: false }) disableFollow!: false;
 
   // reputation = 0;
+
+  redirectToProfile() {
+    window.open("/profile/" + this.User._id, "_blank");
+  }
 }
 </script>

@@ -12,11 +12,11 @@
             .d-flex
               v-switch(v-model="offerFormData.solutionChannelMode" color="primary" label="Screen Share" value="ScreenShare")
             //- v-alert(border="top" color="red lighten-2" dark v-if="!offerFormData.solutionChannelMode.length") | Please Select at least one mode
-          v-btn(color="primary" block rounded :disabled="myOffer" type="submit" ) {{caption}}
+          v-btn(color="primary" block rounded :disabled="myOffer" type="submit"  :loading="loading"	) {{caption}}
       v-card(v-else  :disabled="myOffer" )
         v-card-title {{caption}}, please wait
       auth-dialog(:showDialog.sync="AuthDialogState")
-      
+      //- v-snackbar(v-model="snackbar" :color="snackbarColor" absolute	 :timeout="snackbarTimeout") {{snackbarMessage}}
 </template>
 
 <script lang="ts">
@@ -25,6 +25,7 @@ import "reflect-metadata";
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
 import AuthDialog from "@/components/User/AuthDialog.vue";
 import { AuthStoreModule } from "@/store";
+import { eventBus } from "@/mixins/event-bus";
 
 @Component({
   name: "CreateOfferSolutionComponent",
@@ -45,10 +46,18 @@ export default class CreateOfferSolutionComponent extends Vue {
   offerFormValid = false;
   offerFormData = {
     offerAnswerDesc: null,
-    solutionChannelMode: ["chat", "Video", "ScreenShare"],
+    solutionChannelMode: ["Chat", "Video", "ScreenShare"],
   };
 
+  // snackbar = false;
+  // snackbarColor = "success";
+  // snackbarMessage = "your offer submitted";
+  // snackbarTimeout = "1000";
+  // offerCreated = false;
+  loading = false;
+
   async createOffer() {
+    this.loading = true;
     let isFormValid = this.createOfferForm.validate();
     // let xyz = this.createOfferForm.validate();
     // console.log(xyz);
@@ -59,9 +68,9 @@ export default class CreateOfferSolutionComponent extends Vue {
         formName: "OfferYourSolution",
         formData: this.offerFormData,
       });
-
       this.$store.commit("setLoginSuccessRedirectUrl", this.$route.path);
       this.AuthDialogState = true;
+      this.loading = false;
       return;
     }
 
@@ -83,8 +92,17 @@ export default class CreateOfferSolutionComponent extends Vue {
         this.offerFormData.solutionChannelMode
       );
 
+      //
+      eventBus.$emit("offer-submitted");
+      // this.snackbar = true;
+      // this.$set(this.question, "myOffer", {
+      //   notes: this.offerFormData.offerAnswerDesc,
+      // });
       AuthStoreModule.setDraftFormAction(null);
+      this.createOfferForm.reset();
     }
+
+    this.loading = false;
   }
 
   get myOffer() {

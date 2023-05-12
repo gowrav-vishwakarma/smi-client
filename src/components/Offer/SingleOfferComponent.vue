@@ -4,6 +4,14 @@
         //- v-alert(border="left" icon="mdi-fire" dense type="success" colored-border color="deep-purple accent-4")
         SolverSignature(:User="offer.Offerer" enableRating="true" disableFollow="true" :solverOnlineStatus="solverOnlineStatus" displayOnlineLayout="true")
         v-card-text {{offer.notes}}
+          v-chip-group(v-if="offer.solutionChannel && offer.solutionChannel.length" column)
+            //- div(small v-if="offer.solutionChannel && offer.solutionChannel.length")
+            v-chip(small)
+              v-icon(small class="icon mr-2" color="green" v-if="offer.solutionChannel.includes('Chat')") mdi-chat
+            v-chip(small)
+              v-icon(small v-if="offer.solutionChannel.includes('ScreenShare')" color="green" class="mr-2") mdi-monitor
+            v-chip(small)
+              v-icon(small color="green" class="mr-2" v-if="offer.solutionChannel.includes('Video')") mdi-video
         div(v-if="questionBelongsToMe" style="width:100%;")
           v-btn(blocked @click="call" v-if="questionBelongsToMe && !offerCallConnected && solverOnlineStatus" style="width:100%;")
             v-icon(small) mdi-phone

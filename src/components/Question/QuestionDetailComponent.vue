@@ -1,25 +1,32 @@
 <template lang="pug">
-  v-container.grid-list-xs
-    v-row.no-gutter
-      //- offer section
-      v-col.col-md-4.col-sm-4.col-xs-4
-        div(style="position:sticky;top:70px;")
-          create-offer-component(:question="question" v-if="!isQuestionBelongsToLoginUser")
-          div(v-else) Your Offered Solution by others
-          question-offer-list.mt-3(:question="question")
-      //- question section
-      v-col.col-md-8.col-sm-8.col-xs-8
-        question-single(:question="question" :key="question._id" disableAnswerSection="true" videoControl="true")
-        question-comments-list-component(:question="question" @event-new-comment-created="reloadData")
-        //- .ml-1
-        //-   .text-h6 {{ question.title }}
-        //-   .caption.mt-2 {{ question.detail }}
-          //- solution-channels-component.ml-auto(v-if="question.solutionChannels" :solutionChannels="question.solutionChannels")
-          //- user-signature-as-questioner(:User="question.byUser")
-          //- .d-flex
-            question-value-component(:question="question")
-            .caption.ml-auto.grey--text.lighten-4 asked {{ humanized_time_span(question.createdAt) }}
-          //- voting-component(:question="question")
+v-container.grid-list-xs
+  v-row.no-gutter
+    //- offer section
+    v-col.col-md-4.col-sm-4.col-xs-4
+      div.hidden-sm-and-down(style="position:sticky;top:70px;")
+        create-offer-component(:question="question" v-if="!isQuestionBelongsToLoginUser")
+        div(v-else) Your Offered Solution by others
+        question-offer-list.mt-3(:question="question")
+      v-expansion-panels.hidden-md-and-up
+        v-expansion-panel
+          v-expansion-panel-header
+            create-offer-component(:question="question" v-if="!isQuestionBelongsToLoginUser")
+            div(v-else) Your Offered Solution by others
+          v-expansion-panel-content
+            question-offer-list.mt-3(:question="question")
+    //- question section
+    v-col.col-md-8.col-sm-8.col-xs-8
+      question-single(:question="question" :key="question._id" disableAnswerSection="true" videoControl="true")
+      question-comments-list-component(:question="question" @event-new-comment-created="reloadData")
+      //- .ml-1
+      //-   .text-h6 {{ question.title }}
+      //-   .caption.mt-2 {{ question.detail }}
+        //- solution-channels-component.ml-auto(v-if="question.solutionChannels" :solutionChannels="question.solutionChannels")
+        //- user-signature-as-questioner(:User="question.byUser")
+        //- .d-flex
+          question-value-component(:question="question")
+          .caption.ml-auto.grey--text.lighten-4 asked {{ humanized_time_span(question.createdAt) }}
+        //- voting-component(:question="question")
 </template>
 
 <script lang="ts">

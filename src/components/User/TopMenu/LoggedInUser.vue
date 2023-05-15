@@ -2,13 +2,13 @@
   <div class="d-flex">
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
-        <!-- <v-badge bordered color="error" icon="mdi-cir" overlap left> -->
-        <v-btn text v-bind="attrs" v-on="on" class="pa-0">
-          <ws-manager v-bind="attrs" v-on="on"></ws-manager>
-          {{ $store.getters.loggedInUser.name }}
-          <v-icon>mdi-dots-vertical</v-icon>
+        <v-btn text small v-bind="attrs" v-on="on" class="pa-0">
+          <ws-manager></ws-manager>
+          <span class="hidden-sm-and-down">
+            {{ $store.getters.loggedInUser.name }}
+            <v-icon>mdi-dots-vertical</v-icon>
+          </span>
         </v-btn>
-        <!-- </v-badge> -->
       </template>
 
       <v-list>

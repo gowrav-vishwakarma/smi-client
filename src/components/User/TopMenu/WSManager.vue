@@ -1,12 +1,7 @@
 <template lang="pug">
 div
-  v-btn(text :color="statusColor" xs)
-    v-icon(small :color="statusColor") mdi-circle
-    //- span.hidden-sm-and-down {{this.$store.getters.userOnlineStatus}} 
+  v-icon(small :color="statusColor") mdi-circle
   div.extra-component
-    //- div.call-dial-ringing
-    //-   audio(ref="callDialPlayer")
-    //-     source(src="@/assets/audio/callDialTone.mp3" type="audio/mpeg")
     div.call-receive-ringing
       audio(ref="incomingCallRingingPlayer")
         source(src="@/assets/audio/callRingingTone.mp3" type="audio/mpeg" preload="auto")

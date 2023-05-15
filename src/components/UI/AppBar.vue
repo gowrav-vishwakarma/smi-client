@@ -13,7 +13,7 @@ v-app-bar(app='' color='white' flat='')
     v-icon  mdi-plus 
     span.hidden-sm-and-down Ask Question
   v-spacer
-  top-menu.hidden-sm-and-down
+  top-menu
   auth-dialog(:showdialog.sync='AuthDialogState')
   // selected filter options
   template(v-slot:extension='' v-if='isFilterSelected')

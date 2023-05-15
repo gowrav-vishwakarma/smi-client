@@ -1,57 +1,48 @@
 <template lang="pug">
- div
-  v-app-bar(app='' color='white' flat='')
-    router-link.d-flex.align-center(to="/" class="logo-link")
-      v-toolbar-title(to='/')
-        v-avatar(color='orange' size='46' dark='')
-          small(style="font-weight:bold;") Q/A
-        small.hidden-sm-and-down(class="ml-2") Solve My Issue
-    //- .d-flex.align-center
-    //-   h3.shrink.mt-1(alt='SMI Name' contain='')
-    //-     v-avatar(color='orange' size='46' dark='')
-    //-       small Q/A
-    //-     v-btn.hidden-sm-and-down(text='' :ripple='false' to='/' plain='') Solve My Issue
-    v-spacer
-    v-layout
-      filter-component
-    v-spacer
-    v-btn(rounded='' color='orange' v-if='!$store.getters.isAuthenticated' dark='' @click='askquestion')
-      v-icon  mdi-plus 
-      span.hidden-sm-and-down Ask Question
-    v-btn(rounded='' color='orange' v-else='' dark='' to='/ask-question')
-      v-icon  mdi-plus 
-      span.hidden-sm-and-down Ask Question
-    v-spacer
-    top-menu
-    auth-dialog(:showdialog.sync='AuthDialogState')
-    // selected filter options
-    template(v-slot:extension='' v-if='isFilterSelected')
-      v-container.d-flex.justify-space-between.grey.lighten-5.pa-0.mt-1(style='width: 100%; align-items: center')
-        div(style='width: 100%')
-          v-chip-group(v-if='$store.getters.filters' style='width: 100%')
-            v-chip(small='' color='orange white--text')  Filters: 
-            v-chip(small='' v-if='$store.getters.filters.query')
-              | {{ $store.getters.filters.query }}
-            //- v-chip(small='' v-for='t in $store.getters.filters.topics' :key="'t' + t")
-            //-   | {{ t }}
-            v-chip(small v-if="$store.getters.filters.topics && $store.getters.filters.topics.length")
-              span 
-                b topics: &nbsp;
-              span.v-chip__content(v-for='t in $store.getters.filters.topics' :key="'t' + t") {{ t.split("/").reverse()[0] }} &nbsp;
-            //- v-chip(small='' v-for='l in $store.getters.filters.languages' :key="'l' + l")
-            //-   | {{ l }}
-            v-chip(small v-if="$store.getters.filters.tags && $store.getters.filters.tags.length")
-              span 
-                b tags: &nbsp;
-              span.v-chip__content(v-for='t in $store.getters.filters.tags' :key="'t' + t") {{ t }} &nbsp;
-            v-chip(small v-if="solutionChannelFilterSelected")
-              v-icon(small class="icon mr-2" color="green" v-if="$store.getters.filters.availableOnAudioCall") mdi-phone-incoming
-              v-icon(small class="icon mr-2" color="green" v-if="$store.getters.filters.availableOnChatChannel") mdi-chat
-              v-icon(small v-if="$store.getters.filters.availableOnScreenShare" color="green" class="mr-2") mdi-monitor
-              v-icon(small color="green" class="mr-2" v-if="$store.getters.filters.availableOnVideoCall") mdi-video
-        .mx-auto
-          v-chip(small='' color='red lighten-1 white--text' @click='clearFilter')
-            | Clear Filter
+v-app-bar(app='' color='white' flat='')
+  router-link.d-flex.align-center(to="/" class="logo-link")
+    v-toolbar-title.mx-2(to='/') [smi]
+      small.hidden-sm-and-down(class="ml-2") Solve My Issue
+  v-spacer
+  filter-component.flex-grow-1.mr-2
+  v-spacer
+  v-btn(rounded='' color='orange' v-if='!$store.getters.isAuthenticated' dark='' @click='askquestion')
+    v-icon  mdi-plus 
+    span.hidden-sm-and-down Ask Question
+  v-btn(rounded='' color='orange' v-else='' dark='' to='/ask-question')
+    v-icon  mdi-plus 
+    span.hidden-sm-and-down Ask Question
+  v-spacer
+  top-menu.hidden-sm-and-down
+  auth-dialog(:showdialog.sync='AuthDialogState')
+  // selected filter options
+  template(v-slot:extension='' v-if='isFilterSelected')
+    v-container.d-flex.justify-space-between.grey.lighten-5.pa-0.mt-1(style='width: 100%; align-items: center')
+      div(style='width: 100%')
+        v-chip-group(v-if='$store.getters.filters' style='width: 100%')
+          v-chip(small='' color='orange white--text')  Filters: 
+          v-chip(small='' v-if='$store.getters.filters.query')
+            | {{ $store.getters.filters.query }}
+          //- v-chip(small='' v-for='t in $store.getters.filters.topics' :key="'t' + t")
+          //-   | {{ t }}
+          v-chip(small v-if="$store.getters.filters.topics && $store.getters.filters.topics.length")
+            span 
+              b topics: &nbsp;
+            span.v-chip__content(v-for='t in $store.getters.filters.topics' :key="'t' + t") {{ t.split("/").reverse()[0] }} &nbsp;
+          //- v-chip(small='' v-for='l in $store.getters.filters.languages' :key="'l' + l")
+          //-   | {{ l }}
+          v-chip(small v-if="$store.getters.filters.tags && $store.getters.filters.tags.length")
+            span 
+              b tags: &nbsp;
+            span.v-chip__content(v-for='t in $store.getters.filters.tags' :key="'t' + t") {{ t }} &nbsp;
+          v-chip(small v-if="solutionChannelFilterSelected")
+            v-icon(small class="icon mr-2" color="green" v-if="$store.getters.filters.availableOnAudioCall") mdi-phone-incoming
+            v-icon(small class="icon mr-2" color="green" v-if="$store.getters.filters.availableOnChatChannel") mdi-chat
+            v-icon(small v-if="$store.getters.filters.availableOnScreenShare" color="green" class="mr-2") mdi-monitor
+            v-icon(small color="green" class="mr-2" v-if="$store.getters.filters.availableOnVideoCall") mdi-video
+      .mx-auto
+        v-chip(small='' color='red lighten-1 white--text' @click='clearFilter')
+          | Clear Filter
 </template>
 
 <script lang="ts">

@@ -2,10 +2,15 @@
   <div class="d-flex">
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
-        <div text v-bind="attrs" v-on="on">
+        <!-- <v-badge bordered color="error" icon="mdi-cir" overlap left> -->
+        <v-btn text v-bind="attrs" v-on="on" class="pa-0">
           <ws-manager v-bind="attrs" v-on="on"></ws-manager>
-        </div>
+          {{ $store.getters.loggedInUser.name }}
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+        <!-- </v-badge> -->
       </template>
+
       <v-list>
         <v-list-item
           style="min-height: 28px"
@@ -31,20 +36,6 @@
             Busy
           </v-list-item-title>
         </v-list-item>
-      </v-list>
-    </v-menu>
-
-    <v-menu offset-y>
-      <template v-slot:activator="{ on, attrs }">
-        <!-- <v-badge bordered color="error" icon="mdi-cir" overlap left> -->
-        <v-btn text v-bind="attrs" v-on="on" class="pa-0">
-          {{ $store.getters.loggedInUser.name }}
-          <v-icon>mdi-dots-vertical</v-icon>
-        </v-btn>
-        <!-- </v-badge> -->
-      </template>
-
-      <v-list>
         <v-list-item class="pa-0">
           <v-btn
             text
@@ -85,17 +76,15 @@ import { AuthStoreModule } from "@/store";
   components: {
     WsManager,
   },
-
-  methods: {
-    async logout() {
-      await AuthStoreModule.resetCurrentUserAction();
-      this.$router.push("/");
-    },
-
-    updateOnlineStatus(status: string) {
-      AuthStoreModule.updateUserOnlineStatusAction(status);
-    },
-  },
 })
-export default class LoggedInUserTopMenu extends Vue {}
+export default class LoggedInUserTopMenu extends Vue {
+  async logout() {
+    await AuthStoreModule.resetCurrentUserAction();
+    this.$router.push("/");
+  }
+
+  updateOnlineStatus(status: string) {
+    AuthStoreModule.updateUserOnlineStatusAction(status);
+  }
+}
 </script>

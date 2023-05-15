@@ -114,7 +114,12 @@
 </template>
 
 <script lang="ts">
-import { topics, languages } from "@/services/staticValues";
+import {
+  topics,
+  getFlatTopics,
+  languages,
+  Topic,
+} from "@/services/staticValues";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 import { VueEditor } from "vue2-editor";
@@ -145,7 +150,7 @@ export default class AskQuestionView extends Vue {
     },
     scope: "Public",
   };
-  topics: string[] = topics;
+  topics: string[] = getFlatTopics(topics);
   valid = false;
   showDetailError = false;
 

@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { topics, languages } from "@/services/staticValues";
+import { topics, languages, Topic, getFlatTopics } from "@/services/staticValues";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 import { VueEditor } from "vue2-editor";
@@ -56,7 +56,7 @@ export default class AskQuestionView extends Vue {
     availableOnAudioCall: null,
   };
 
-  topics: string[] = topics;
+  topics: string[] = getFlatTopics(topics);;
   valid: false = false;
   languageList: string[] = languages;
 

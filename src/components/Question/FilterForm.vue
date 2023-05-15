@@ -1,26 +1,29 @@
 <template lang="pug">
-    div.questionFilterComponent
-      v-form(ref="filterForm" v-model="valid")
-        v-text-field(label="Question Contains" placeholder="your search query" dense small outlined v-model="filterQuery.query" :rules="[(v) => v.length <= 80 || 'Too long']")
-        v-autocomplete(v-model="filterQuery.topics" dense small multiple :items="topics" small-chips label="Topic" outlined)
-        v-combobox(v-model="filterQuery.tags" dense small outlined label="Tags" multiple small-chips clearable :delimiters="[',']" deletable-chips)
-        //- todo filters
-        //- v-autocomplete(:items="languageList" dense small v-model="filterQuery.languages" multiple label="Language" outlined)
-        //- v-checkbox(label="questions having answer" dense small v-model="filterQuery.hasComments") 
-        div Available for solution
-        .d-flex(style="align-items:center;flex-wrap:wrap;")
-          v-checkbox(style="width:50%;" label="Chat" dense v-model="filterQuery.availableOnChatChannel")
-            //- <template v-slot:prepend>
-            //-   v-icon(color="primary" v-show="true") mdi-chat
-            //- </template>
-          v-checkbox(style="width:50%;" label="Screen Share" dense v-model="filterQuery.availableOnScreenShare")
-          v-checkbox(style="width:50%;" label="Video Call" dense v-model="filterQuery.availableOnVideoCall")
-          v-checkbox(style="width:50%;" label="Audio Call" dense v-model="filterQuery.availableOnAudioCall")
-        v-row
-          v-col(cols="6")
-            v-btn(color="grey"  @click="dialogClose" :disabled="!valid" block) Close
-          v-col(cols="6")
-            v-btn(color="primary" @click="filterFormSubmit" :disabled="!valid" block) Search
+div.questionFilterComponent
+  v-form(ref="filterForm" v-model="valid")
+    v-text-field(label="Question Contains" placeholder="your search query" dense small outlined v-model="filterQuery.query" :rules="[(v) => v.length <= 80 || 'Too long']")
+    v-autocomplete(v-model="filterQuery.topics" dense small multiple :items="topics" small-chips label="Topic" outlined)
+      template(v-slot:selection="data")
+        v-chip(v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove(data.item)")
+          | {{ data.item.split("/").reverse()[0] }}
+    v-combobox(v-model="filterQuery.tags" dense small outlined label="Tags" multiple small-chips clearable :delimiters="[',']" deletable-chips)
+    //- todo filters
+    //- v-autocomplete(:items="languageList" dense small v-model="filterQuery.languages" multiple label="Language" outlined)
+    //- v-checkbox(label="questions having answer" dense small v-model="filterQuery.hasComments") 
+    div Available for solution
+    .d-flex(style="align-items:center;flex-wrap:wrap;")
+      v-checkbox(style="width:50%;" label="Chat" dense v-model="filterQuery.availableOnChatChannel")
+        //- <template v-slot:prepend>
+        //-   v-icon(color="primary" v-show="true") mdi-chat
+        //- </template>
+      v-checkbox(style="width:50%;" label="Screen Share" dense v-model="filterQuery.availableOnScreenShare")
+      v-checkbox(style="width:50%;" label="Video Call" dense v-model="filterQuery.availableOnVideoCall")
+      v-checkbox(style="width:50%;" label="Audio Call" dense v-model="filterQuery.availableOnAudioCall")
+    v-row
+      v-col(cols="6")
+        v-btn(color="grey"  @click="dialogClose" :disabled="!valid" block) Close
+      v-col(cols="6")
+        v-btn(color="primary" @click="filterFormSubmit" :disabled="!valid" block) Search
 </template>
 
 <script lang="ts">

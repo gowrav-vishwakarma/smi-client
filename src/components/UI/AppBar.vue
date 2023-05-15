@@ -37,7 +37,7 @@
             v-chip(small v-if="$store.getters.filters.topics && $store.getters.filters.topics.length")
               span 
                 b topics: &nbsp;
-              span.v-chip__content(v-for='t in $store.getters.filters.topics' :key="'t' + t") {{ t }} &nbsp;
+              span.v-chip__content(v-for='t in $store.getters.filters.topics' :key="'t' + t") {{ t.split("/").reverse()[0] }} &nbsp;
             //- v-chip(small='' v-for='l in $store.getters.filters.languages' :key="'l' + l")
             //-   | {{ l }}
             v-chip(small v-if="$store.getters.filters.tags && $store.getters.filters.tags.length")

@@ -5,14 +5,16 @@ v-container.grid-list-xs
     v-col.col-md-4.col-sm-4.col-xs-4
       div.hidden-sm-and-down(style="position:sticky;top:70px;")
         create-offer-component(:question="question" v-if="!isQuestionBelongsToLoginUser")
-        div(v-else) Your Offered Solution by others
+        v-card(v-else)
+          v-card-title Your Offered Solution by others
         question-offer-list.mt-3(:question="question")
       v-expansion-panels.hidden-md-and-up
         v-expansion-panel
           v-expansion-panel-header
-            create-offer-component(:question="question" v-if="!isQuestionBelongsToLoginUser")
+            div(v-if="!isQuestionBelongsToLoginUser") Offer Solution
             div(v-else) Your Offered Solution by others
           v-expansion-panel-content
+            create-offer-component(:showTitle="false" :question="question" v-if="!isQuestionBelongsToLoginUser")
             question-offer-list.mt-3(:question="question")
     //- question section
     v-col.col-md-8.col-sm-8.col-xs-8

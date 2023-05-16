@@ -22,6 +22,17 @@ export default class Filter extends VuexModule implements IFilterState {
       : { query: "", topics: [], tags: [], languages: [], sortBy: "newest" };
   }
 
+  get isCleared(): boolean {
+    return (
+      this.filterState === null ||
+      (this.filterState?.query == "" &&
+        this.filterState?.topics?.length == 0 &&
+        this.filterState?.tags?.length == 0 &&
+        this.filterState?.languages?.length == 0 &&
+        this.filterState?.sortBy == "newest")
+    );
+  }
+
   @Mutation
   setFilters(filters: FiltersI) {
     this.filterState = filters;

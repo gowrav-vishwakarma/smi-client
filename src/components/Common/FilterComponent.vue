@@ -11,7 +11,7 @@ div.filter-component
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { eventBus } from "@/mixins/event-bus";
 import QuestionFilters from "@/components/Question/FilterForm.vue";
 import { FilterQuestionsDTO } from "@/dto/request/question-filter.dto";
@@ -25,6 +25,14 @@ import { FilterQuestionsDTO } from "@/dto/request/question-filter.dto";
 export default class FilterComponent extends Vue {
   queryString: any = null;
   filterFormDialog = false;
+
+  @Watch("$store.getters.filters", { immediate: true })
+  onFilterChange() {
+    if (this.$store.getters.filters) {
+      this.queryString = this.$store.getters.filters.query;
+    }
+
+  }
   /**
    * todo
    *  type n enter search into question title & tags

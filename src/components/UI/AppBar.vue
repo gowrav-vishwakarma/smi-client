@@ -19,17 +19,13 @@ v-app-bar(app='' color='white' flat='')
   template(v-slot:extension='' v-if='isFilterSelected')
     v-container.d-flex.justify-space-between.grey.lighten-5.pa-0.mt-1(style='width: 100%; align-items: center')
       div(style='width: 100%')
-        v-chip-group(v-if='$store.getters.filters' style='width: 100%')
-          v-chip(small color='red lighten-1 white--text' @click='clearFilter')
-            | Clear 
-          v-chip(small='' v-if='$store.getters.filters.query')
+        v-chip-group( style='width: 100%')
+          v-chip(small color='red lighten-1 white--text' @click='clearFilter') {{ $store.getters.isCleared ? 'Default':'Clear' }}
+          v-chip(small='' v-if='$store.getters.filters.query' close @click:close="clearQuery" @click="clearQuery")
             | {{ $store.getters.filters.query }}
-          v-chip(small='' v-for='t in $store.getters.filters.languages' :key="'t' + t")
+          v-chip(small='' v-for='t in $store.getters.filters.languages' :key="'t' + t" close @click:close="clearLanguage(t)" @click="clearLanguage(t)")
             | {{ t }}
-          v-chip(small v-if="$store.getters.filters.topics && $store.getters.filters.topics.length")
-            span 
-              b topics: &nbsp;
-            span.v-chip__content(v-for='t in $store.getters.filters.topics' :key="'t' + t") {{ t.split("/").reverse()[0] }} &nbsp;
+          v-chip(small v-if="$store.getters.filters.topics && $store.getters.filters.topics.length" v-for='t in $store.getters.filters.topics' :key="'t' + t" close @click:close="clearTopic(t)" @click="clearTopic(t)" ) {{ t.split("/").reverse()[0] }}
           //- v-chip(small='' v-for='l in $store.getters.filters.languages' :key="'l' + l")
           //-   | {{ l }}
           v-chip(small v-if="$store.getters.filters.tags && $store.getters.filters.tags.length")
@@ -49,6 +45,7 @@ import TopMenu from "@/components/User/TopMenu/index.vue";
 import AuthDialog from "@/components/User/AuthDialog.vue";
 import FilterComponent from "@/components/Common/FilterComponent.vue";
 import { eventBus } from "@/mixins/event-bus";
+import { AuthStoreModule } from "@/store";
 // import SolutionChannelsComponent from "@/components/Question/SolutionChannels.vue";
 
 @Component({
@@ -109,9 +106,62 @@ export default class App extends Vue {
     }
   }
 
+  clearQuery() {
+    this.$store.commit("setFilters", {
+      ...this.$store.getters.filters,
+      query: "",
+    });
+    eventBus.$emit("filterQuestions", {
+      ...this.$store.getters.filters,
+      query: "",
+    });
+  }
+
+  clearLanguage(lang: string) {
+    let languages = this.$store.getters.filters.languages;
+    languages = languages.filter((l: string) => l != lang);
+    this.$store.commit("setFilters", {
+      ...this.$store.getters.filters,
+      languages,
+    });
+    eventBus.$emit("filterQuestions", {
+      ...this.$store.getters.filters,
+      languages,
+    });
+  }
+
+  clearTopic(topic: string) {
+    let topics = this.$store.getters.filters.topics;
+    topics = topics.filter((t: string) => t != topic);
+    this.$store.commit("setFilters", {
+      ...this.$store.getters.filters,
+      topics,
+    });
+    eventBus.$emit("filterQuestions", {
+      ...this.$store.getters.filters,
+      topics,
+    });
+  }
+
   clearFilter() {
-    this.$store.commit("setFilters", undefined);
-    eventBus.$emit("filterQuestions", undefined);
+    const user = AuthStoreModule.currentUser as any;
+
+    if (!user && this.$store.getters.isCleared) {
+      alert("Login Requried for your default");
+    }
+    if (user && this.$store.getters.isCleared) {
+      let filter = {
+        topics: user.userToppics,
+        tags: [],
+        languages: user.userLanguages,
+        sortBy: "newest",
+      };
+      this.$store.commit("setFilters", filter);
+      eventBus.$emit("filterQuestions", filter);
+      return;
+    }
+    this.$store.commit("setFilters", null);
+    eventBus.$emit("filterQuestions", null);
   }
 }
 </script>

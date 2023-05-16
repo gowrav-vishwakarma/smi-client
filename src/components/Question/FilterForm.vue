@@ -1,7 +1,7 @@
 <template lang="pug">
 div.questionFilterComponent
   v-form(ref="filterForm" v-model="valid")
-    v-text-field(label="Question Contains" placeholder="your search query" dense small outlined v-model="filterQuery.query" :rules="[(v) => v.length <= 80 || 'Too long']")
+    v-text-field(label="Question Contains" placeholder="your search query" dense small outlined v-model="filterQuery.query" :rules="[(v) => v && v.length <= 80 || 'Too long']")
     v-autocomplete(v-model="filterQuery.topics" dense small multiple :items="topics" small-chips label="Topic" outlined)
       template(v-slot:selection="data")
         v-chip(v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove(data.item)")
@@ -29,7 +29,7 @@ div.questionFilterComponent
 
 <script lang="ts">
 import { topics, languages, getFlatTopics } from "@/services/staticValues";
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 import { VueEditor } from "vue2-editor";
 import MulticorderUI from "@/components/Multicorder/MulticorderUI.vue";
@@ -71,6 +71,8 @@ export default class AskQuestionView extends Vue {
       await this.callback(this.filterQuery);
     }
 
+    
+
     // this.progress = 0;
     // var data = this.question;
     // data.languages = this.$store.getters.loggedInUser.userLanguages;
@@ -83,6 +85,13 @@ export default class AskQuestionView extends Vue {
     // );
     // this.$router.push("question/" + newfilterQuery._id);
   }
+
+  @Watch("$store.getters.filters", { immediate: true })
+    onFilterChange() {
+      if (this.$store.getters.filters) {
+        this.filterQuery = this.$store.getters.filters;
+      }
+    }
 
   dialogClose() {
     this.callback(undefined);

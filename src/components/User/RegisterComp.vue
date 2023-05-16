@@ -121,7 +121,7 @@
           </template>
         </v-autocomplete>
 
-        <v-select
+        <v-autocomplete
           v-model="regForm.country"
           :items="countries"
           single-line
@@ -130,7 +130,7 @@
           class="field mt-2"
           label="Country"
           dense
-        ></v-select>
+        ></v-autocomplete>
         <v-btn
           class="lgnbtn mt-2"
           block

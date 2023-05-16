@@ -1,6 +1,6 @@
 <template lang="pug">
 div(style="width: 100%" v-if="renderOfferList")
-  single-offer(v-for="offer in questionOffers" :offer="offer" :key="offer._id" :question="question" :solverOnlineStatusList="solverOnlineStatusList")
+  single-offer(v-for="offer in questionOffers" :offer="offer" :key="offer._id" :question="question" :isSolved="isSolved" :solverOnlineStatusList="solverOnlineStatusList")
 </template>
 
 <script lang="ts">
@@ -19,6 +19,8 @@ import socket, { SocketOn, SocketEmit } from "@/services/socket";
 })
 export default class QuestionOfferListComponent extends Vue {
   @Prop({ default: null }) readonly question!: QuestionDetailResponseDTO;
+
+  @Prop({ default: false }) readonly isSolved!: boolean;
 
   questionOffers: any[] = [];
   connectedUserPayloadReceived = false;

@@ -1,7 +1,7 @@
 <template lang="pug">
 div.questionFilterComponent
   v-form(ref="filterForm" v-model="valid")
-    v-text-field(label="Question Contains" placeholder="your search query" dense small outlined v-model="filterQuery.query" :rules="[(v) => v && v.length <= 80 || 'Too long']")
+    v-text-field(label="Question Contains" placeholder="your search query" dense small outlined v-model="filterQuery.query")
     v-autocomplete(v-model="filterQuery.topics" dense small multiple :items="topics" small-chips label="Topic" outlined)
       template(v-slot:selection="data")
         v-chip(v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove(data.item)")

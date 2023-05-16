@@ -1,22 +1,24 @@
 <template lang="pug">
 div
-  v-card.pa-2(v-if="!myOffer")
-    v-card-title(v-if="showTitle") Offer Your Solution
-    v-form(ref="createOfferForm" v-model="offerFormValid" @submit.prevent="createOffer")
-      v-textarea(v-model="offerFormData.offerAnswerDesc" label="Offer Answer" required outlined auto-grow rows="3" :rules="descRules")
-      div
-        v-label In which form would you be comfortable in answering the question?
-        .d-flex.justify-space-between
-          v-switch(v-model="offerFormData.solutionChannelMode" color="primary" label="Chat" value="Chat")
-          v-switch(v-model="offerFormData.solutionChannelMode" color="primary" label="Video" value="Video")
-        .d-flex
-          v-switch(v-model="offerFormData.solutionChannelMode" color="primary" label="Screen Share" value="ScreenShare")
-        //- v-alert(border="top" color="red lighten-2" dark v-if="!offerFormData.solutionChannelMode.length") | Please Select at least one mode
-      v-btn(color="primary" block rounded :disabled="myOffer" type="submit"  :loading="loading"	) {{caption}}
-  v-card(v-else  :disabled="myOffer" )
-    v-card-title {{caption}}, please wait
-  auth-dialog(:showDialog.sync="AuthDialogState")
-  //- v-snackbar(v-model="snackbar" :color="snackbarColor" absolute	 :timeout="snackbarTimeout") {{snackbarMessage}}
+  div(v-if="!isSolved")
+    v-card.pa-2(v-if="!myOffer")
+      v-card-title(v-if="showTitle") Offer Your Solution
+      v-form(ref="createOfferForm" v-model="offerFormValid" @submit.prevent="createOffer")
+        v-textarea(v-model="offerFormData.offerAnswerDesc" label="Offer Answer" required outlined auto-grow rows="3" :rules="descRules")
+        div
+          v-label In which form would you be comfortable in answering the question?
+          .d-flex.justify-space-between
+            v-switch(v-model="offerFormData.solutionChannelMode" color="primary" label="Chat" value="Chat")
+            v-switch(v-model="offerFormData.solutionChannelMode" color="primary" label="Video" value="Video")
+          .d-flex
+            v-switch(v-model="offerFormData.solutionChannelMode" color="primary" label="Screen Share" value="ScreenShare")
+          //- v-alert(border="top" color="red lighten-2" dark v-if="!offerFormData.solutionChannelMode.length") | Please Select at least one mode
+        v-btn(color="primary" block rounded :disabled="myOffer" type="submit"  :loading="loading"	) {{caption}}
+    v-card(v-else  :disabled="myOffer" )
+      v-card-title {{caption}}, please wait
+    auth-dialog(:showDialog.sync="AuthDialogState")
+  v-card.pa-2(v-else)
+      v-card-title.green SOLVED
 </template>
 
 <script lang="ts">
@@ -43,6 +45,8 @@ export default class CreateOfferSolutionComponent extends Vue {
 
   @Prop({ default: true })
   readonly showTitle!: boolean;
+
+  @Prop({ default: false }) readonly isSolved!: boolean;
 
   AuthDialogState = false;
 

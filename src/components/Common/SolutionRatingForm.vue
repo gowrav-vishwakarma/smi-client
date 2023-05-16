@@ -1,13 +1,14 @@
 <template lang="pug">
-  div.text-center.solution-rating-form-component
-      v-card(class="mx-auto elevation-16" max-width="400" )
-          v-card-title(style="align-items:center;") {{title}}
-          v-card-text Please take a few seconds to rate your experience. It really helps!
-            v-rating( v-model="rating" color="yellow darken-3" background-color="grey darken-1" active-color="yellow-accent-4" hover size="48" length="5")
-            v-textarea(label="comment" v-model="comment" outline prepend-icon="mdi-comment" rows="2")
-          v-divider
-          v-card-actions
-            v-btn(color="primary" text block @click="submitRating") Rate Now
+div.text-center.solution-rating-form-component
+    v-card(class="mx-auto elevation-16" max-width="400" )
+        v-card-title(style="align-items:center;") {{title}}
+        v-card-text Please take a few seconds to rate your experience. It really helps!
+          v-rating( v-model="rating" color="yellow darken-3" background-color="grey darken-1" active-color="yellow-accent-4" hover size="48" length="5")
+          v-textarea(label="comment" v-model="comment" outline prepend-icon="mdi-comment" rows="2")
+          v-checkbox(v-if="isQuestioner" label="Mark Solved" v-model="markSolved")
+        v-divider
+        v-card-actions
+          v-btn(color="primary" text block @click="submitRating") Rate Now
 </template>
 
 <script lang="ts">
@@ -26,11 +27,15 @@ export default class SolutionRatingForm extends Vue {
   @Prop({ default: null })
   readonly question!: QuestionListResponseDTO;
 
+  @Prop({ default: false })
+  readonly isMyQuestion!: boolean;
+
   @Prop({ default: null })
   readonly solutionAttemptDetail!: SolutionAttemptDetailResponseDTO;
 
   rating = 0;
   comment = "";
+  markSolved = false;
 
   get title() {
     if (this.isOfferer) {
@@ -65,6 +70,7 @@ export default class SolutionRatingForm extends Vue {
       offererId: this.solutionAttemptDetail.offererId,
       questionId: this.solutionAttemptDetail.questionId,
       questionerId: this.solutionAttemptDetail.questionerId,
+      markedSolved: this.markSolved,
       // solutionAttemptDetail: this.solutionAttemptDetail,
     });
 

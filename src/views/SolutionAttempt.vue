@@ -1,11 +1,11 @@
 <template lang="pug">
-  v-container.smi-meeting-wrapper
-    div(style="height: 100vh" v-if="solutionAttempt && solutionAttempt._id")
-      vue-jitsi-meet(ref="jitsiRef" domain="meet.jit.si" :options="jitsiOptions" v-if="!showRatingDialog")
-      v-dialog(v-model="showRatingDialog" max-width="400")
-        SolutionRatingForm(:solutionAttemptDetail="solutionAttempt")
-    div(v-else)
-      P Meeting finished | Something went wrong
+v-container.smi-meeting-wrapper
+  div(style="height: 80vh" v-if="solutionAttempt && solutionAttempt._id")
+    vue-jitsi-meet(ref="jitsiRef" domain="meet.jit.si" :options="jitsiOptions" v-if="!showRatingDialog")
+    v-dialog(v-model="showRatingDialog" max-width="400")
+      SolutionRatingForm(:solutionAttemptDetail="solutionAttempt" :isMyQuestion="isMyQuestion")
+  div(v-else)
+    P Meeting finished | Something went wrong
 </template>
 
 <script lang="ts">
@@ -84,6 +84,13 @@ export default class SolutionAttempt extends Mixins(General) {
     };
   }
 
+  get isMyQuestion() {
+    return (
+      this.$route.params.solutionId == this.solutionAttempt.questionId &&
+      this.solutionAttempt.questionerId == this.$store.getters.loggedInUser._id
+    );
+  }
+
   async mounted() {
     if (this.$route.params && this.$route.params.solutionId) {
       this.solutionAttempt = await solutionApi.getSolutionAttempt(
@@ -119,6 +126,7 @@ export default class SolutionAttempt extends Mixins(General) {
     // this.$vToastify.success(event.displayName + " Left");
 
     this.showRatingDialog = true;
+
     // this.$router.push("/");
     // this.$router.push("/question/" + this.solutionAttempt.questionId);
   }

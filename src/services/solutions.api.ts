@@ -21,6 +21,7 @@ class SolutionsAPIService extends APIService {
     offererId: string;
     questionId: string;
     questionerId: string;
+    markedSolved: boolean;
   }): Promise<any> {
     console.log("sending Rating Data", ratingParam);
 

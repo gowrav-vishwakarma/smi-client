@@ -12,18 +12,19 @@ v-card
           v-icon(small v-if="offer.solutionChannel.includes('ScreenShare')" color="green" class="mr-2") mdi-monitor
         v-chip(small)
           v-icon(small color="green" class="mr-2" v-if="offer.solutionChannel.includes('Video')") mdi-video
-    div(v-if="questionBelongsToMe" style="width:100%;")
-      v-btn(blocked @click="call" v-if="questionBelongsToMe && !offerCallConnected && solverOnlineStatus" style="width:100%;")
-        v-icon(small) mdi-phone
-        | connect
-      v-btn(blocked v-else-if="questionBelongsToMe && offerCallConnected" style="width:100%;")
-        v-icon(small) mdi-phone
-        | connected
-      v-btn(blocked v-else-if="questionBelongsToMe" style="width:100%;")
-        v-icon(small color="red") mdi-circle
-        | offline
-    v-btn( v-else color="red lighten-4") waiting for call
-    v-icon(@click="callDisconnect" v-if="offerCallConnected") mdi-phone-cancel
+    div(v-if="!isSolved" style="width:100%;")
+      div(v-if="questionBelongsToMe" style="width:100%;")
+        v-btn(blocked @click="call" v-if="questionBelongsToMe && !offerCallConnected && solverOnlineStatus" style="width:100%;")
+          v-icon(small) mdi-phone
+          | connect
+        v-btn(blocked v-else-if="questionBelongsToMe && offerCallConnected" style="width:100%;")
+          v-icon(small) mdi-phone
+          | connected
+        v-btn(blocked v-else-if="questionBelongsToMe" style="width:100%;")
+          v-icon(small color="red") mdi-circle
+          | offline
+      v-btn( v-else color="red lighten-4" block) waiting for call
+      v-icon(@click="callDisconnect" v-if="offerCallConnected") mdi-phone-cancel
 
   v-card( v-if="offerCallConnected")
     div
@@ -77,6 +78,8 @@ export default class SingleOfferComponent extends Vue {
 
   @Prop({ default: null })
   readonly solverOnlineStatusList!: string[];
+
+  @Prop({ default: false }) readonly isSolved!: boolean;
 
   blob = null;
   callRinging = false;

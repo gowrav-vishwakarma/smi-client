@@ -1,7 +1,10 @@
 <template lang="pug">
 div(style="width: 100%")
   v-checkbox(v-model="showOnlyOpen" label="Show Only Open Questions")
-  question-single(v-for="(question, i) in questions" :question="question" :key="question._id" :isMyProfileView="true" @questionClosed="onQuestionClosed")
+  div(v-if="questions.length>0")
+    question-single(v-for="(question, i) in questions" :question="question" :key="question._id" :isMyProfileView="true" @questionClosed="onQuestionClosed")
+  v-card(v-else)
+    v-card-text You have not asked any questions yet, Start asking questions
 </template>
 
 <script lang="ts">

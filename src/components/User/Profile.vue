@@ -26,10 +26,10 @@ v-container
               v-icon(color="red") mdi-map-marker
               | {{this.profile.city}} {{this.profile.state}} {{this.profile.country}}
           v-card-subtitle
-            .d-flex
-              span.text-subtitle-1 {{this.profile.post}}  
-              span.text-subtitle-1.ml-4 
-                small . {{this.profile.jobType}}
+            .d-flex.caption
+              span.text-subtitle-1(v-if="this.profile.post") {{this.profile.post}}
+              span.text-subtitle-1.ml-4(v-if="this.profile.companyName") {{this.profile.companyName}}
+              span.text-subtitle-1.ml-4(v-if="this.profile.jobType") {{this.profile.jobType}}
             v-divider
             //- .d-flex.mt-2
             //-   div(v-if="this.profile.asFollowers") {{this.profile.asFollowers.totalFollowers}} Followers
@@ -57,6 +57,9 @@ v-container
                       v-text-field(v-model="profile.post" label="post")
                     v-col
                       v-select(v-model="profile.jobType" label="jobType" :items="['Full Time','Part Time','Freelancer']" )
+                  v-row 
+                    v-col 
+                      v-text-field(v-model="profile.companyName" label="companyName")
               v-card-actions
                 v-spacer
                 v-btn(@click="editProfile = false") Cancel
@@ -345,6 +348,7 @@ export default class UserProfileComponent extends Vue {
           country: this.profile.country,
           post: this.profile.post,
           jobType: this.profile.jobType,
+          companyName: this.profile.companyName,
         };
         break;
       case "topicsInterestedIn":

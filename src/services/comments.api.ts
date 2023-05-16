@@ -32,6 +32,14 @@ class CommentsAPIService extends APIService {
     });
     return response;
   }
+
+  async deleteComment(commentId: string): Promise<any> {
+    const response = await this.axiosCall<any>({
+      method: "GET",
+      url: "comments/delete-comment/" + commentId,
+    });
+    return response;
+  }
 }
 
 export default new CommentsAPIService();

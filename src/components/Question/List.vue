@@ -1,11 +1,14 @@
 <template lang="pug">
 div(style="width: 100%")
+  div(style="width: 100%" v-if="questions.length > 0")
     question-single(v-for="(question, i) in questions" :question="question" :key="questions[i]._id")
     //- AuthDialog(:showDialog="showAuthDialog")
     v-layout.pt-2(style="border-top: 1px solid")
       v-flex(xs12)
         v-btn.primary(@click="prevPage" :disabled="!hasPrevPage" :class="{disabled: !hasPrevPage,active: hasPrevPage}" :style="{'margin-right': '10px'}") Previous
         v-btn.primary(@click="nextPage" :disabled="!hasNextPage" :class="{disabled: !hasNextPage,active: hasNextPage}" :style="{'margin-left': '10px'}") Next
+  v-card(style="width: 100%" v-else)
+    v-card-title.primary--text No Questions Found, Try removing filters
 </template>
 
 <script lang="ts">

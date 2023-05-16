@@ -30,6 +30,7 @@ v-card.mb-2.pa-5.question-single-card(v-if="question")
       .d-flex
         solution-channels-component(v-if="question.solutionChannels" :solutionChannels="question.solutionChannels")
         v-btn(v-if="isMyProfileView && isMyQuestion && question.status=='OPEN'" :color="question.status=='OPEN'?'red':'green'" small @click="closeQuestion") Close
+        v-chip.pl-1(v-if="isMyProfileView" small dense) {{question.status}}
         v-btn.primary(v-if="!disableAnswerBtn" rounded small @click="gotoDetails") Answer
 </template>
 

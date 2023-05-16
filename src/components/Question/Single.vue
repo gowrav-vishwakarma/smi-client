@@ -6,7 +6,7 @@ v-card.mb-2.pa-5.question-single-card(v-if="question")
       .d-flex.justify-end
         v-icon(v-if="question.scope=='Public'" color="green") mdi-earth
         v-icon(v-if="question.scope=='Private'" color="red") mdi-lock
-        v-icon(x-large color="red" size="100" v-if="!displayVideo" :disabled="question.video && question.video !==''") mdi-youtube
+        v-icon(x-large color="red" size="100" v-if="!displayVideo" :disabled="!question.video || question.video ==''") mdi-youtube
     .question-description-text
       .text-body-2.text--secondary.text-justify.question-description-text.ml-5 {{shortdetail}}
       v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")

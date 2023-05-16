@@ -80,7 +80,7 @@ export default class LoggedInUserTopMenu extends Vue {
   unreadOffers = 0;
 
   mounted() {
-    userApi.getUnreadOffers(true).then((res) => {
+    userApi.getUnreadOffers(true, false).then((res) => {
       this.unreadOffers = res;
       console.log("unread offers", res);
     });

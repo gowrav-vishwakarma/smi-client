@@ -177,9 +177,20 @@ class UserAPIService extends APIService {
     return response;
   }
 
-  async getUnreadOffers(count: boolean): Promise<any> {
+  async markOfferRead(offerId: string, readStatus: boolean): Promise<any> {
     const response = await this.axiosCall<any>({
-      url: `/offers/unread/${count}`,
+      url: `/offers/markread/${offerId}/${readStatus}`,
+      method: "GET",
+    });
+    return response;
+  }
+
+  async getUnreadOffers(
+    countOnly: boolean,
+    showReadOffers: boolean
+  ): Promise<any> {
+    const response = await this.axiosCall<any>({
+      url: `/offers/unread/${countOnly}/${showReadOffers}`,
       method: "GET",
     });
     return response;

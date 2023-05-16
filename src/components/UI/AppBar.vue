@@ -20,11 +20,12 @@ v-app-bar(app='' color='white' flat='')
     v-container.d-flex.justify-space-between.grey.lighten-5.pa-0.mt-1(style='width: 100%; align-items: center')
       div(style='width: 100%')
         v-chip-group(v-if='$store.getters.filters' style='width: 100%')
-          v-chip(small='' color='orange white--text')  Filters: 
+          v-chip(small color='red lighten-1 white--text' @click='clearFilter')
+            | Clear 
           v-chip(small='' v-if='$store.getters.filters.query')
             | {{ $store.getters.filters.query }}
-          //- v-chip(small='' v-for='t in $store.getters.filters.topics' :key="'t' + t")
-          //-   | {{ t }}
+          v-chip(small='' v-for='t in $store.getters.filters.languages' :key="'t' + t")
+            | {{ t }}
           v-chip(small v-if="$store.getters.filters.topics && $store.getters.filters.topics.length")
             span 
               b topics: &nbsp;
@@ -40,9 +41,6 @@ v-app-bar(app='' color='white' flat='')
             v-icon(small class="icon mr-2" color="green" v-if="$store.getters.filters.availableOnChatChannel") mdi-chat
             v-icon(small v-if="$store.getters.filters.availableOnScreenShare" color="green" class="mr-2") mdi-monitor
             v-icon(small color="green" class="mr-2" v-if="$store.getters.filters.availableOnVideoCall") mdi-video
-      .mx-auto
-        v-chip(small='' color='red lighten-1 white--text' @click='clearFilter')
-          | Clear Filter
 </template>
 
 <script lang="ts">

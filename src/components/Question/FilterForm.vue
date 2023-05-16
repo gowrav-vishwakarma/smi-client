@@ -6,6 +6,7 @@ div.questionFilterComponent
       template(v-slot:selection="data")
         v-chip(v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove(data.item)")
           | {{ data.item.split("/").reverse()[0] }}
+    v-autocomplete(v-model="filterQuery.languages" dense small multiple :items="languageList" small-chips label="Languages" outlined)
     v-combobox(v-model="filterQuery.tags" dense small outlined label="Tags" multiple small-chips clearable :delimiters="[',']" deletable-chips)
     //- todo filters
     //- v-autocomplete(:items="languageList" dense small v-model="filterQuery.languages" multiple label="Language" outlined)
@@ -27,7 +28,7 @@ div.questionFilterComponent
 </template>
 
 <script lang="ts">
-import { topics, languages, Topic, getFlatTopics } from "@/services/staticValues";
+import { topics, languages, getFlatTopics } from "@/services/staticValues";
 import { Component, Vue, Prop } from "vue-property-decorator";
 
 import { VueEditor } from "vue2-editor";

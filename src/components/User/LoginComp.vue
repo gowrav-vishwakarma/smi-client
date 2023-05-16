@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import { AuthStoreModule } from "@/store";
+import { AuthStoreModule, FilterStoreModule } from "@/store";
 import UserAPIService from "../../services/user.api";
 import { CurrentUserI } from "@/store/module/auth";
 
@@ -108,14 +108,14 @@ export default class LoginComponent extends Vue {
       };
       await AuthStoreModule.setCurrentUserAction(user);
       // console.log(AuthStoreModule.token);
-      // let filter = {
-      //   // topics: user.topic,
-      //   tags: [],
-      //   // languages: user.languagesSpeaks,
-      //   isPaid: undefined,
-      //   sortBy: "newest",
-      // };
-      //   this.$store.commit("updateFilters", filter);
+      let filter = {
+        topics: user.userToppics,
+        tags: [],
+        languages: user.userLanguages,
+        sortBy: "newest",
+      };
+      FilterStoreModule.setFilters(filter);
+
       if (AuthStoreModule.loginSuccessRedirectUrl != null) {
         this.$router.push(AuthStoreModule.loginSuccessRedirectUrl);
         await AuthStoreModule.setLoginSuccessRedirectUrl(null);

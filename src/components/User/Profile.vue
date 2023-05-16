@@ -27,10 +27,11 @@ v-container
               | {{this.profile.city}} {{this.profile.state}} {{this.profile.country}}
           v-card-subtitle
             .d-flex.caption
-              span.text-subtitle-1(v-if="this.profile.post") {{this.profile.post}}
-              span.text-subtitle-1.ml-4(v-if="this.profile.companyName") {{this.profile.companyName}}
-              span.text-subtitle-1.ml-4(v-if="this.profile.jobType") {{this.profile.jobType}}
-            v-divider
+              span(v-if="this.profile.post") {{this.profile.post}}
+              span.ml-4(v-if="this.profile.companyName") {{this.profile.companyName}}
+              span.ml-4(v-if="this.profile.jobType") {{this.profile.jobType}}
+            span(v-if="this.profile.languagesSpeaks") {{this.profile.languagesSpeaks.join(", ")}}
+          v-divider
             //- .d-flex.mt-2
             //-   div(v-if="this.profile.asFollowers") {{this.profile.asFollowers.totalFollowers}} Followers
             //-   div.ml-4(style="width:10px;")
@@ -60,6 +61,9 @@ v-container
                   v-row 
                     v-col 
                       v-text-field(v-model="profile.companyName" label="companyName")
+                  v-row 
+                    v-col 
+                      v-autocomplete(v-model="profile.languagesSpeaks" :items="languages" multiple dense small-chips label="Languages Known")
               v-card-actions
                 v-spacer
                 v-btn(@click="editProfile = false") Cancel
@@ -209,7 +213,7 @@ v-container
 
 <script lang="ts">
 import { Component, Vue, Ref, Prop } from "vue-property-decorator";
-import { topics, getFlatTopics } from "@/services/staticValues";
+import { topics, getFlatTopics, languages } from "@/services/staticValues";
 import userExperience from "../../dto/user/experience.dto";
 // import profileDto from "../../dto/user/profile.dto";
 // import QuestionerSignature from "@/components/User/Signature/AsQuestioner.vue";
@@ -243,6 +247,7 @@ export default class UserProfileComponent extends Vue {
   uploadProfileImage: File | null = null;
 
   skillList: string[] = getFlatTopics(topics);
+  languages: string[] = languages;
 
   newExperience = {
     companyName: null,
@@ -256,33 +261,7 @@ export default class UserProfileComponent extends Vue {
     role: null,
     description: null,
   };
-  userExperienceList: userExperience[] = [
-    {
-      companyName: "Areli Commerce ",
-      post: "Developer",
-      from: "July 2018",
-      to: "Current",
-      city: "Ahmedabad",
-      state: "Gujrat",
-      country: "India",
-      jobType: "Full Time",
-      role: "<p> -> Constructing solutions for B2B and B2C business needs <br/>-> Working on Graphics for Marketing and Merchandising departments whenever required <br/>-> Conversations & Feedbacks from other departments</p>",
-      description:
-        "<p>Full Stack Developer </p> <h2>Creating all Frontend & backend</h2>",
-    },
-    {
-      companyName: "Frendy",
-      post: "Developer",
-      from: "July 2018",
-      to: "Current",
-      city: "Ahmedabad",
-      state: "Gujrat",
-      country: "India",
-      jobType: "Full Time",
-      role: "Full Stack Developer Creating all Frontend & backend",
-      description: "Full Stack Developer Creating all Frontend & backend",
-    },
-  ];
+  userExperienceList: userExperience[] = [];
 
   profile: any = {};
 
@@ -349,6 +328,7 @@ export default class UserProfileComponent extends Vue {
           post: this.profile.post,
           jobType: this.profile.jobType,
           companyName: this.profile.companyName,
+          languagesSpeaks: this.profile.languagesSpeaks,
         };
         break;
       case "topicsInterestedIn":

@@ -75,7 +75,7 @@
 
         <!-- </v-col> -->
         <!-- </v-row> -->
-        <v-combobox
+        <v-autocomplete
           v-model="regForm.languages"
           :items="languages"
           auto
@@ -85,9 +85,9 @@
           multiple
           dense
           small-chips
-        ></v-combobox>
+        ></v-autocomplete>
 
-        <v-select
+        <v-autocomplete
           v-model="regForm.topics"
           :items="topics"
           auto
@@ -96,7 +96,30 @@
           label="Topics Interested In"
           multiple
           dense
-        ></v-select>
+          small-chips
+        >
+          <template v-slot:selection="{ item }">
+            <v-chip
+              close
+              @click:close="removeSkill(item)"
+              @click="removeSkill(item)"
+            >
+              {{ item.split("/").reverse()[0] }}
+            </v-chip>
+          </template>
+          <template v-slot:item="data">
+            <v-list-item-content>
+              <v-list-item-title
+                v-html="
+                  data.item
+                    .split('/')
+                    .map((item, index) => '&nbsp;'.repeat(index * 4) + item)
+                    .join('<br/>')
+                "
+              ></v-list-item-title>
+            </v-list-item-content>
+          </template>
+        </v-autocomplete>
 
         <v-select
           v-model="regForm.country"
@@ -197,7 +220,12 @@
 </style>
 
 <script lang="ts">
-import { topics, languages, countries } from "@/services/staticValues";
+import {
+  topics,
+  languages,
+  countries,
+  getFlatTopics,
+} from "@/services/staticValues";
 import { Component, Vue } from "vue-property-decorator";
 
 import UserAPIService from "../../services/user.api";
@@ -214,8 +242,8 @@ export default class RegisterComponent extends Vue {
     username: "",
     password: "",
     confirmPassword: "",
-    languages: [],
-    topics: [],
+    languages: [] as string[],
+    topics: [] as string[],
     country: "",
   };
   userExist = false;
@@ -235,7 +263,7 @@ export default class RegisterComponent extends Vue {
       value === this.regForm.password ||
       "The password confirmation does not match.",
   ];
-  topics = topics;
+  topics = getFlatTopics(topics);
   languages = languages;
   countries = countries;
   verifySnack = false;
@@ -281,6 +309,10 @@ export default class RegisterComponent extends Vue {
   redirectToCodeVerify() {
     this.verifySnack = false;
     this.$router.push("/verification/" + this.regForm.email + "/verifycode");
+  }
+
+  removeSkill(item: string) {
+    this.regForm.topics.splice(this.regForm.topics.indexOf(item), 1);
   }
 }
 </script>

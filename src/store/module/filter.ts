@@ -5,6 +5,7 @@ export class FiltersI {
   topics?: string[];
   tags?: string[];
   languages?: string[];
+  sortBy?: string;
 }
 
 export interface IFilterState {
@@ -18,7 +19,7 @@ export default class Filter extends VuexModule implements IFilterState {
   get filters(): FiltersI | null {
     return this.filterState
       ? this.filterState
-      : { query: "", topics: [], tags: [], languages: [] };
+      : { query: "", topics: [], tags: [], languages: [], sortBy: "newest" };
   }
 
   @Mutation

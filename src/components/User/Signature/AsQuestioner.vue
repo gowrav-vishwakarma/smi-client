@@ -1,18 +1,20 @@
 <template lang="pug">
-  div.signature.asquestioner
-    .d-flex.justify-space-between
-      v-card.questioner-avatar-card(flat tile style="max-width:70%")
-        v-list.pa-0
-          v-list-item.pa-0.pl-1
-            v-avatar(color="primary" size="42px")
-              user-avatar(:user="User")
-            //-     v-img(alt="Q DP" src="@/assets/logo.png" transition="scale-transition" to="/")
-            v-list-item-content.ml-1.pa-0
-              v-list-item-title.ma-0 {{User.name}}
-                span.ml-4.primary--text(style="cursor: pointer;" @click="viewProfile") view profile
-              v-list-item-subtitle
-                small {{User.post}}
-      User-Rating(:User="User")
+div.signature.asquestioner
+  .d-flex.justify-left
+    .caption.ml-0.blue--text(@click="viewProfile" style="cursor: pointer") {{User.name}}, {{User.post}}
+    //- .d-flex.justify-space-between
+    //-   v-card.questioner-avatar-card(flat tile style="max-width:70%")
+    //-     v-list.pa-0
+    //-       v-list-item.pa-0
+    //-         //- v-avatar(color="primary" size="32px")
+    //-         //-   user-avatar(:user="User")
+    //-         //-     v-img(alt="Q DP" src="@/assets/logo.png" transition="scale-transition" to="/")
+    //-         v-list-item-content.ml-1.pa-0
+    //-           v-list-item-title.ma-0.blue--text(@click="viewProfile" style="cursor: pointer") {{User.name}}, {{User.post}}
+    //-             //- span.ml-4.primary--text(style="cursor: pointer;" @click="viewProfile") view profile
+    //-           //- v-list-item-subtitle
+    //-           //-   small {{User.post}}
+    User-Rating.ml-3(:User="User")
 </template>
 
 <script lang="ts">

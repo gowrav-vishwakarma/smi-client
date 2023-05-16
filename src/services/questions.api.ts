@@ -110,6 +110,14 @@ class QuestionsAPIService extends APIService {
     });
     return response;
   }
+
+  async closeQuestion(questionId: string): Promise<any> {
+    const response = await this.axiosCall<any>({
+      method: "GET",
+      url: "/questions/close/" + questionId,
+    });
+    return response;
+  }
 }
 
 export default new QuestionsAPIService();

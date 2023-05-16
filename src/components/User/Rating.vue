@@ -1,14 +1,8 @@
 <template lang="pug">
-    v-card.questioner-rating-card.pa-1.rounded-lg(outlined tile)
-        v-list.pa-0
-            v-list-item.pa-0
-                v-icon(large color="yellow darken-2") mdi-star
-                v-list-item-content.ml-1.pa-0(style="display:block;")
-                    v-list-item-title.ma-0 
-                        small Rating -
-                        span.ml-1.primary--text(style="font-size:1em")  {{reputation}}
-                    v-list-item-subtitle 
-                        small By {{User.reputationAsQuestioner.totalRatingsCount}} user
+.d-flex
+        span.ml-1.primary--text(style="font-size:1em")  {{reputation}}
+        v-icon(small color="yellow darken-2") mdi-star
+        small (By {{User.reputationAsQuestioner.totalRatingsCount}} user)
 </template>
 
 <script lang="ts">

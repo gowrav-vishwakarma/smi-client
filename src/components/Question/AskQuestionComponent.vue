@@ -34,7 +34,29 @@
           outlined
           dense
           class="mt-4"
-        ></v-autocomplete>
+        >
+          <template v-slot:selection="{ item }">
+            <v-chip
+              close
+              @click:close="removeSkill(item)"
+              @click="removeSkill(item)"
+            >
+              {{ item.split("/").reverse()[0] }}
+            </v-chip>
+          </template>
+          <template v-slot:item="data">
+            <v-list-item-content>
+              <v-list-item-title
+                v-html="
+                  data.item
+                    .split('/')
+                    .map((item, index) => '&nbsp;'.repeat(index * 4) + item)
+                    .join('<br/>')
+                "
+              ></v-list-item-title>
+            </v-list-item-content>
+          </template>
+        </v-autocomplete>
 
         <v-combobox
           v-model="question.tags"
@@ -187,6 +209,10 @@ export default class AskQuestionView extends Vue {
 
   recorderOndataavailable(blob: any) {
     this.blob = blob;
+  }
+
+  removeSkill(item: string) {
+    this.question.topic = "";
   }
 
   async createQuestion() {

@@ -53,10 +53,12 @@ class UserAPIService extends APIService {
     return response;
   }
 
-  async getMyQuestions(): Promise<QuestionListResponseDTO[]> {
+  async getMyQuestions(
+    showOnlyOpen = false
+  ): Promise<QuestionListResponseDTO[]> {
     const response = await this.axiosCall<QuestionListResponseDTO[]>({
       method: "GET",
-      url: `/questions/my-questions`,
+      url: `/questions/my-questions/${showOnlyOpen}`,
     });
     return response;
   }

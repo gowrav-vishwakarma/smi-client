@@ -1,52 +1,52 @@
 <template lang="pug">
-    v-card
-      .d-flex.flex-column
-        //- v-alert(border="left" icon="mdi-fire" dense type="success" colored-border color="deep-purple accent-4")
-        SolverSignature(:User="offer.Offerer" enableRating="true" disableFollow="true" :solverOnlineStatus="solverOnlineStatus" displayOnlineLayout="true")
-        v-card-text {{offer.notes}}
-          v-chip-group(v-if="offer.solutionChannel && offer.solutionChannel.length" column)
-            //- div(small v-if="offer.solutionChannel && offer.solutionChannel.length")
-            v-chip(small)
-              v-icon(small class="icon mr-2" color="green" v-if="offer.solutionChannel.includes('Chat')") mdi-chat
-            v-chip(small)
-              v-icon(small v-if="offer.solutionChannel.includes('ScreenShare')" color="green" class="mr-2") mdi-monitor
-            v-chip(small)
-              v-icon(small color="green" class="mr-2" v-if="offer.solutionChannel.includes('Video')") mdi-video
-        div(v-if="questionBelongsToMe" style="width:100%;")
-          v-btn(blocked @click="call" v-if="questionBelongsToMe && !offerCallConnected && solverOnlineStatus" style="width:100%;")
-            v-icon(small) mdi-phone
-            | connect
-          v-btn(blocked v-else-if="questionBelongsToMe && offerCallConnected" style="width:100%;")
-            v-icon(small) mdi-phone
-            | connected
-          v-btn(blocked v-else-if="questionBelongsToMe" style="width:100%;")
-            v-icon(small color="red") mdi-circle
-            | offline
-        v-btn( v-else color="red lighten-4") waiting for call
-        v-icon(@click="callDisconnect" v-if="offerCallConnected") mdi-phone-cancel
+v-card
+  .d-flex.flex-column
+    //- v-alert(border="left" icon="mdi-fire" dense type="success" colored-border color="deep-purple accent-4")
+    SolverSignature(:User="offer.Offerer" enableRating="true" disableFollow="true" :solverOnlineStatus="solverOnlineStatus" displayOnlineLayout="true")
+    v-card-text {{offer.notes}}
+      v-chip-group(v-if="offer.solutionChannel && offer.solutionChannel.length" column)
+        //- div(small v-if="offer.solutionChannel && offer.solutionChannel.length")
+        v-chip(small)
+          v-icon(small class="icon mr-2" color="green" v-if="offer.solutionChannel.includes('Chat')") mdi-chat
+        v-chip(small)
+          v-icon(small v-if="offer.solutionChannel.includes('ScreenShare')" color="green" class="mr-2") mdi-monitor
+        v-chip(small)
+          v-icon(small color="green" class="mr-2" v-if="offer.solutionChannel.includes('Video')") mdi-video
+    div(v-if="questionBelongsToMe" style="width:100%;")
+      v-btn(blocked @click="call" v-if="questionBelongsToMe && !offerCallConnected && solverOnlineStatus" style="width:100%;")
+        v-icon(small) mdi-phone
+        | connect
+      v-btn(blocked v-else-if="questionBelongsToMe && offerCallConnected" style="width:100%;")
+        v-icon(small) mdi-phone
+        | connected
+      v-btn(blocked v-else-if="questionBelongsToMe" style="width:100%;")
+        v-icon(small color="red") mdi-circle
+        | offline
+    v-btn( v-else color="red lighten-4") waiting for call
+    v-icon(@click="callDisconnect" v-if="offerCallConnected") mdi-phone-cancel
 
-      v-card( v-if="offerCallConnected")
-        div
-          v-list-item(two-line)
-            v-list-item-content
-              v-list-item-title
-                v-icon mdi-signal
-                | Voice Connected
-              v-list-item-subtitle {{offer.Offerer.name}}
-        //- MulticorderUI( ref="MulticoderUI" @recorderOndataavailable="recorderOndataavailable" @delete-recording="deleteRecording" )
-        .d-flex
-          //- v-btn-toggle(group block)
-          v-btn(text style="width:50%")
-            v-icon mdi-video-box
-          v-btn(text style="width:50%")
-            v-icon mdi-monitor-share
-      div.extra-component
-        div.call-dial-ringing
-          audio(ref="callDialPlayer" loop)
-            source(src="@/assets/audio/callDialTone.mp3" type="audio/mpeg")
-        div.call-receive-ringing
-          audio(ref="callRingingPlayer" loop)
-            source(src="@/assets/audio/callRingingTone.mp3" type="audio/mpeg")
+  v-card( v-if="offerCallConnected")
+    div
+      v-list-item(two-line)
+        v-list-item-content
+          v-list-item-title
+            v-icon mdi-signal
+            | Voice Connected
+          v-list-item-subtitle {{offer.Offerer.name}}
+    //- MulticorderUI( ref="MulticoderUI" @recorderOndataavailable="recorderOndataavailable" @delete-recording="deleteRecording" )
+    .d-flex
+      //- v-btn-toggle(group block)
+      v-btn(text style="width:50%")
+        v-icon mdi-video-box
+      v-btn(text style="width:50%")
+        v-icon mdi-monitor-share
+  div.extra-component
+    div.call-dial-ringing
+      audio(ref="callDialPlayer" loop)
+        source(src="@/assets/audio/callDialTone.mp3" type="audio/mpeg")
+    div.call-receive-ringing
+      audio(ref="callRingingPlayer" loop)
+        source(src="@/assets/audio/callRingingTone.mp3" type="audio/mpeg")
 </template>
 
 <script lang="ts">

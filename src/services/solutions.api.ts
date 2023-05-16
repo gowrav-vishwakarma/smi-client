@@ -37,6 +37,13 @@ class SolutionsAPIService extends APIService {
       url: `/solution-attempt/${id}`,
     });
   }
+
+  async removeSolutionOffer(id: string): Promise<any> {
+    return await this.axiosCall<any>({
+      method: "DELETE",
+      url: `offers/remove-solution-offer/${id}`,
+    });
+  }
 }
 
 export default new SolutionsAPIService();

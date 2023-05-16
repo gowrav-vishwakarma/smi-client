@@ -1,11 +1,11 @@
 <template lang="pug">
-    div
-      v-card.d-flex.flex-column(tile)
-          v-card-text Your answer/comment
-            vue-editor.mt-2(v-model="comment")
-          v-card-actions.pl-3.pr-3
-            v-btn(block v-if="this.$store.getters.loggedInUser" @click="submitComment" color="primary") Submit Answer
-            v-btn(v-else block color="secondary" @click="redirectToLogin" ) Login to Answer
+div
+  v-card.d-flex.flex-column(tile)
+      v-card-text Your answer/comment
+        vue-editor.mt-2(v-model="comment" :editor-toolbar="editorToolbar")
+      v-card-actions.pl-3.pr-3
+        v-btn(block v-if="this.$store.getters.loggedInUser" @click="submitComment" color="primary") Submit Answer
+        v-btn(v-else block color="secondary" @click="redirectToLogin" ) Login to Answer
 </template>
 
 <script lang="ts">
@@ -27,6 +27,22 @@ export default class CreateCommentComponent extends Vue {
 
   comment = "";
 
+  editorToolbar = [
+    [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+    ["bold", "italic", "underline", "strike"], // toggled buttons
+    [
+      { align: "" },
+      { align: "center" },
+      { align: "right" },
+      { align: "justify" },
+    ],
+    ["blockquote", "code-block"],
+    [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
+    [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
+    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    ["link"], // temp remove image and video it has a hook for image upload also ["link", "image", "video"],
+    ["clean"], // remove formatting button
+  ];
   submitComment() {
     commentsAPIService
       .createComment(this.question._id, this.comment)

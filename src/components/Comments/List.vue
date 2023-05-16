@@ -1,8 +1,8 @@
 <template lang="pug">
-  v-sheet(v-if="questionComments")
-    comment-single(v-for="singleComment in questionComments" :comment="singleComment" :key="singleComment._id")
-    v-divider.mt-3
-    comment-create(:question="question" @event-new-comment-created="reloadData")
+v-sheet(v-if="questionComments")
+  comment-single(v-for="singleComment in questionComments" :comment="singleComment" :key="singleComment._id")
+  v-divider.mt-3
+  comment-create(:question="question" @event-new-comment-created="reloadData")
 </template>
 
 <script lang="ts">

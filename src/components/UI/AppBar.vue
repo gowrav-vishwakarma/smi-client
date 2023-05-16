@@ -25,13 +25,10 @@ v-app-bar(app='' color='white' flat='')
             | {{ $store.getters.filters.query }}
           v-chip(small='' v-for='t in $store.getters.filters.languages' :key="'t' + t" close @click:close="clearLanguage(t)" @click="clearLanguage(t)")
             | {{ t }}
-          v-chip(small v-if="$store.getters.filters.topics && $store.getters.filters.topics.length" v-for='t in $store.getters.filters.topics' :key="'t' + t" close @click:close="clearTopic(t)" @click="clearTopic(t)" ) {{ t.split("/").reverse()[0] }}
+          v-chip(small v-if="$store.getters.filters.topics && $store.getters.filters.topics.length" v-for='t in $store.getters.filters.topics' :key="'topic' + t" close @click:close="clearTopic(t)" @click="clearTopic(t)" ) {{ t.split("/").reverse()[0] }}
           //- v-chip(small='' v-for='l in $store.getters.filters.languages' :key="'l' + l")
           //-   | {{ l }}
-          v-chip(small v-if="$store.getters.filters.tags && $store.getters.filters.tags.length")
-            span 
-              b tags: &nbsp;
-            span.v-chip__content(v-for='t in $store.getters.filters.tags' :key="'t' + t") {{ t }} &nbsp;
+          v-chip(small v-if="$store.getters.filters.tags && $store.getters.filters.tags.length" v-for='t in $store.getters.filters.tags' :key="'tag' + t" close @click:close="clearTag(t)" @click="clearTag(t)") {{ t }} 
           v-chip(small v-if="solutionChannelFilterSelected")
             v-icon(small class="icon mr-2" color="green" v-if="$store.getters.filters.availableOnAudioCall") mdi-phone-incoming
             v-icon(small class="icon mr-2" color="green" v-if="$store.getters.filters.availableOnChatChannel") mdi-chat
@@ -140,6 +137,19 @@ export default class App extends Vue {
     eventBus.$emit("filterQuestions", {
       ...this.$store.getters.filters,
       topics,
+    });
+  }
+
+  clearTag(tag: string) {
+    let tags = this.$store.getters.filters.tags;
+    tags = tags.filter((t: string) => t != tag);
+    this.$store.commit("setFilters", {
+      ...this.$store.getters.filters,
+      tags,
+    });
+    eventBus.$emit("filterQuestions", {
+      ...this.$store.getters.filters,
+      tags,
     });
   }
 

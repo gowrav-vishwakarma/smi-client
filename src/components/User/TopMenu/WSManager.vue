@@ -142,6 +142,21 @@ export default class WSManager extends Vue {
       console.log("call Hanguped", payload);
     });
 
+    SocketOn("OfferPlaced", (payload) => {
+      console.log("OfferPlaced", payload);
+      this.$vToastify
+        .prompt({
+          title: `${payload.solverName} placed a offer on`,
+          body: `"${payload.questionTitle}"`,
+          answers: { "Go to question": true, Close: false },
+        })
+        .then((gotoPage: boolean) => {
+          if (gotoPage) {
+            this.$router.push("/question/" + payload.questionId);
+          }
+        });
+    });
+
     // socket.on("call-received", ({ from, content }) => {
     //   if (this.$store.getters.onlineStatus === "busy") {
     //     this.sendBusy();

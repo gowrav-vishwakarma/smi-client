@@ -16,7 +16,8 @@
           style="min-height: 28px"
           @click="updateOnlineStatus('Online')"
         >
-          <v-list-item-title class="text-center green--text">
+          <v-list-item-title class="green--text">
+            <v-icon small color="green"> mdi-circle</v-icon>
             Online
           </v-list-item-title>
         </v-list-item>
@@ -24,7 +25,8 @@
           style="min-height: 28px"
           @click="updateOnlineStatus('Offline')"
         >
-          <v-list-item-title class="text-center red--text">
+          <v-list-item-title class="red--text">
+            <v-icon small color="red"> mdi-circle</v-icon>
             Offline
           </v-list-item-title>
         </v-list-item>
@@ -32,34 +34,22 @@
           style="min-height: 28px"
           @click="updateOnlineStatus('Busy')"
         >
-          <v-list-item-title class="text-center orange--text">
+          <v-list-item-title class="orange--text">
+            <v-icon small color="orange"> mdi-circle</v-icon>
             Busy
           </v-list-item-title>
         </v-list-item>
-        <v-list-item class="pa-0">
-          <v-btn
-            text
-            plain
-            to="/my-profile"
-            v-if="$store.getters.isAuthenticated"
-            pa-0
-          >
-            <v-icon> mdi-account</v-icon>
+        <v-list-item to="/my-profile" style="min-height: 28px">
+          <v-list-item-title>
+            <v-icon small> mdi-account</v-icon>
             Profile
-          </v-btn>
+          </v-list-item-title>
         </v-list-item>
-        <v-list-item class="pa-0">
-          <v-btn
-            text
-            plain
-            @click="logout"
-            v-if="$store.getters.isAuthenticated"
-            pa-0
-            color="red"
-          >
-            <v-icon> mdi-logout</v-icon>
+        <v-list-item @click="logout" style="min-height: 28px">
+          <v-list-item-title>
+            <v-icon small> mdi-logout</v-icon>
             logout
-          </v-btn>
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>

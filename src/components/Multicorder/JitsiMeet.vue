@@ -15,8 +15,8 @@ export default class JitsiMeet extends Vue {
 
   domain = "meet.jit.si";
 
-  @Prop()
-  options = {};
+  @Prop({ default: {} })
+  options!: any;
 
   jitsiApi: any;
 

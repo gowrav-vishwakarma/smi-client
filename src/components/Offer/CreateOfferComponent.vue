@@ -22,6 +22,8 @@ div
 </template>
 
 <script lang="ts">
+import { SocketEmit } from "@/services/socket";
+
 import questionsApi from "@/services/questions.api";
 import "reflect-metadata";
 import { Component, Prop, Vue, Ref } from "vue-property-decorator";
@@ -103,6 +105,13 @@ export default class CreateOfferSolutionComponent extends Vue {
           eventBus.$emit("offer-submitted");
           AuthStoreModule.setDraftFormAction(null);
           this.createOfferForm.reset();
+          SocketEmit("OfferPlaced", {
+            to: this.question.questionerId,
+            solverName: this.$store.getters.loggedInUser.name,
+            solverAvatar: this.$store.getters.loggedInUser.avatar,
+            questionId: this.question._id,
+            questionTitle: this.question.title,
+          });
         })
         .catch((err) => {
           console.log(err);

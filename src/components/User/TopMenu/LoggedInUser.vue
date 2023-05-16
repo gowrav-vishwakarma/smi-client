@@ -39,6 +39,14 @@
             Busy
           </v-list-item-title>
         </v-list-item>
+        <v-list-item to="/unread-offers" style="min-height: 28px">
+          <v-list-item-title>
+            UnRead Offers
+            <v-chip color="red" x-small v-if="unreadOffers > 0"
+              >{{ unreadOffers }}
+            </v-chip>
+          </v-list-item-title>
+        </v-list-item>
         <v-list-item to="/my-profile" style="min-height: 28px">
           <v-list-item-title>
             <v-icon small> mdi-account</v-icon>
@@ -60,6 +68,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import WsManager from "@/components/User/TopMenu/WSManager.vue";
 import { AuthStoreModule } from "@/store";
+import userApi from "@/services/user.api";
 
 @Component({
   name: "LoggedInUserTopMenu",
@@ -68,6 +77,15 @@ import { AuthStoreModule } from "@/store";
   },
 })
 export default class LoggedInUserTopMenu extends Vue {
+  unreadOffers = 0;
+
+  mounted() {
+    userApi.getUnreadOffers(true).then((res) => {
+      this.unreadOffers = res;
+      console.log("unread offers", res);
+    });
+  }
+
   async logout() {
     await AuthStoreModule.resetCurrentUserAction();
     this.$router.push("/");

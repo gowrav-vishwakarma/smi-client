@@ -176,6 +176,14 @@ class UserAPIService extends APIService {
     });
     return response;
   }
+
+  async getUnreadOffers(count: boolean): Promise<any> {
+    const response = await this.axiosCall<any>({
+      url: `/offers/unread/${count}`,
+      method: "GET",
+    });
+    return response;
+  }
 }
 
 export default new UserAPIService();

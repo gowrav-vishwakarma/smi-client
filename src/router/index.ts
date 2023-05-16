@@ -49,6 +49,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/AskQuestionView.vue"),
   },
   {
+    path: "/unread-offers",
+    name: "unread-offers",
+    component: () => import("../views/UnReadQuestions.vue"),
+  },
+  {
     path: "/my-profile",
     name: "my-profile",
     component: () => import("../views/MyProfileView.vue"),

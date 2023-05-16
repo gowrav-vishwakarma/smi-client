@@ -14,7 +14,7 @@ v-app-bar(app='' color='white' flat='')
     span.hidden-sm-and-down Ask Question
   v-spacer
   top-menu
-  auth-dialog(:showdialog.sync='AuthDialogState')
+  auth-dialog(:show-dialog.sync='AuthDialogState')
   // selected filter options
   template(v-slot:extension='' v-if='isFilterSelected')
     v-container.d-flex.justify-space-between.grey.lighten-5.pa-0.mt-1(style='width: 100%; align-items: center')

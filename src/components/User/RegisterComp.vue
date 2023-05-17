@@ -86,40 +86,12 @@
           dense
           small-chips
         ></v-autocomplete>
-
-        <v-autocomplete
+        <treeselect
+          class="mb-2 mt-n5"
           v-model="regForm.topics"
-          :items="topics"
-          auto
-          outlined
-          class="field"
-          label="Topics Interested In"
-          multiple
-          dense
-          small-chips
-        >
-          <template v-slot:selection="{ item }">
-            <v-chip
-              close
-              @click:close="removeSkill(item)"
-              @click="removeSkill(item)"
-            >
-              {{ item.split("/").reverse()[0] }}
-            </v-chip>
-          </template>
-          <template v-slot:item="data">
-            <v-list-item-content>
-              <v-list-item-title
-                v-html="
-                  data.item
-                    .split('/')
-                    .map((item, index) => '&nbsp;'.repeat(index * 4) + item)
-                    .join('<br/>')
-                "
-              ></v-list-item-title>
-            </v-list-item-content>
-          </template>
-        </v-autocomplete>
+          :multiple="true"
+          :options="topicsInterestedIn"
+        ></treeselect>
 
         <v-autocomplete
           v-model="regForm.country"
@@ -221,18 +193,26 @@
 
 <script lang="ts">
 import {
+  topics_,
   topics,
   languages,
   countries,
   getFlatTopics,
+  Topic,
 } from "@/services/staticValues";
 import { Component, Vue } from "vue-property-decorator";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 import UserAPIService from "../../services/user.api";
 import RegisterUserDTO from "../../dto/request/register.dto";
 // import { eventBus } from "@/mixins/event-bus";
 
-@Component
+@Component({
+  components: {
+    Treeselect,
+  },
+})
 export default class RegisterComponent extends Vue {
   valid = false;
   show1 = false;
@@ -263,7 +243,7 @@ export default class RegisterComponent extends Vue {
       value === this.regForm.password ||
       "The password confirmation does not match.",
   ];
-  topics = getFlatTopics(topics);
+  topicsInterestedIn: Topic[] = topics;
   languages = languages;
   countries = countries;
   verifySnack = false;

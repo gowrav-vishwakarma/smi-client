@@ -2,10 +2,12 @@
 div.questionFilterComponent
   v-form(ref="filterForm" v-model="valid")
     v-text-field(label="Question Contains" placeholder="your search query" dense small outlined v-model="filterQuery.query")
-    v-autocomplete(v-model="filterQuery.topics" dense small multiple :items="topics" small-chips label="Topic" outlined)
-      template(v-slot:selection="data")
-        v-chip(v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove(data.item)")
-          | {{ data.item.split("/").reverse()[0] }}
+    treeselect.mb-2.mt-n5(v-model="filterQuery.topics" :multiple="true" :options="topicsInterestedIn")
+
+    //- v-autocomplete(v-model="filterQuery.topics" dense small multiple :items="topics" small-chips label="Topic" outlined)
+    //-   template(v-slot:selection="data")
+    //-     v-chip(v-bind="data.attrs" :input-value="data.selected" close @click="data.select" @click:close="remove(data.item)")
+    //-       | {{ data.item.split("/").reverse()[0] }}
     v-autocomplete(v-model="filterQuery.languages" dense small multiple :items="languageList" small-chips label="Languages" outlined)
     v-combobox(v-model="filterQuery.tags" dense small outlined label="Tags" multiple small-chips clearable :delimiters="[',']" deletable-chips)
     //- todo filters
@@ -28,7 +30,11 @@ div.questionFilterComponent
 </template>
 
 <script lang="ts">
-import { topics, languages, getFlatTopics } from "@/services/staticValues";
+import { topics_, topics, languages, getFlatTopics, Topic } from "@/services/staticValues";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+
+
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 import { VueEditor } from "vue2-editor";
@@ -40,6 +46,7 @@ import questionsApi from "@/services/questions.api";
   components: {
     VueEditor,
     MulticorderUI,
+    Treeselect
   },
 })
 export default class AskQuestionView extends Vue {
@@ -60,7 +67,8 @@ export default class AskQuestionView extends Vue {
     availableOnAudioCall: null,
   };
 
-  topics: string[] = getFlatTopics(topics);;
+  // topics: string[] = getFlatTopics(topics_);;
+  topicsInterestedIn: Topic[] = topics;
   valid: false = false;
   languageList: string[] = languages;
 

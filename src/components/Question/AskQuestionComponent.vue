@@ -24,42 +24,15 @@
           :editorToolbar="editorToolbar"
           v-model="question.detail"
         ></vue-editor>
-        <div v-if="showDetailError" class="v-messages theme--light error--text">
-          Please enter some content.
-        </div>
 
-        <v-autocomplete
+        <treeselect
+          class="mb-2 mt-2"
+          :multiple="true"
           v-model="question.topic"
-          :items="topics"
-          label="Question Topic Category"
-          required
-          :rules="[(v) => !!v || 'Topic is required']"
-          outlined
-          dense
-          class="mt-4"
-        >
-          <template v-slot:selection="{ item }">
-            <v-chip
-              close
-              @click:close="removeSkill(item)"
-              @click="removeSkill(item)"
-            >
-              {{ item.split("/").reverse()[0] }}
-            </v-chip>
-          </template>
-          <template v-slot:item="data">
-            <v-list-item-content>
-              <v-list-item-title
-                v-html="
-                  data.item
-                    .split('/')
-                    .map((item, index) => '&nbsp;'.repeat(index * 4) + item)
-                    .join('<br/>')
-                "
-              ></v-list-item-title>
-            </v-list-item-content>
-          </template>
-        </v-autocomplete>
+          :options="topicsInterestedIn"
+          value-consists-of="ALL_WITH_INDETERMINATE"
+          :rules="[(v) => !!v || 'Required']"
+        ></treeselect>
 
         <v-combobox
           v-model="question.tags"
@@ -124,6 +97,12 @@
       </v-form>
       <v-progress-linear class="mt-2" v-model="progress"></v-progress-linear>
     </v-card-text>
+    <div
+      v-if="showDetailError"
+      class="v-messages d-flex justify-center theme--light error--text"
+    >
+      {{ ErrorText }}
+    </div>
     <v-card-actions>
       <v-btn
         color="success"
@@ -140,12 +119,15 @@
 
 <script lang="ts">
 import {
+  topics_,
   topics,
   getFlatTopics,
   languages,
   Topic,
 } from "@/services/staticValues";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 import { VueEditor } from "vue2-editor";
 import MulticorderUI from "@/components/Multicorder/MulticorderUI.vue";
@@ -156,6 +138,7 @@ import userApi from "@/services/user.api";
   components: {
     VueEditor,
     MulticorderUI,
+    Treeselect,
   },
 })
 export default class AskQuestionView extends Vue {
@@ -163,10 +146,12 @@ export default class AskQuestionView extends Vue {
 
   askToUser: any = null;
 
+  ErrorText = "Question title, detail and topics are must";
+
   progress = 0;
   blob = null;
   question = {
-    topic: "",
+    topic: [],
     title: "",
     detail: "",
     tags: [],
@@ -181,7 +166,7 @@ export default class AskQuestionView extends Vue {
     scope: "Public",
     askTo: "",
   };
-  topics: string[] = getFlatTopics(topics);
+  topicsInterestedIn: Topic[] = topics;
   valid = false;
   showDetailError = false;
 
@@ -211,7 +196,17 @@ export default class AskQuestionView extends Vue {
   }
 
   @Watch("question.detail")
-  onMyFieldChanged(newValue: string) {
+  onDetailsChanged(newValue: string) {
+    if (newValue.trim() === "") {
+      this.showDetailError = true;
+    } else {
+      this.showDetailError = false;
+      this.valid = true;
+    }
+  }
+
+  @Watch("question.topic")
+  onTopicsChanged(newValue: string) {
     if (newValue.trim() === "") {
       this.showDetailError = true;
     } else {
@@ -229,11 +224,17 @@ export default class AskQuestionView extends Vue {
   }
 
   removeSkill(item: string) {
-    this.question.topic = "";
+    this.question.topic = [
+      ...this.question.topic.filter((x: string) => x !== item),
+    ];
   }
 
   async createQuestion() {
-    if (this.question.detail.trim() === "") {
+    if (
+      this.question.detail.trim() === "" ||
+      this.question.title.trim() === "" ||
+      this.question.topic.length === 0
+    ) {
       this.showDetailError = true;
       this.valid = false;
       return;

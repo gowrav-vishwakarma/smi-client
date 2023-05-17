@@ -80,14 +80,15 @@ v-container
             div(v-else)
               v-btn.ml-4(small rounted icon color="primary" @click="editProfile=false, editingProfileSection='topicsInterestedIn'" v-if="makeProfileEditable")
                 v-icon mdi-pencil
-          v-autocomplete( v-model="profile.topicsInterestedIn" :items="skillList" label="" multiple chips :autofocus="editingProfileSection == 'topicsInterestedIn'?true:false"  v-if="editingProfileSection ==='topicsInterestedIn'")
-            template(v-slot:selection="{ item, index }")
-              v-chip(v-bind="item" close @click:close="removeSkill(item)" @click="removeSkill(item)")
-                | {{ item.split("/").reverse()[0] }}
-            template(v-slot:item="data")
-              v-list-item-content
-                v-list-item-title(v-html="data.item.split('/').map((item, index) => '&nbsp;'.repeat(index * 4) + item).join('<br/>')")
-          div
+          //- v-autocomplete( v-model="profile.topicsInterestedIn" :items="skillList" label="" multiple chips :autofocus="editingProfileSection == 'topicsInterestedIn'?true:false"  v-if="editingProfileSection ==='topicsInterestedIn'")
+          //-   template(v-slot:selection="{ item, index }")
+          //-     v-chip(v-bind="item" close @click:close="removeSkill(item)" @click="removeSkill(item)")
+          //-       | {{ item.split("/").reverse()[0] }}
+          //-   template(v-slot:item="data")
+          //-     v-list-item-content
+          //-       v-list-item-title(v-html="data.item.split('/').map((item, index) => '&nbsp;'.repeat(index * 4) + item).join('<br/>')")
+          treeselect(v-model="profile.topicsInterestedIn" :multiple="true" :options="topicsInterestedIn" v-if="editingProfileSection ==='topicsInterestedIn'")
+          div(v-else)
             v-card(flat v-if="profile.topicsInterestedIn && profile.topicsInterestedIn.length > 0").pa-2
               v-chip.ma-1(v-for="(value, index) in profile.topicsInterestedIn" :key="index") {{value.split("/").reverse()[0]}}
             v-card(flat v-else).pa-2
@@ -215,8 +216,18 @@ v-container
 </template>
 
 <script lang="ts">
+// import the component
+import Treeselect from "@riophae/vue-treeselect";
+// import the styles
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { Component, Vue, Ref, Prop } from "vue-property-decorator";
-import { topics, getFlatTopics, languages } from "@/services/staticValues";
+import {
+  topics_,
+  topics,
+  getFlatTopics,
+  languages,
+  Topic,
+} from "@/services/staticValues";
 import userExperience from "../../dto/user/experience.dto";
 // import profileDto from "../../dto/user/profile.dto";
 // import QuestionerSignature from "@/components/User/Signature/AsQuestioner.vue";
@@ -231,6 +242,7 @@ import { eventBus } from "@/mixins/event-bus";
     UserRating,
     // QuestionerSignature,
     UserRatingAsSolver,
+    Treeselect,
   },
 })
 export default class UserProfileComponent extends Vue {
@@ -249,7 +261,8 @@ export default class UserProfileComponent extends Vue {
   uploadCoverImage: File | null = null;
   uploadProfileImage: File | null = null;
 
-  skillList: string[] = getFlatTopics(topics);
+  skillList: string[] = getFlatTopics(topics_);
+  topicsInterestedIn: Topic[] = topics;
   languages: string[] = languages;
 
   newExperience = {

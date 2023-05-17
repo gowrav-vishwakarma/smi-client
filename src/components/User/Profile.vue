@@ -298,20 +298,20 @@ export default class UserProfileComponent extends Vue {
     // : "https://cdn.vuetifyjs.com/images/profiles/marcus.jpg";
   }
 
-  get askMeLink() {
-    return (
-      process.env.VUE_APP_BASE_URL +
-      "/ask-question?to=" +
-      this.$store.getters.loggedInUser._id
-    );
-  }
-
   // get askMeLink() {
   //   return (
-  //     "https://solvemyissue.online/ask-question?to=" +
+  //     process.env.VUE_APP_BASE_URL +
+  //     "/ask-question?to=" +
   //     this.$store.getters.loggedInUser._id
   //   );
   // }
+
+  get askMeLink() {
+    return (
+      "https://solvemyissue.online/ask-question?to=" +
+      this.$store.getters.loggedInUser._id
+    );
+  }
 
   copyToClipBoard() {
     const clipboardData =

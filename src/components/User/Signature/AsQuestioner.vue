@@ -14,7 +14,7 @@ div.signature.asquestioner
     //-             //- span.ml-4.primary--text(style="cursor: pointer;" @click="viewProfile") view profile
     //-           //- v-list-item-subtitle
     //-           //-   small {{User.post}}
-    User-Rating.ml-3(:User="User")
+  User-Rating(:User="User")
 </template>
 
 <script lang="ts">

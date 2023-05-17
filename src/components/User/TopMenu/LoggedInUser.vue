@@ -1,9 +1,9 @@
 <template>
   <div class="d-flex">
+    <ws-manager></ws-manager>
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
         <v-btn text small v-bind="attrs" v-on="on" class="pa-0">
-          <ws-manager></ws-manager>
           <span class="hidden-sm-and-down">
             {{ $store.getters.loggedInUser.name }}
             <v-icon>mdi-dots-vertical</v-icon>

@@ -11,7 +11,7 @@ export class QuestionValue {
 export default class QuestionListResponseDTO {
   _id!: string;
 
-  topic!: string;
+  topic!: string[];
 
   title!: string;
 

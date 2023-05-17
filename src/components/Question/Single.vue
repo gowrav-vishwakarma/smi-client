@@ -15,9 +15,13 @@ v-card.mb-2.pa-5.question-single-card(v-if="question")
           video(width="320" height="240" :controls="videoControl" preload="none")
             source(:src="question.video" type="video/webm")
   .d-flex.mt-3
-    .caption.grey--text.lighten-4 Asked {{ humanized_time_span(question.createdAt) }} :
-    .caption.primary--text.lighten-4.ml-auto {{convertTotag(question.tags)}}
-  questioner-signature(:User="question.byUser")
+    .d-flex.flex-column.justify-space-between
+      .caption.grey--text.lighten-4 Asked {{ humanized_time_span(question.createdAt) }} :
+      questioner-signature(:User="question.byUser")
+    .d-flex.flex-column.ml-auto
+      .caption.primary--text.lighten-4.ml-auto {{convertTotag(question.tags)}}
+      .caption.primary--text.lighten-4.ml-auto.hidden-sm-and-down {{topicFull}}
+      .caption.primary--text.lighten-4.ml-auto.hidden-md-and-up {{lastTopic}}
   v-divider
   .d-flex.mt-1(style="align-items:center")
     question-value-component(:question="question")
@@ -103,6 +107,51 @@ export default class QuestionSingle extends Mixins(General) {
 
   get shortdetail() {
     return S(this.question.detail).stripTags().truncate(100).s;
+  }
+
+  get topicFull() {
+    const maxCharLen = 30;
+    const topics = this.question.topic;
+
+    if (topics.length === 1) {
+      // Return the only topic if there is only one
+      return topics[0];
+    } else if (topics.length > 1) {
+      let topicString = topics[0];
+      let remainingLength = maxCharLen - topicString.length;
+
+      for (let i = 1; i < topics.length; i++) {
+        const topic = topics[i];
+        const topicLength = topic.length;
+
+        if (topicLength <= remainingLength) {
+          // Append the topic if it fits within the remaining length
+          topicString += ` / ${topic}`;
+          remainingLength -= topicLength + 3; // Account for ' / ' separator
+        } else {
+          // Break the loop if the remaining length is not enough for the next topic
+          break;
+        }
+      }
+
+      if (topicString.length < maxCharLen) {
+        // Append ellipsis (...) if the full topic string is shorter than the maximum length
+        topicString += " ...";
+      }
+
+      if (topics.length > 2) {
+        // Add the last topic if there are more than two topics
+        topicString += ` / ${topics[topics.length - 1]}`;
+      }
+
+      return topicString;
+    }
+
+    return "";
+  }
+
+  get lastTopic() {
+    return this.question.topic[this.question.topic.length - 1];
   }
 
   changeScope(scope: "Private" | "Public") {

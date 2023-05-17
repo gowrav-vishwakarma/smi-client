@@ -9,7 +9,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import QuestionDetailResponseDTO from "@/dto/response/question-detail-response.dto";
 import SingleOffer from "@/components/Offer/SingleOfferComponent.vue";
 import questionsApi from "@/services/questions.api";
-import socket, { SocketOn, SocketEmit } from "@/services/socket";
+import { SocketOn, SocketEmit } from "@/services/socket";
 
 @Component({
   name: "QuestionOfferList",

@@ -1,8 +1,8 @@
 <template lang="pug">
 v-row.mt-2.no-gutters
-      v-col.caption.col-xs-12.col-sm-4 {{ question.questionValue.totalVoteCount + question.questionValue.totalVoteDownCount }} Votes
-      v-col.caption.col-xs-12.col-sm-4 {{ question.questionValue.totalCommentsCount }} Comments
-      v-col.caption.col-xs-12.col-sm-4 {{ question.questionValue.totalOfferingCount }} Offers
+      v-col.caption(cols=12 sm=4) {{ question.questionValue.totalVoteCount + question.questionValue.totalVoteDownCount }} Votes
+      v-col.caption(cols=12 sm=4) {{ question.questionValue.totalCommentsCount }} Comments
+      v-col.caption(cols=12 sm=4) {{ question.questionValue.totalOfferingCount }} Offers
 </template>
 
 <script lang="ts">

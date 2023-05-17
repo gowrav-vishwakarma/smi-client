@@ -20,6 +20,7 @@
     "reflect-metadata": "^0.1.13",
     "register-service-worker": "^1.7.2",
     "simple-peer": "^9.11.1",
+    "smartlook-client": "^8.1.0",
     "socket.io-client": "^4.5.1",
     "string": "^3.3.3",
     "vue": "^2.6.14",

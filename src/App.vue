@@ -11,6 +11,7 @@ import { Component, Vue } from "vue-property-decorator";
 import UiAppBar from "@/components/UI/AppBar.vue";
 import { eventBus } from "@/mixins/event-bus";
 import SMILoader from "@/components/Common/Loader.vue";
+import smartlookClient from "smartlook-client";
 
 @Component({
   components: {
@@ -32,6 +33,13 @@ export default class App extends Vue {
     eventBus.$on("hide-loader", () => {
       this.isLoading = false;
     });
+
+    if (process.env.VUE_APP_SMARTLOOKKEY) {
+      console.log("Setting smartlook");
+      smartlookClient.init(process.env.VUE_APP_SMARTLOOKKEY);
+    } else {
+      console.log("Skipping smartlook in staging");
+    }
 
     // setting meta data title of page
     document.title = "Solve My Issue";

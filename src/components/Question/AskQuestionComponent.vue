@@ -31,7 +31,9 @@
           v-model="question.topic"
           :options="topicsInterestedIn"
           value-consists-of="ALL_WITH_INDETERMINATE"
+          sort-value-by="LEVEL"
           :rules="[(v) => !!v || 'Required']"
+          placeholder="Select Topics"
         ></treeselect>
 
         <v-combobox
@@ -206,8 +208,8 @@ export default class AskQuestionView extends Vue {
   }
 
   @Watch("question.topic")
-  onTopicsChanged(newValue: string) {
-    if (newValue.trim() === "") {
+  onTopicsChanged(newValue: string[]) {
+    if (newValue.length === 0) {
       this.showDetailError = true;
     } else {
       this.showDetailError = false;

@@ -91,6 +91,7 @@
           v-model="regForm.topics"
           :multiple="true"
           :options="topicsInterestedIn"
+          placeholder="Select Topics of Interests"
         ></treeselect>
 
         <v-autocomplete

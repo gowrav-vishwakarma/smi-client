@@ -87,7 +87,7 @@ v-container
           //-   template(v-slot:item="data")
           //-     v-list-item-content
           //-       v-list-item-title(v-html="data.item.split('/').map((item, index) => '&nbsp;'.repeat(index * 4) + item).join('<br/>')")
-          treeselect(v-model="profile.topicsInterestedIn" :multiple="true" :options="topicsInterestedIn" v-if="editingProfileSection ==='topicsInterestedIn'")
+          treeselect(v-model="profile.topicsInterestedIn" :multiple="true" :options="topicsInterestedIn" placeholder="Select Topics of Interests" v-if="editingProfileSection ==='topicsInterestedIn'")
           div(v-else)
             v-card(flat v-if="profile.topicsInterestedIn && profile.topicsInterestedIn.length > 0").pa-2
               v-chip.ma-1(v-for="(value, index) in profile.topicsInterestedIn" :key="index") {{value.split("/").reverse()[0]}}

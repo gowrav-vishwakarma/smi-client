@@ -2,7 +2,7 @@
 div.questionFilterComponent
   v-form(ref="filterForm" v-model="valid")
     v-text-field(label="Question Contains" placeholder="your search query" dense small outlined v-model="filterQuery.query")
-    treeselect.mb-2.mt-n5(v-model="filterQuery.topics" :multiple="true" :options="topicsInterestedIn")
+    treeselect.mb-2.mt-n5(v-model="filterQuery.topics" :multiple="true" :options="topicsInterestedIn" placeholder="Select Topics of Interests")
 
     //- v-autocomplete(v-model="filterQuery.topics" dense small multiple :items="topics" small-chips label="Topic" outlined)
     //-   template(v-slot:selection="data")

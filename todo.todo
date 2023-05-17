@@ -1,13 +1,17 @@
 New TODO
 
-    Share button :: TODO
-    online status update with save into DB and trigger to all user :: TODO
     question delete all video and images delete :: TODO
     profile question list private/public question added :: Done/TODO
-    Profile (Ask me anything) :: TODO
+    online status update with save into DB and trigger to all user :: TODO
+    Pagination in my Questions :: TODO
+    Pagination in my Offers :: TODO
+    Pagination in my unread offers :: TODO
+    Pagination in my comments :: TODO
 
+    Share button :: ?TODO
     filter type solver and unsolved :: ?TODO
     
+    Profile (Ask me anything) :: DONE
     Top Skill Dropdown data :: Done 
     mark as solved at rating for questioner :: Done
     multioffer :: Done

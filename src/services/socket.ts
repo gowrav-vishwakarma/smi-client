@@ -2,7 +2,7 @@ import { validatorDto } from "@/helper/validateDto";
 import { ClassConstructor } from "class-transformer";
 import { io } from "socket.io-client";
 
-const URL = process.env.VUE_APP_WS_URL || "https://ws.solvemyissue.live";
+const URL = process.env.VUE_APP_WS_URL || "https://solvemyissue.online";
 console.log(URL);
 const socket = io(URL, { autoConnect: false });
 

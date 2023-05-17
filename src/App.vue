@@ -37,6 +37,11 @@ export default class App extends Vue {
     if (process.env.VUE_APP_SMARTLOOKKEY) {
       console.log("Setting smartlook");
       smartlookClient.init(process.env.VUE_APP_SMARTLOOKKEY);
+      if (this.$store.getters.isAuthenticated) {
+        smartlookClient.identify(this.$store.getters.loggedInUser.email, {
+          name: this.$store.getters.loggedInUser.name,
+        });
+      }
     } else {
       console.log("Skipping smartlook in staging");
     }

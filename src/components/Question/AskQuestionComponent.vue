@@ -1,7 +1,10 @@
 <template>
   <v-card class="mb-12" color="">
     <v-card-title>
-      <span class="headline">New Question</span>
+      <span class="headline"
+        >New Question: Ask
+        {{ askToUser ? "'" + askToUser.name + "'" : "Publicly" }}</span
+      >
     </v-card-title>
     <v-card-text>
       <v-form ref="form" v-model="valid">
@@ -147,6 +150,7 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { VueEditor } from "vue2-editor";
 import MulticorderUI from "@/components/Multicorder/MulticorderUI.vue";
 import questionsApi from "@/services/questions.api";
+import userApi from "@/services/user.api";
 
 @Component({
   components: {
@@ -155,6 +159,10 @@ import questionsApi from "@/services/questions.api";
   },
 })
 export default class AskQuestionView extends Vue {
+  @Prop({ default: null }) askTo!: string | null;
+
+  askToUser: any = null;
+
   progress = 0;
   blob = null;
   question = {
@@ -171,6 +179,7 @@ export default class AskQuestionView extends Vue {
       videoCall: true,
     },
     scope: "Public",
+    askTo: "",
   };
   topics: string[] = getFlatTopics(topics);
   valid = false;
@@ -192,6 +201,14 @@ export default class AskQuestionView extends Vue {
     ["link"], // temp remove image and video it has a hook for image upload also ["link", "image", "video"],
     ["clean"], // remove formatting button
   ];
+
+  @Watch("askTo")
+  async askToChanged() {
+    if (this.askTo) {
+      this.askToUser = await userApi.getProfile(this.askTo);
+      this.question.askTo = this.askTo;
+    }
+  }
 
   @Watch("question.detail")
   onMyFieldChanged(newValue: string) {

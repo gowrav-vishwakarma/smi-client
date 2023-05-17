@@ -31,6 +31,8 @@ export default class QuestionListResponseDTO {
     vote: number;
   };
 
+  scope!: string;
+
   createdAt!: string;
 
   questionerId!: string;

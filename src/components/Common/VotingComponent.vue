@@ -1,19 +1,20 @@
 <template lang="pug">
-    div.text-center.voting-component
-      .d-flex
-          div
-            v-tooltip(top)
-              template( v-slot:activator="{ on, attrs }")
-                v-icon.mx-4(small @click="voteUp" v-bind="attrs" v-on="on" :color="voteUpColor") mdi-thumb-up
-                p.pa-0.ma-0.icon-text {{ currentVoteUpCount }} up 
-              span vote up
-          div
-            v-tooltip(top)
-              template( v-slot:activator="{ on, attrs }")
-                v-icon.mx-4(small @click="voteDown" v-bind="attrs" v-on="on" :color="voteDownColor") mdi-thumb-down
-                p.pa-0.ma-0.icon-text {{ currentVoteDownCount }} down
-              span vote dowm
-      auth-dialog(:showDialog.sync="AuthDialogState")
+div.text-center.voting-component.d-flex.flex-column
+  .d-flex
+      div
+        v-tooltip(top)
+          template( v-slot:activator="{ on, attrs }")
+            v-icon.mx-2(small @click="voteUp" v-bind="attrs" v-on="on" :color="voteUpColor") mdi-thumb-up
+            p.pa-0.ma-0.icon-text {{ currentVoteUpCount }} up 
+          span vote up
+      div
+        v-tooltip(top)
+          template( v-slot:activator="{ on, attrs }")
+            v-icon.mx-2(small @click="voteDown" v-bind="attrs" v-on="on" :color="voteDownColor") mdi-thumb-down
+            p.pa-0.ma-0.icon-text {{ currentVoteDownCount }} down
+          span vote dowm
+  slot
+  auth-dialog(:showDialog.sync="AuthDialogState")
 </template>
 
 <script lang="ts">

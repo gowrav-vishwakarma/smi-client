@@ -157,6 +157,21 @@ export default class WSManager extends Vue {
         });
     });
 
+    SocketOn("questionAskedTo", (payload) => {
+      console.log("questionAskedTo", payload);
+      this.$vToastify
+        .prompt({
+          title: `${payload.name} asked a question to you`,
+          body: `"${payload.title}"`,
+          answers: { "Go to question": true, Close: false },
+        })
+        .then((gotoPage: boolean) => {
+          if (gotoPage) {
+            this.$router.push("/question/" + payload.questionId);
+          }
+        });
+    });
+
     // socket.on("call-received", ({ from, content }) => {
     //   if (this.$store.getters.onlineStatus === "busy") {
     //     this.sendBusy();

@@ -1,11 +1,11 @@
 <template lang="pug">
 v-card.mb-2.pa-5.question-single-card(v-if="question")
-  v-card.pa-0.ma-0.question-detail-card(flat @click="gotoDetails")
+  v-card.pa-0.ma-0.question-detail-card(flat)
     .d-flex.justify-space-between
-      h4.text-subtitle-1.question-heading.primary--text( style="cursor:pointer") Q. {{question.title}}
+      h4.text-subtitle-1.question-heading.primary--text( style="cursor:pointer" @click="gotoDetails") Q. {{question.title}}
       .d-flex.justify-end
-        v-icon(v-if="question.scope=='Public'" color="green") mdi-earth
-        v-icon(v-if="question.scope=='Private'" color="red") mdi-lock
+        v-icon(v-if="question.scope=='Public'" color="green" @click.stop="isMyProfileView && changeScope('Private')") mdi-earth
+        v-icon(v-if="question.scope=='Private'" color="red" @click.stop="isMyProfileView && changeScope('Public')") mdi-lock
         v-icon(x-large color="red" size="100" v-if="!displayVideo" :disabled="!question.video || question.video ==''") mdi-youtube
     .question-description-text
       .text-body-2.text--secondary.text-justify.question-description-text.ml-5 {{shortdetail}}
@@ -20,18 +20,24 @@ v-card.mb-2.pa-5.question-single-card(v-if="question")
   questioner-signature(:User="question.byUser")
   v-divider
   .d-flex.mt-1(style="align-items:center")
-    div
-      question-value-component(:question="question")
-      .d-flex
-        voting-component(v-if="!disableVotingAction" :question="question")
-        //- booking-component(v-if="!disableBookmarkAction" :question="question")
-        //- share-button(v-if="!disableShareAction" :question="question")
-    .ml-auto(v-if="!disableAnswerSection")
-      .d-flex
-        solution-channels-component(v-if="question.solutionChannels" :solutionChannels="question.solutionChannels")
-        v-btn(v-if="isMyProfileView && isMyQuestion && question.status=='OPEN'" :color="question.status=='OPEN'?'red':'green'" small @click="closeQuestion") Close
-        v-chip.pl-1(v-if="isMyProfileView" small dense) {{question.status}}
-        v-btn.primary(v-if="!disableAnswerBtn" rounded small @click="gotoDetails") Answer
+    question-value-component(:question="question")
+    voting-component.pr-3(v-if="!disableVotingAction" :question="question")
+      //- booking-component(v-if="!disableBookmarkAction" :question="question")
+      //- share-button(v-if="!disableShareAction" :question="question")
+    solution-channels-component(v-if="question.solutionChannels" :solutionChannels="question.solutionChannels")
+      v-menu(bottom left v-if="isMyProfileView")
+        template(v-slot:activator='{ on, attrs }')
+          v-btn( x-small color="primary" v-bind='attrs' v-on='on')
+            | {{question.status}}
+            v-icon(x-small) mdi-dots-vertical
+        v-list
+          v-list-item(v-if="question.status!=='OPEN'" @click="changeStatus('OPEN')")
+            v-list-item-title.caption Open
+          v-list-item(v-if="question.status!=='CLOSED'" @click="changeStatus('CLOSED')")
+            v-list-item-title.caption Closed
+          v-list-item(v-if="question.status!=='SOLVED'" @click="changeStatus('SOLVED')")
+            v-list-item-title.caption Solved
+
 </template>
 
 <script lang="ts">
@@ -99,6 +105,12 @@ export default class QuestionSingle extends Mixins(General) {
     return S(this.question.detail).stripTags().truncate(100).s;
   }
 
+  changeScope(scope: "Private" | "Public") {
+    QuestionsAPIService.changeScope(this.question._id, scope).then((res) => {
+      this.question.scope = scope;
+    });
+  }
+
   convertTotag(inArr: [string]) {
     return inArr.length > 0
       ? inArr
@@ -109,13 +121,14 @@ export default class QuestionSingle extends Mixins(General) {
       : "";
   }
 
-  closeQuestion() {
+  changeStatus(status: "OPEN" | "CLOSED" | "SOLVED") {
     const confirm = window.confirm(
-      "Are you sure you want to close this question?"
+      "Are you sure you want to change status of this question?"
     );
     if (!confirm) return;
-    QuestionsAPIService.closeQuestion(this.question._id);
-    this.$emit("questionClosed", this.question._id);
+    QuestionsAPIService.changeStatus(this.question._id, status);
+    this.question.status = status;
+    this.$emit("questionStatusChanged", this.question._id, status);
   }
 }
 </script>

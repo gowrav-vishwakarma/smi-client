@@ -1,6 +1,6 @@
 <template>
   <v-container grid-list-xs>
-    <ask-question-component></ask-question-component>
+    <ask-question-component :askTo="askTo"></ask-question-component>
   </v-container>
 </template>
 
@@ -14,5 +14,13 @@ import AskQuestionComponent from "@/components/Question/AskQuestionComponent.vue
     AskQuestionComponent,
   },
 })
-export default class AskQuestionView extends Vue {}
+export default class AskQuestionView extends Vue {
+  askTo: string | null = null;
+
+  mounted() {
+    if (this.$route.query.to) {
+      this.askTo = this.$route.query.to as string;
+    }
+  }
+}
 </script>

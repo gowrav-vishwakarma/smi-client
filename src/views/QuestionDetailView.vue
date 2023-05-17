@@ -8,7 +8,7 @@
 import QuestionDetailComponent from "@/components/Question/QuestionDetailComponent.vue";
 import QuestionDetailResponseDTO from "@/dto/response/question-detail-response.dto";
 import questionsApi from "@/services/questions.api";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import { eventBus } from "@/mixins/event-bus";
 
 @Component({
@@ -28,6 +28,7 @@ export default class QuestionDetailView extends Vue {
     await this.getQuestionDetail();
   }
 
+  @Watch("$route.params.id")
   async getQuestionDetail() {
     this.question = await questionsApi.getQuestion(this.$route.params.id);
   }

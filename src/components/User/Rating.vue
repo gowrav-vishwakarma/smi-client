@@ -1,8 +1,8 @@
 <template lang="pug">
 .d-flex
-        span.ml-1.primary--text(style="font-size:1em")  {{reputation}}
-        v-icon(small color="yellow darken-2") mdi-star
-        small (By {{User.reputationAsQuestioner.totalRatingsCount}} user)
+    span.caption.ml-1.primary--text(style="font-size:1em")  {{reputation}}
+    v-icon(x-small color="yellow darken-2") mdi-star
+    small.caption (By {{User.reputationAsQuestioner.totalRatingsCount}} user)
 </template>
 
 <script lang="ts">

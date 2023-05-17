@@ -1,6 +1,8 @@
 <template lang="pug">
-    .d-flex
-          .caption {{ question.questionValue.totalVoteCount + question.questionValue.totalVoteDownCount }} Votes, {{ question.questionValue.totalCommentsCount }} Comments, {{ question.questionValue.totalOfferingCount }} Offers
+v-row.mt-2.no-gutters
+      v-col.caption.col-xs-12.col-sm-4 {{ question.questionValue.totalVoteCount + question.questionValue.totalVoteDownCount }} Votes
+      v-col.caption.col-xs-12.col-sm-4 {{ question.questionValue.totalCommentsCount }} Comments
+      v-col.caption.col-xs-12.col-sm-4 {{ question.questionValue.totalOfferingCount }} Offers
 </template>
 
 <script lang="ts">

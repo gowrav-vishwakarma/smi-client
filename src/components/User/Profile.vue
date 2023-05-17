@@ -91,7 +91,10 @@ v-container
             v-card(flat v-if="profile.topicsInterestedIn && profile.topicsInterestedIn.length > 0").pa-2
               v-chip.ma-1(v-for="(value, index) in profile.topicsInterestedIn" :key="index") {{value.split("/").reverse()[0]}}
             v-card(flat v-else).pa-2
-              v-card-subtitle my topicsInterestedIn not be updated at the moment
+              v-card-subtitle Please update your topics of interest
+          div
+            v-card 
+              v-card-text(@click="copyToClipBoard" style="cursor:pointer") Your ask me link (click to copy): {{ askMeLink }}
       //- div.userExperienceContainer.mt-4
       //-   v-form(ref="userExperienceForm")
       //-     .d-flex
@@ -293,6 +296,24 @@ export default class UserProfileComponent extends Vue {
         ? process.env.VUE_APP_S3_CDN_URL + this.profile.profileImage
         : "";
     // : "https://cdn.vuetifyjs.com/images/profiles/marcus.jpg";
+  }
+
+  get askMeLink() {
+    return (
+      process.env.VUE_APP_BASE_URL +
+      "/ask-question?to=" +
+      this.$store.getters.loggedInUser._id
+    );
+  }
+
+  copyToClipBoard() {
+    const clipboardData =
+      navigator.clipboard ||
+      window.Clipboard; /* IE support https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript */
+    const message = this.askMeLink;
+
+    clipboardData.writeText(message);
+    this.$vToastify.success("Copied to clipboard");
   }
 
   async mounted() {

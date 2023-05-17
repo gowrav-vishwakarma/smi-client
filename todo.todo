@@ -1,15 +1,18 @@
 New TODO
 
-    online status update with save into DB and trigger to all user
-    Top Skill Dropdown data
-    question delete all video and images delete
-    mark as solved at rating for questioner
-    multioffer
-    filter type solver and unsolved
-    question private/public/corporate: done
-    offer create button loader and disabled: done
-    profile question list private/public question added
-    Share button
+    Share button :: TODO
+    online status update with save into DB and trigger to all user :: TODO
+    question delete all video and images delete :: TODO
+    profile question list private/public question added :: Done/TODO
+    Profile (Ask me anything) :: TODO
+
+    filter type solver and unsolved :: ?TODO
+    
+    Top Skill Dropdown data :: Done 
+    mark as solved at rating for questioner :: Done
+    multioffer :: Done
+    question private/public/corporate: Done
+    offer create button loader and disabled: Done
 
 
 

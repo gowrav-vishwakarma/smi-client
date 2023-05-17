@@ -111,10 +111,18 @@ class QuestionsAPIService extends APIService {
     return response;
   }
 
-  async closeQuestion(questionId: string): Promise<any> {
+  async changeStatus(questionId: string, status: string): Promise<any> {
     const response = await this.axiosCall<any>({
       method: "GET",
-      url: "/questions/close/" + questionId,
+      url: "/questions/change-status/" + questionId + "/" + status,
+    });
+    return response;
+  }
+
+  async changeScope(questionId: string, scope: string): Promise<any> {
+    const response = await this.axiosCall<any>({
+      method: "GET",
+      url: "/questions/change-scope/" + questionId + "/" + scope,
     });
     return response;
   }

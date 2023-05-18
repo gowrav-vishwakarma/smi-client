@@ -26,13 +26,13 @@ export default class FilterComponent extends Vue {
   queryString: any = null;
   filterFormDialog = false;
 
-  @Watch("$store.getters.filters", { immediate: true })
-  onFilterChange() {
-    if (this.$store.getters.filters) {
-      this.queryString = this.$store.getters.filters.query;
-    }
+  // @Watch("$store.getters.filters", { immediate: true })
+  // onFilterChange() {
+  //   if (this.$store.getters.filters) {
+  //     this.queryString = this.$store.getters.filters.query;
+  //   }
 
-  }
+  // }
   /**
    * todo
    *  type n enter search into question title & tags

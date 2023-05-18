@@ -15,7 +15,7 @@ div(style="width: 100%")
 
 <script lang="ts">
 import "reflect-metadata";
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import { FilterQuestionsDTO } from "../../dto/request/question-filter.dto";
 import QuestionListResponseDTO from "@/dto/response/question-list-response.dto";
 import QuestionSingle from "@/components/Question/Single.vue";
@@ -37,12 +37,8 @@ export default class QuestionList extends Vue {
   currentPage = 1;
   questionsPerPage = 20;
   @Prop({ default: () => ({}) }) readonly filter!: FilterQuestionsDTO;
-  // showAuthDialog = false;
-  async mounted() {
-    eventBus.$on("filterQuestions", async (filterData: any) => {
-      await this.getQList(filterData);
-    });
 
+  async mounted() {
     this.getQList({
       ...this.$store.getters.filters,
       page: this.currentPage,
@@ -50,6 +46,7 @@ export default class QuestionList extends Vue {
     });
   }
 
+  @Watch("$store.getters.filters", { immediate: true })
   async getQList(filterData: any) {
     let filterQuery = this.filter;
     if (filterData != undefined) {

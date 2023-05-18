@@ -16,7 +16,7 @@ v-app-bar(app='' color='white' flat='')
   top-menu
   auth-dialog(:show-dialog.sync='AuthDialogState')
   // selected filter options
-  template(v-slot:extension='' v-if='isFilterSelected && $route.path == "/"')
+  template(v-slot:extension='' v-if='isFilterSelected')
     v-container.d-flex.justify-space-between.grey.lighten-5.pa-0.mt-1(style='width: 100%; align-items: center')
       div(style='width: 100%')
         v-chip-group( style='width: 100%')
@@ -153,7 +153,12 @@ export default class App extends Vue {
     });
   }
 
+  mounted() {
+    console.log("this.$store.getters.filters", this.$store.getters.filters);
+  }
+
   clearFilter() {
+    console.log("clearFilter");
     const user = AuthStoreModule.currentUser as any;
 
     if (!user && this.$store.getters.isCleared) {

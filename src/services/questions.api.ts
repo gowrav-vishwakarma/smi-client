@@ -8,6 +8,7 @@ class QuestionsAPIService extends APIService {
   async getQuestions(
     filter: FilterQuestionsDTO | Record<string, never>
   ): Promise<QuestionListResponseDTO[]> {
+    console.log("filter", filter);
     const response = await this.axiosCall<QuestionListResponseDTO[]>({
       method: "POST",
       // method: "GET",

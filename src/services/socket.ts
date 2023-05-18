@@ -3,7 +3,6 @@ import { ClassConstructor } from "class-transformer";
 import { io, Socket } from "socket.io-client";
 
 const URL = process.env.VUE_APP_WS_URL || "https://solvemyissue.online";
-console.log(URL);
 const socket: Socket = io(URL, { autoConnect: false });
 
 socket.onAny((event, ...args) => {

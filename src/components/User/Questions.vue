@@ -2,7 +2,7 @@
 div(style="width: 100%")
   v-checkbox(v-model="showOnlyOpen" label="Show Only Open Questions")
   div(v-if="questions.length>0")
-    question-single(v-for="(question, i) in questions" :question="question" :key="question._id" :isMyProfileView="true" @questionClosed="onQuestionClosed")
+    question-single(v-for="(question, i) in questions" :question="question" :key="question._id" :isMyProfileView="true" @questionClosed="onQuestionClosed" @questionDeleted="onQuestionDeleted")
   v-card(v-else)
     v-card-text You have not asked any questions yet, Start asking questions
 </template>
@@ -29,6 +29,10 @@ export default class UserQuestionsComponent extends Vue {
   }
 
   onQuestionClosed(questionId: string) {
+    this.questions = this.questions.filter((q) => q._id !== questionId);
+  }
+
+  onQuestionDeleted(questionId: string) {
     this.questions = this.questions.filter((q) => q._id !== questionId);
   }
 

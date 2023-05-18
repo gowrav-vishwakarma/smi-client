@@ -13,7 +13,7 @@ v-card.mb-2.pa-5.question-single-card(v-if="question")
           v-img(src="@/assets/logo.png" max-height="350" contain)
       v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="question.video && displayVideo")
           video(width="320" height="240" :controls="videoControl" preload="none")
-            source(:src="question.video" type="video/webm")
+            source(:src="videoURL" type="video/webm")
   .d-flex.mt-3
     .d-flex.flex-column.justify-space-between
       .caption.grey--text.lighten-4 Asked {{ humanized_time_span(question.createdAt) }} :
@@ -41,6 +41,8 @@ v-card.mb-2.pa-5.question-single-card(v-if="question")
             v-list-item-title.caption Closed
           v-list-item(v-if="question.status!=='SOLVED'" @click="changeStatus('SOLVED')")
             v-list-item-title.caption Solved
+          v-list-item(color="red" @click="deleteQuestion")
+            v-list-item-title.caption Delete
 
 </template>
 
@@ -103,6 +105,10 @@ export default class QuestionSingle extends Mixins(General) {
 
   get displayVideo() {
     return this.videoControl;
+  }
+
+  get videoURL() {
+    return process.env.VUE_APP_S3_CDN_URL + this.question.video;
   }
 
   get shortdetail() {
@@ -178,6 +184,15 @@ export default class QuestionSingle extends Mixins(General) {
     QuestionsAPIService.changeStatus(this.question._id, status);
     this.question.status = status;
     this.$emit("questionStatusChanged", this.question._id, status);
+  }
+
+  deleteQuestion() {
+    const confirm = window.confirm(
+      "Are you sure you want to delete this question?"
+    );
+    if (!confirm) return;
+    QuestionsAPIService.deleteQuestion(this.question._id);
+    this.$emit("questionDeleted", this.question._id);
   }
 }
 </script>

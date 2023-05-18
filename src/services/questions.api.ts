@@ -126,6 +126,13 @@ class QuestionsAPIService extends APIService {
     });
     return response;
   }
+
+  deleteQuestion(questionId: string): Promise<any> {
+    return this.axiosCall<any>({
+      method: "GET",
+      url: "/questions/delete/" + questionId,
+    });
+  }
 }
 
 export default new QuestionsAPIService();

@@ -319,13 +319,6 @@ export default class UserProfileComponent extends Vue {
     );
   }
 
-  // get askMeLink() {
-  //   return (
-  //     "https://solvemyissue.online/ask-question?to=" +
-  //     this.$store.getters.loggedInUser._id
-  //   );
-  // }
-
   copyToClipBoard() {
     const clipboardData =
       navigator.clipboard ||

@@ -4,7 +4,12 @@ import { io, Socket } from "socket.io-client";
 
 const URL = process.env.VUE_APP_WS_URL || "https://solvemyissue.online";
 console.log(URL);
-const socket: Socket = io(URL, { autoConnect: false });
+const socket: Socket = io(URL, {
+  autoConnect: false,
+  reconnection: false,
+  upgrade: false,
+  transports: ["websocket", "polling"],
+});
 
 socket.onAny((event, ...args) => {
   console.log("onAny", event, args);

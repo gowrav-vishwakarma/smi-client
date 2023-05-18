@@ -14,31 +14,14 @@
       <v-list>
         <v-list-item
           style="min-height: 28px"
-          @click="updateOnlineStatus('Online')"
+          @click="updateOnlineStatus('ONLINE')"
         >
           <v-list-item-title class="green--text">
             <v-icon small color="green"> mdi-circle</v-icon>
             Online
           </v-list-item-title>
         </v-list-item>
-        <v-list-item
-          style="min-height: 28px"
-          @click="updateOnlineStatus('Offline')"
-        >
-          <v-list-item-title class="red--text">
-            <v-icon small color="red"> mdi-circle</v-icon>
-            Offline
-          </v-list-item-title>
-        </v-list-item>
-        <v-list-item
-          style="min-height: 28px"
-          @click="updateOnlineStatus('Busy')"
-        >
-          <v-list-item-title class="orange--text">
-            <v-icon small color="orange"> mdi-circle</v-icon>
-            Busy
-          </v-list-item-title>
-        </v-list-item>
+
         <v-list-item to="/unread-offers" style="min-height: 28px">
           <v-list-item-title>
             UnRead Offers
@@ -82,7 +65,7 @@ export default class LoggedInUserTopMenu extends Vue {
   mounted() {
     userApi.getUnreadOffers(true, false).then((res) => {
       this.unreadOffers = res;
-      console.log("unread offers", res);
+      // console.log("unread offers", res);
     });
   }
 
@@ -91,7 +74,7 @@ export default class LoggedInUserTopMenu extends Vue {
     this.$router.push("/");
   }
 
-  updateOnlineStatus(status: string) {
+  updateOnlineStatus(status: "ONLINE" | "OFFLINE" | "BUSY") {
     AuthStoreModule.updateUserOnlineStatusAction(status);
   }
 }

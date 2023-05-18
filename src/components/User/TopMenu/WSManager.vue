@@ -13,6 +13,7 @@ import socket, { SocketOn, SocketEmit } from "@/services/socket";
 import { SocketAuthDTO } from "@/dto/ws.dto";
 import solutionsApi from "@/services/solutions.api";
 import { AuthStoreModule } from "@/store";
+import userApi from "@/services/user.api";
 
 import callDialToneMP3 from "@/assets/audio/callDialTone.mp3";
 const callDialTone: string = callDialToneMP3;
@@ -36,6 +37,10 @@ export default class WSManager extends Vue {
     // this.playSoundWithNotification();
   }
 
+  destroyed() {
+    socket.disconnect();
+  }
+
   socketConnect() {
     if (!this.$store.getters.isAuthenticated) {
       console.log("Not connecting to socket because user is not authenticated");
@@ -46,19 +51,30 @@ export default class WSManager extends Vue {
     socket.auth = { username };
     socket.connect();
 
-    SocketOn(
-      "session",
-      (data: any) => {
-        socket.auth = { username };
-        this.isConnected = true;
+    SocketOn("connect", () => {
+      this.isConnected = true;
+      console.log("connect", socket.id);
+      userApi.setOnlineStatus("ONLINE");
+      AuthStoreModule.updateUserOnlineStatusAction("ONLINE");
+    });
 
-        // if (this.$store.getters.userOnlineStatus == null) {
-        AuthStoreModule.updateUserOnlineStatusAction("Online");
-        //call api to update user status
-        // }
-      },
-      SocketAuthDTO
-    );
+    SocketOn("connect_error", (err) => {
+      console.error(err);
+    });
+
+    // SocketOn(
+    //   "session",
+    //   (data: any) => {
+    //     socket.auth = { username };
+    //     this.isConnected = true;
+
+    //     // if (this.$store.getters.userOnlineStatus == null) {
+    //     AuthStoreModule.updateUserOnlineStatusAction("Online");
+    //     //call api to update user status
+    //     // }
+    //   },
+    //   SocketAuthDTO
+    // );
 
     SocketOn("ringing", (payload) => {
       console.log("call-receive", payload);
@@ -118,7 +134,8 @@ export default class WSManager extends Vue {
       // ) {
       this.callReset();
       // this.userOnlineStatus = "Busy";
-      await AuthStoreModule.updateUserOnlineStatusAction("Busy");
+      userApi.setOnlineStatus("BUSY");
+      await AuthStoreModule.updateUserOnlineStatusAction("BUSY");
       // this.offerCallConnected = true;
       this.$router.push("/solution-attempt/" + payload.solutionOfferId);
       // }
@@ -167,10 +184,6 @@ export default class WSManager extends Vue {
           }
         });
     });
-
-    socket.on("connect_error", (err) => {
-      console.error(err);
-    });
   }
 
   callReset() {
@@ -205,9 +218,9 @@ export default class WSManager extends Vue {
   }
 
   get statusColor() {
-    return this.isConnected && this.$store.getters.userOnlineStatus == "Busy"
+    return this.isConnected && this.$store.getters.userOnlineStatus == "BUSY"
       ? "orange"
-      : this.isConnected && this.$store.getters.userOnlineStatus == "Online"
+      : this.isConnected && this.$store.getters.userOnlineStatus == "ONLINE"
       ? "green"
       : "red";
   }

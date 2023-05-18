@@ -14,7 +14,7 @@ export class CurrentUserI {
   accessToken!: string;
   userToppics!: string[];
   userLanguages!: string[];
-  onlineStatus: string | null = null;
+  onlineStatus: "ONLINE" | "OFFLINE" | "BUSY" = "ONLINE";
 }
 
 // storing form data that is required authentication for submission
@@ -80,7 +80,7 @@ export default class Auth extends VuexModule implements IAuthState {
   }
 
   @Mutation
-  updateUserOnlineStatus(onlineStatus: string) {
+  updateUserOnlineStatus(onlineStatus: "ONLINE" | "OFFLINE" | "BUSY") {
     if (this.currentUser) this.currentUser["onlineStatus"] = onlineStatus;
   }
 

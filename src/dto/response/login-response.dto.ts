@@ -23,7 +23,7 @@ export class UserDetails {
 
   userToppics!: string[];
   userLanguages!: string[];
-  onlineStatus!: string;
+  onlineStatus!: "ONLINE" | "OFFLINE" | "BUSY";
 }
 
 export default class LoginResponseDTO {

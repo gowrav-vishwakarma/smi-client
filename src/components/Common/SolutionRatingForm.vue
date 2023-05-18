@@ -18,6 +18,7 @@ import SolutionAttemptDetailResponseDTO from "@/dto/response/solutionattempt-det
 import solutionsApi from "@/services/solutions.api";
 import { eventBus } from "@/mixins/event-bus";
 import { AuthStoreModule } from "@/store";
+import userApi from "@/services/user.api";
 
 @Component({
   name: "SolutionRatingForm",
@@ -75,7 +76,8 @@ export default class SolutionRatingForm extends Vue {
     });
 
     eventBus.$emit("hide-loader");
-    await AuthStoreModule.updateUserOnlineStatusAction(null);
+    userApi.setOnlineStatus("ONLINE");
+    await AuthStoreModule.updateUserOnlineStatusAction("ONLINE");
 
     this.$router.push("/question/" + this.solutionAttemptDetail.questionId);
   }

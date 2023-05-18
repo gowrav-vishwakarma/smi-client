@@ -195,6 +195,14 @@ class UserAPIService extends APIService {
     });
     return response;
   }
+
+  async setOnlineStatus(status: "ONLINE" | "OFFLINE" | "BUSY"): Promise<any> {
+    const response = await this.axiosCall<any>({
+      url: `/users/set-online-status/${status}`,
+      method: "GET",
+    });
+    return response;
+  }
 }
 
 export default new UserAPIService();

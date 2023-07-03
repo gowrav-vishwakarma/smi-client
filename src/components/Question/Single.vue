@@ -8,7 +8,8 @@ v-card.mb-2.pa-5.question-single-card(v-if="question")
         v-icon(v-if="question.scope=='Private'" color="red" @click.stop="isMyProfileView && changeScope('Public')") mdi-lock
         v-icon(x-large color="red" size="100" v-if="!displayVideo" :disabled="!question.video || question.video ==''") mdi-youtube
     .question-description-text
-      .text-body-2.text--secondary.text-justify.question-description-text.ml-5 {{shortdetail}}
+      .text-body-2.text--secondary.text-justify.question-description-text.ml-5(v-if="showDetail" v-html="question.detail")
+      .text-body-2.text--secondary.text-justify.question-description-text.ml-5(v-else) {{shortdetail}}
       v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")
           v-img(src="@/assets/logo.png" max-height="350" contain)
       v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="question.video && displayVideo")
@@ -93,6 +94,8 @@ export default class QuestionSingle extends Mixins(General) {
   @Prop({ default: false }) disableVotingAction: any;
 
   @Prop({ default: false }) videoControl!: boolean;
+
+  @Prop({ default: false }) showDetail!: boolean;
 
   gotoDetails() {
     this.$router.push("/question/" + this.question._id);

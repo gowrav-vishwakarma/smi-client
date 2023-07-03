@@ -69,7 +69,7 @@ export default class AskQuestionView extends Vue {
 
   // topics: string[] = getFlatTopics(topics_);;
   topicsInterestedIn: Topic[] = topics;
-  valid: false = false;
+  valid = false;
   languageList: string[] = languages;
 
   async filterFormSubmit() {

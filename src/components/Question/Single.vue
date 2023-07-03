@@ -1,15 +1,17 @@
 <template lang="pug">
 v-card.mb-2.pa-5.question-single-card(v-if="question")
   v-card.pa-0.ma-0.question-detail-card(flat)
+    //- .d-flex.justify-space-between
+    //-   h4.text-subtitle-1.question-heading.primary--text( style="cursor:pointer" @click="gotoDetails") Q. {{question.title}}
     .d-flex.justify-space-between
-      h4.text-subtitle-1.question-heading.primary--text( style="cursor:pointer" @click="gotoDetails") Q. {{question.title}}
+      v-card-title.question-heading(style="cursor:pointer" @click="gotoDetails") Q. {{question.title}}
       .d-flex.justify-end
         v-icon(v-if="question.scope=='Public'" color="green" @click.stop="isMyProfileView && changeScope('Private')") mdi-earth
         v-icon(v-if="question.scope=='Private'" color="red" @click.stop="isMyProfileView && changeScope('Public')") mdi-lock
         v-icon(x-large color="red" size="100" v-if="!displayVideo" :disabled="!question.video || question.video ==''") mdi-youtube
     .question-description-text
-      .text-body-2.text--secondary.text-justify.question-description-text.ml-5(v-if="showDetail" v-html="question.detail")
-      .text-body-2.text--secondary.text-justify.question-description-text.ml-5(v-else) {{shortdetail}}
+      v-card-subtitle.pt-0.text--secondary.text-justify(v-if="showDetail" v-html="question.detail")
+      v-card-subtitle.pt-0.text--secondary.text-justify(v-else) {{shortdetail}}
       v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")
           v-img(src="@/assets/logo.png" max-height="350" contain)
       v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="question.video && displayVideo")
@@ -115,7 +117,7 @@ export default class QuestionSingle extends Mixins(General) {
   }
 
   get shortdetail() {
-    return S(this.question.detail).stripTags().truncate(100).s;
+    return S(this.question.detail).stripTags().truncate(350).s;
   }
 
   get topicFull() {
@@ -199,3 +201,10 @@ export default class QuestionSingle extends Mixins(General) {
   }
 }
 </script>
+
+<style scoped>
+.question-heading:hover {
+  color: var(--v-primary-base); /* Replace with the desired color variable */
+  cursor: pointer; /* Add a cursor style on hover, if desired */
+}
+</style>

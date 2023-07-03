@@ -13,7 +13,7 @@
           v-model="question.title"
           :rules="[
             (v) => !!v || 'Required',
-            (v) => v.length <= 50 || 'Too long',
+            (v) => v.length <= 250 || 'Too long',
           ]"
           outlined
           dense

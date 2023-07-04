@@ -223,6 +223,7 @@ export default {
     },
     onVideoLive() {
       this.controls = "liveVideo";
+      this.$nextTick(()=>this.videoRecord())
     },
     onViewChange(view) {
       this.view = view;

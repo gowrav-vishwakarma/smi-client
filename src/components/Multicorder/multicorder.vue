@@ -75,7 +75,7 @@ export default /*#__PURE__*/ {
     },
     playerMuted: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     screenshotFormat: {
       type: String,
@@ -173,7 +173,7 @@ export default /*#__PURE__*/ {
     startScreenshare() {
       try {
         navigator.mediaDevices
-          .getDisplayMedia()
+          .getDisplayMedia({ video: true, audio: true})
           .then((stream) => this.loadSrcStream(stream));
       } catch (err) {
         console.error("Error: " + err);

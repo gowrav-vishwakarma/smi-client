@@ -80,7 +80,11 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/LayoutDocs.vue"),
     // component: () => import("../views/LayoutThree.vue"),
   },
-
+  {
+    path: "/about",
+    name: "aboutsmi",
+    component: () => import("../views/AboutSMI.vue"),
+  },
   {
     path: "*",
     name: "not-found",

@@ -8,7 +8,6 @@
       :src="source"
       :autoplay="autoplay"
       :playsinline="playsinline"
-      muted="muted"
     />
     <img
       v-show="view == 'snapshot'"

@@ -201,7 +201,7 @@ export default {
       videoSourceList: [],
       isPaused: false,
       isPlayerPaused: false,
-      isMuted: true,
+      isMuted: false,
       isPlayerMuted: true,
       view: "video",
       recordings: [], // local sparsed list of recording data

@@ -201,7 +201,7 @@ export default {
       videoSourceList: [],
       isPaused: false,
       isPlayerPaused: false,
-      isMuted: true,
+      isMuted: false,
       isPlayerMuted: true,
       view: "video",
       recordings: [], // local sparsed list of recording data
@@ -223,6 +223,7 @@ export default {
     },
     onVideoLive() {
       this.controls = "liveVideo";
+      this.$nextTick(()=>this.videoRecord())
     },
     onViewChange(view) {
       this.view = view;

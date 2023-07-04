@@ -5,14 +5,14 @@
         p.mt-3.pa-10.text-sm-h6.text-md-h5.text-lg-h2.text-xl-h2(style="color:white;")
          b SolveMyIssue (SMI) Is An Open Community <br/> For Anyone
         //p(class="text-h1 text-sm-h6 text-md-h5 text-lg-h4 text-xl-h3") This text has responsive font size.
-    v-container.mt-4(fluid)
+    v-container.mt-10.pt-10.pb-10(fluid grey lighten-2)
       v-row
         v-col(cols="12" sm="6" md="4" lg="3" v-for="wList in howSMIWorkList"  :key="wList.id")
           v-hover(v-slot="{ hover }")
               v-card(class="mx-auto", color="grey lighten-4", max-width="600")
-                v-img(:aspect-ratio="9/9", src="https://cdn.vuetifyjs.com/images/cards/kitchen.png")
+                v-img(:aspect-ratio="9/9", :src="wList.bgImageUrl" transition="scale-transition")
                   v-expand-transition
-                    div(v-if="!hover", class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h4 white--text", style="height: 100%")
+                    div(v-if="hover", class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h4 white--text", style="height: 100%")
                       | {{wList.detail}}
                 v-card-text(class="pt-6", style="position: relative;")
                   v-btn(absolute, color="orange", class="white--text", fab, top)
@@ -25,17 +25,7 @@
                     br
                     | Made of bamboo by hand
           v-card(outlined	elevation="0" )
-
-        v-col(cols="12" sm="6" md="4" lg="3")
-          v-card
-            v-card-title Vote the Answer
-        v-col(cols="12" sm="6" md="4" lg="3")
-          v-card
-            v-card-title Answer Questions
-        v-col(cols="12" sm="6" md="4" lg="3")
-          v-card
-            v-card-title Get Reputation
-    p SMI About Page
+    //p SMI About Page
 </template>
 
 <script lang="ts">
@@ -48,12 +38,36 @@ export default class AboutSMIView extends Vue {
     {
       "title":"Ask Question",
       "id":"ask_question",
-      "detail":"Ask Question, Get Help From Professional",
+      "detail":"Get Help From Professional",
       "icon":"mdi-help",
       "extraClass":"",
       "bgImageUrl":"https://cdn.vuetifyjs.com/images/cards/kitchen.png"
-
+    },
+      {
+      "title":"Vote The Answers",
+      "id":"vote_the_answers",
+      "detail":"Give Up/Down Vote To Answers",
+      "icon":"mdi-thumb-up",
+      "extraClass":"",
+      "bgImageUrl":"/img/assets/vote-question.jpg"
+    },
+      {
+      "title":"Get Reputation",
+      "id":"get_reputation",
+      "detail":"Earn Reputation Point",
+      "icon":"mdi-certificate",
+      "extraClass":"",
+      "bgImageUrl":"/img/assets/get-reputation.png"
+    },
+    {
+      "title":"Answer Questions",
+      "id":"answer_questions",
+      "detail":"Share Your Knowledge",
+      "icon":"mdi-lightbulb",
+      "extraClass":"",
+      "bgImageUrl":"/img/assets/answer-question.png"
     }
+
   ];
 
 }
@@ -64,7 +78,6 @@ export default class AboutSMIView extends Vue {
   align-items: center;
   bottom: 0;
   justify-content: center;
-  opacity: .5;
   position: absolute;
   width: 100%;
 }

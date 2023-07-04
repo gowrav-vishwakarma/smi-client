@@ -13,7 +13,8 @@ import { Vue, Component, Ref, Prop } from "vue-property-decorator";
 export default class JitsiMeet extends Vue {
   @Ref("jitsiContainer") private jitsiRefContainer!: HTMLIFrameElement;
 
-  domain = "meet.jit.si";
+  // domain = "meet.jit.si";
+  domain = "jitsi.solvemyissue.online";
 
   @Prop({ default: {} })
   options!: any;
@@ -21,7 +22,9 @@ export default class JitsiMeet extends Vue {
   jitsiApi: any;
 
   mounted() {
-    this.loadScript("https://meet.jit.si/external_api.js");
+    // this.loadScript("https://meet.jit.si/external_api.js");
+    this.loadScript("https://jitsi.solvemyissue.online/external_api.js");
+
   }
 
   beforeDestroy() {

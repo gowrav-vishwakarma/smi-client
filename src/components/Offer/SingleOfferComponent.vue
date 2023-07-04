@@ -23,7 +23,10 @@ v-card
         v-btn(blocked v-else-if="questionBelongsToMe" style="width:100%;")
           v-icon(small color="red") mdi-circle
           | offline
-      v-btn( v-else color="red lighten-4" block) waiting for call
+      div(v-else-if="offerBelongsToMe")
+        div( v-if="offer.offerValue.totalAcceptedCount")
+          v-btn( color="green lighten-4" block) {{offer.offerValue.totalAcceptedCount}} Accepted
+        v-btn( v-else color="red lighten-4" block) waiting for call
       v-icon(@click="callDisconnect" v-if="offerCallConnected") mdi-phone-cancel
 
   v-card( v-if="offerCallConnected")

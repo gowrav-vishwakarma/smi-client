@@ -1,6 +1,6 @@
 <template lang="pug">
 div(style="width: 100%" v-if="renderOfferList")
-  single-offer(v-for="offer in questionOffers" :offer="offer" :key="offer._id" :question="question" :isSolved="isSolved" :solverOnlineStatusList="solverOnlineStatusList")
+  single-offer.mt-4(v-for="offer in questionOffers" :offer="offer" :key="offer._id" :question="question" :isSolved="isSolved" :solverOnlineStatusList="solverOnlineStatusList")
 </template>
 
 <script lang="ts">
@@ -61,6 +61,13 @@ export default class QuestionOfferListComponent extends Vue {
         // console.log("checkUserConnected", offererIds);
       }
       // checkUserConnected
+      if(offers.length > 0 && this.$store.getters.loggedInUser){
+        const findIndex = offers.findIndex(item => item.offererId === this.$store.getters.loggedInUser._id);
+        if (findIndex !== -1) {
+          const sortOffers = offers.splice(findIndex, 1)[0];
+          offers.unshift(sortOffers);
+        }
+      }
       this.questionOffers = offers;
     });
   }

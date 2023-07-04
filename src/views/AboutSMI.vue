@@ -10,7 +10,7 @@
         v-col(cols="12" sm="6" md="4" lg="3" v-for="wList in howSMIWorkList"  :key="wList.id")
           v-hover(v-slot="{ hover }")
               v-card(class="mx-auto", color="grey lighten-4", max-width="600")
-                v-img(:aspect-ratio="9/9", :src="wList.bgImageUrl" transition="scale-transition")
+                v-img(:aspect-ratio="10/9", :src="wList.bgImageUrl" transition="scale-transition")
                   v-expand-transition
                     div(v-if="hover", class="d-flex transition-fast-in-fast-out orange darken-2 v-card--reveal text-h4 white--text", style="height: 100%")
                       | {{wList.detail}}
@@ -25,7 +25,19 @@
                     br
                     | Made of bamboo by hand
           v-card(outlined	elevation="0" )
+    v-container.mt-10.pt-10.pb-10.rounded-b-xl(fluid blue)
+      v-row
+        // First Column (Image)
+        v-col(cols="12" sm="6")
+          v-img(src="/img/assets/home-header-1.svg" contain fill-height)
+        // Second Column (Text Detail)
+        v-col(cols="12" sm="6" class="d-flex align-center")
+          v-card(elevation="0" tile color="blue ")
+            v-card-subtitle.text-h3(style="color:white") GET REPUTATION
+            v-card-title.text-h2 How Do You Gain Reputation Points ?
+            //v-card-text Description
     //p SMI About Page
+    v-divider.mt-10
 </template>
 
 <script lang="ts">
@@ -41,7 +53,15 @@ export default class AboutSMIView extends Vue {
       "detail":"Get Help From Professional",
       "icon":"mdi-help",
       "extraClass":"",
-      "bgImageUrl":"https://cdn.vuetifyjs.com/images/cards/kitchen.png"
+      "bgImageUrl":"/img/assets/ask-question.jpg"
+    },
+    {
+      "title":"Answer Questions",
+      "id":"answer_questions",
+      "detail":"Share Your Knowledge",
+      "icon":"mdi-lightbulb",
+      "extraClass":"",
+      "bgImageUrl":"/img/assets/answer-question.png"
     },
       {
       "title":"Vote The Answers",
@@ -58,14 +78,6 @@ export default class AboutSMIView extends Vue {
       "icon":"mdi-certificate",
       "extraClass":"",
       "bgImageUrl":"/img/assets/get-reputation.png"
-    },
-    {
-      "title":"Answer Questions",
-      "id":"answer_questions",
-      "detail":"Share Your Knowledge",
-      "icon":"mdi-lightbulb",
-      "extraClass":"",
-      "bgImageUrl":"/img/assets/answer-question.png"
     }
 
   ];

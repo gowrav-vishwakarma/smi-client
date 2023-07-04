@@ -4,6 +4,13 @@
     v-main(class="grey lighten-3")
       SMILoader(v-if="isLoading")
       router-view
+    v-footer.mt-5(padless dark)
+      v-flex.text-center
+        v-card-text
+          b [smi]
+          | &nbsp; Solve My Issue
+        v-card(flat tile)
+          router-link(to="/about" class="redirect-link") About
 </template>
 
 <script lang="ts">

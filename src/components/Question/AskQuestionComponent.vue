@@ -192,7 +192,7 @@ export default class AskQuestionView extends Vue {
   @Watch("askTo")
   async askToChanged() {
     if (this.askTo) {
-      this.askToUser = await userApi.getProfile(this.askTo);
+      this.askToUser = await userApi.getProfileByToken(this.askTo);
       this.question.askTo = this.askTo;
     }
   }

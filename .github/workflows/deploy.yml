@@ -27,6 +27,7 @@ jobs:
           VUE_APP_BASE_URL: ${{ secrets.VUE_APP_BASE_URL }}
           VUE_APP_SMARTLOOKKEY: ${{ secrets.VUE_APP_SMARTLOOKKEY }}
           VUE_APP_S3_CDN_URL: ${{ secrets.VUE_APP_S3_CDN_URL }}
+          VUE_APP_ENABLE_RECORDING: ${{ secrets.VUE_APP_ENABLE_RECORDING }}
         run: npm run build
 
       - name: Deploy

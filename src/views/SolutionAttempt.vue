@@ -2,10 +2,14 @@
 v-container.smi-meeting-wrapper
   div(style="height: 80vh" v-if="solutionAttempt && solutionAttempt._id")
     vue-jitsi-meet(ref="jitsiRef" domain="meet.jit.si" :options="jitsiOptions" v-if="!showRatingDialog")
-    v-dialog(v-model="showRatingDialog" max-width="400")
-      SolutionRatingForm(:solutionAttemptDetail="solutionAttempt" :isMyQuestion="isMyQuestion")
+    v-dialog(v-model="showRatingDialog")
+      v-card
+        video(id="recordingPlayer" class="video-js vjs-default-skin")
+        SolutionRatingForm(:solutionAttemptDetail="solutionAttempt" :isMyQuestion="isMyQuestion")
   div(v-else)
     P Meeting finished | Something went wrong
+  v-alert
+    VideoJsRecord.mt-5(v-if="isRecordingEnabled" @recording-started="recordingStarted" @recording-finished="recordingFinished")
 </template>
 
 <script lang="ts">
@@ -15,10 +19,14 @@ import { General } from "@/mixins/general";
 import SolutionRatingForm from "@/components/Common/SolutionRatingForm.vue";
 import JitsiMeet from "@/components/Multicorder/JitsiMeet.vue";
 import solutionApi from "@/services/solutions.api";
+import VideoJsRecord from "@/components/Multicorder/VideoJsRecord.vue";
+import "video.js/dist/video-js.css";
+import videojs from "video.js";
 
 @Component({
   name: "SolutionAttempt",
   components: {
+    VideoJsRecord,
     VueJitsiMeet: JitsiMeet,
     SolutionRatingForm,
   },
@@ -28,8 +36,10 @@ export default class SolutionAttempt extends Mixins(General) {
   @Ref("jitsiRef") private jitsiRefComponent!: HTMLIFrameElement;
 
   showRatingDialog = false;
-
   solutionAttempt: any | null = null;
+  isRecordingOn = false;
+  recordingData: any = null;
+  player: any = null;
 
   get jitsiOptions() {
     return {
@@ -126,6 +136,7 @@ export default class SolutionAttempt extends Mixins(General) {
     // this.$vToastify.success(event.displayName + " Left");
 
     this.showRatingDialog = true;
+    this.$nextTick(() => this.showRecording());
 
     // this.$router.push("/");
     // this.$router.push("/question/" + this.solutionAttempt.questionId);
@@ -134,6 +145,7 @@ export default class SolutionAttempt extends Mixins(General) {
   videoConferenceLeft(event: any) {
     console.log("callbackevent video conference left");
     this.showRatingDialog = true;
+    this.$nextTick(() => this.showRecording());
   }
 
   onParticipantJoined(event: any) {
@@ -143,6 +155,52 @@ export default class SolutionAttempt extends Mixins(General) {
       successDuration: 2000,
       body: event.displayName + " Joined",
     });
+  }
+
+  showRecording() {
+    console.log("show recording");
+
+    // If the player has already been initialized, use the existing player
+    if (this.player) {
+      // Use the existing player
+    } else {
+      // Initialize the player
+      this.player = videojs("recordingPlayer", {
+        controls: true,
+        width: 600,
+        height: 300,
+        fluid: false,
+        plugins: {},
+      });
+    }
+
+    if (this.recordingData) {
+      let blobUrl = URL.createObjectURL(this.recordingData);
+      this.player.src({
+        type: "video/webm",
+        src: blobUrl,
+      });
+      this.player.load();
+      this.player.play();
+    }
+  }
+
+  recordingStarted() {
+    this.isRecordingOn = true;
+    console.log("recording started ...");
+  }
+
+  recordingFinished(data) {
+    this.isRecordingOn = false;
+    this.recordingData = data;
+    console.log("recording finished ...", data);
+  }
+  get isRecordingEnabled() {
+    console.log(
+      "process.env.VUE_APP_ENABLE_RECORDING",
+      process.env.VUE_APP_ENABLE_RECORDING
+    );
+    return process.env.VUE_APP_ENABLE_RECORDING == "true";
   }
 }
 </script>

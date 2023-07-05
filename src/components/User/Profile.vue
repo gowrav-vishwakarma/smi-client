@@ -216,7 +216,7 @@ v-container
     v-col.col-sm-12.col-md-12
       v-card.pa-2 Solution History
         ul
-          li(v-for="sa in mySolutionAttemps" :key="sa._id" :class="{'green--text': sa.status == 'SOLVED', 'warning--text': sa.status=='ATTEMPTED'}") {{ sa.question[0].title}}
+          li(v-for="sa in mySolutionAttemps" :key="sa._id" :class="{'green--text': sa.status == 'SOLVED', 'warning--text': sa.status=='ATTEMPTED'}" style="cursor:pointer;" @click="goToQuestion(sa.questionId)") {{ sa.question[0].title}}
             br
             span.caption {{humanized_time_span(sa.createdAt)}}
 </template>
@@ -325,6 +325,10 @@ export default class UserProfileComponent extends Mixins(General) {
       "/ask-question?to=" +
       this.$store.getters.loggedInUser._id
     );
+  }
+
+  goToQuestion(questionId: string) {
+    this.$router.push("/question/" + questionId);
   }
 
   copyToClipBoard() {

@@ -110,7 +110,7 @@ class UserAPIService extends APIService {
       });
 
       if (coverImage) {
-        formData.append("images", coverImage, "coverImage");
+        formData.append("images", coverImage, "profileCoverImage");
       }
 
       if (profileImage) {

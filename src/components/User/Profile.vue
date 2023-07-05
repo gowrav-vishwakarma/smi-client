@@ -1,14 +1,14 @@
 <template lang="pug">
 v-container
   v-card.mx-auto.mb-6.profileImageSection
-    v-img(height="180px" style="overflow:visible;" cover :src="coverImage")
+    v-img(height="180px" style="overflow:visible;" cover :src="coverImage" transition="scale-transition")
       .d-flex
-        v-avatar.ml-2(color="grey" size="150" rounded="50%" style="position: absolute;bottom:-20px;")
-          v-img(cover v-if="profileImage" :src="profileImage")
+        v-avatar.ml-2(color="orange" size="150" rounded="50%" style="position: absolute;bottom:-20px;")
+          v-img(cover v-if="profileImage" :src="profileImage" transition="scale-transition")
           v-icon(v-else style="font-size:100px;") mdi-account
         v-btn.ml-auto(icon large elevation="2" @click="editingProfileSection='uploadImage'" v-if="makeProfileEditable")
           v-icon(dark) mdi-pencil
-    .d-flex.align-center.ml-auto(v-if="editingProfileSection=='uploadImage'" rounded style="width:80%")
+    .d-flex.align-center.ml-auto(v-if="editingProfileSection=='uploadImage'" style="width:80%")
       v-file-input(label="Cover Image" v-model="uploadCoverImage" prepend-icon="mdi-camera")
       v-file-input(label="Profile Image" v-model="uploadProfileImage" prepend-icon="mdi-camera")
       v-btn(@click="saveProfile" color="primary") save
@@ -296,8 +296,8 @@ export default class UserProfileComponent extends Vue {
     if (this.uploadCoverImage)
       return URL.createObjectURL(this.uploadCoverImage);
     else
-      return this.profile.coverImage
-        ? process.env.VUE_APP_S3_CDN_URL + this.profile.coverImage
+      return this.profile.profileCoverImage
+        ? process.env.VUE_APP_S3_CDN_URL + this.profile.profileCoverImage
         : "https://cdn.vuetifyjs.com/images/cards/server-room.jpg";
   }
 
@@ -338,6 +338,8 @@ export default class UserProfileComponent extends Vue {
     if (!this.profile.experiences) {
       this.profile["experiences"] = this.userExperienceList;
     }
+
+    console.log("this.profile",this.profile);
   }
 
   removeSkill(skill: string) {

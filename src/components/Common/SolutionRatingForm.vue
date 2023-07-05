@@ -1,14 +1,14 @@
 <template lang="pug">
 div.text-center.solution-rating-form-component
-    v-card(class="mx-auto elevation-16" max-width="400" )
+    v-card(class="mx-auto" flat max-width="400px" )
         v-card-title(style="align-items:center;") {{title}}
         v-card-text Please take a few seconds to rate your experience. It really helps!
           v-rating( v-model="rating" color="yellow darken-3" background-color="grey darken-1" active-color="yellow-accent-4" hover size="48" length="5")
-          v-textarea(label="comment" v-model="comment" outline prepend-icon="mdi-comment" rows="2")
+          v-textarea(label="comment" v-model="comment" outline prepend-icon="mdi-comment" rows="4")
           v-checkbox(v-if="isQuestioner" label="Mark Solved" v-model="markSolved")
         v-divider
         v-card-actions
-          v-btn(color="primary" text block @click="submitRating") Rate Now
+          v-btn(color="primary"  block @click="submitRating") Submit Solution & Rating Now
 </template>
 
 <script lang="ts">
@@ -34,9 +34,16 @@ export default class SolutionRatingForm extends Vue {
   @Prop({ default: null })
   readonly solutionAttemptDetail!: SolutionAttemptDetailResponseDTO;
 
+  @Prop({ default: null })
+  recordingData: any;
+
+  @Prop({ default: null })
+  recordingText!: string;
+
   rating = 0;
   comment = "";
   markSolved = false;
+  progress = 0;
 
   get title() {
     if (this.isOfferer) {
@@ -62,18 +69,29 @@ export default class SolutionRatingForm extends Vue {
 
   async submitRating() {
     eventBus.$emit("show-loader");
-    await solutionsApi.createSolutionRating({
-      solutionAttemptId: this.$route.params.solutionId,
-      comment: this.comment,
-      rating: this.rating,
-      forOfferer: !this.isOfferer,
-      forQuestioner: !this.isQuestioner,
-      offererId: this.solutionAttemptDetail.offererId,
-      questionId: this.solutionAttemptDetail.questionId,
-      questionerId: this.solutionAttemptDetail.questionerId,
-      markedSolved: this.markSolved,
-      // solutionAttemptDetail: this.solutionAttemptDetail,
-    });
+
+    await solutionsApi.createSolutionRating(
+      {
+        solutionAttemptId: this.$route.params.solutionId,
+        comment: this.comment,
+        rating: this.rating,
+        forOfferer: !this.isOfferer,
+        forQuestioner: !this.isQuestioner,
+        offererId: this.solutionAttemptDetail.offererId,
+        questionId: this.solutionAttemptDetail.questionId,
+        questionerId: this.solutionAttemptDetail.questionerId,
+        markedSolved: this.markSolved,
+        // solutionAttemptDetail: this.solutionAttemptDetail,
+
+        videoText: this.recordingText,
+      },
+      this.recordingData,
+      (event) => {
+        this.progress = Math.round((100 * event.loaded) / event.total);
+      }
+    );
+
+    // todo save video here
 
     eventBus.$emit("hide-loader");
     userApi.setOnlineStatus("ONLINE");

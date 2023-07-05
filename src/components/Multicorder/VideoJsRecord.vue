@@ -1,21 +1,17 @@
-<template>
-  <v-row>
-    <v-col cols="2">
-      <v-btn @click="startRecording" v-if="!recording">
-        <v-icon right dark class="mr-3"> mdi-record </v-icon>
-        Start Recording</v-btn
-      >
-      <v-btn @click="stopRecording" v-else>
-        <v-icon right dark class="mr-3"> mdi-pause </v-icon>
-        Stop Recording</v-btn
-      >
-    </v-col>
-    <v-col cols="10">
-      <div v-show="recording">
-        <video id="myVideo" class="video-js vjs-default-skin"></video>
-      </div>
-    </v-col>
-  </v-row>
+<template lang="pug">
+  v-sheet
+    v-card(flat)
+      v-card-title
+      v-card-text
+        div(v-show="recording")
+          video(id="myVideo" class="video-js vjs-default-skin")
+      v-card-actions
+        v-btn(@click="startRecording" v-if="!recording")
+          v-icon(right dark color="red" class="mr-3") mdi-record
+          | Start Recording
+        v-btn(@click="stopRecording" v-else)
+          v-icon(right dark color="red" class="mr-3") mdi-pause
+          | Stop Recording
 </template>
 
 <script>

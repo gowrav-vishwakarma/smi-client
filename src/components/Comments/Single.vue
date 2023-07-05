@@ -13,6 +13,11 @@ div.question-answer-list.mt-2.pa-2
           div.ml-auto() ...
         v-card-text.ma-0.pa-1.pb-0
           div.custom-html.pa-0.ma-0(v-html="comment.comment")
+          v-icon(x-large color="red" size="100" v-if="!displayVideo && comment.video" @click="displayVideo=true") mdi-youtube
+          div(v-else)
+            v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="comment.video")
+              video(width="320" height="240" preload="none" controls)
+                source(:src="videoURL" type="video/webm")
       voting-component(:comment="comment")
         //- div(class="caption")
         //-   span(v-html="comment.comment")
@@ -38,6 +43,11 @@ import { General } from "@/mixins/general";
 export default class SingleCommentComponent extends Mixins(General) {
   @Prop({ default: null, required: true })
   readonly comment!: any;
+
+  displayVideo = false;
+  get videoURL() {
+    return process.env.VUE_APP_S3_CDN_URL + this.comment.video;
+  }
 }
 </script>
 

@@ -12,23 +12,44 @@ class SolutionsAPIService extends APIService {
     });
   }
 
-  async createSolutionRating(ratingParam: {
-    rating: number;
-    comment: string;
-    solutionAttemptId: string;
-    forOfferer: boolean;
-    forQuestioner: boolean;
-    offererId: string;
-    questionId: string;
-    questionerId: string;
-    markedSolved: boolean;
-  }): Promise<any> {
-    console.log("sending Rating Data", ratingParam);
+  async createSolutionRating(
+    ratingParam: {
+      rating: number;
+      comment: string;
+      solutionAttemptId: string;
+      forOfferer: boolean;
+      forQuestioner: boolean;
+      offererId: string;
+      questionId: string;
+      questionerId: string;
+      markedSolved: boolean;
+
+      videoText: string;
+    },
+    solutionVideoBlob: Blob | null,
+    onUploadProgress: (progressEvent: ProgressEvent) => void
+  ): Promise<any> {
+    // console.log("sending Rating Data", ratingParam);
+
+    const formData = new FormData();
+    Object.entries(ratingParam).forEach(([key, value]) => {
+      let v = Array.isArray(value) ? value.join(",") : value;
+      if (typeof v === "object") v = JSON.stringify(v);
+
+      formData.append(key, v as string);
+    });
+    if (solutionVideoBlob) {
+      formData.append("solutionVideoBlob", solutionVideoBlob);
+    }
 
     return await this.axiosCall<any>({
       method: "POST",
       url: "/solution-attempt/createrating",
-      data: ratingParam,
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress,
     });
   }
 

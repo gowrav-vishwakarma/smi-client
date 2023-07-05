@@ -1,7 +1,8 @@
 <template lang="pug">
 v-app-bar(app='' color='white' flat='')
   router-link.d-flex.align-center(to="/" class="logo-link")
-    v-toolbar-title.mx-2(to='/') [smi]
+    v-toolbar-title(to='/')
+      span.pt-1.pb-1(style="background-color: rgb(255, 152, 0) !important; border-radius: 15%; color: white; font-weight: 400;" ) [SMI]
       small.hidden-sm-and-down(class="ml-2") Solve My Issue
   v-spacer
   filter-component.flex-grow-1.mr-2

@@ -93,7 +93,7 @@ v-container
               v-chip.ma-1(v-for="(value, index) in profile.topicsInterestedIn" :key="index") {{value.split("/").reverse()[0]}}
             v-card(flat v-else).pa-2
               v-card-subtitle Please update your topics of interest
-          div(v-if="profile._id == $store.getters.loggedInUser._id")
+          div(v-if="$store.getters.loggedInUser && profile._id == $store.getters.loggedInUser._id")
             v-card 
               v-card-text(@click="copyToClipBoard" style="cursor:pointer") Your ask me link (click to copy): {{ askMeLink }}
       //- div.userExperienceContainer.mt-4

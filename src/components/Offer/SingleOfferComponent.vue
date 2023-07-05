@@ -6,12 +6,15 @@ v-card
     v-card-text {{offer.notes}}
       v-chip-group(v-if="offer.solutionChannel && offer.solutionChannel.length" column)
         //- div(small v-if="offer.solutionChannel && offer.solutionChannel.length")
-        v-chip(small)
-          v-icon(small class="icon mr-2" color="green" v-if="offer.solutionChannel.includes('Chat')") mdi-chat
-        v-chip(small)
-          v-icon(small v-if="offer.solutionChannel.includes('ScreenShare')" color="green" class="mr-2") mdi-monitor
-        v-chip(small)
-          v-icon(small color="green" class="mr-2" v-if="offer.solutionChannel.includes('Video')") mdi-video
+        v-chip(small v-if="offer.solutionChannel.includes('Chat')")
+          v-icon(small class="icon mr-2" color="green" ) mdi-chat
+        v-chip(small v-if="offer.solutionChannel.includes('ScreenShare')")
+          v-icon(small  color="green" class="mr-2") mdi-monitor
+        v-chip(small v-if="offer.solutionChannel.includes('Video')")
+          v-icon(small color="green" class="mr-2" ) mdi-video
+        v-chip(small v-if="offer.solutionChannel.includes('Record')" tooltip="Record") Will record
+          v-icon(small color="red" class="mr-2" ) mdi-record
+
     div(v-if="!isSolved" style="width:100%;")
       div(v-if="questionBelongsToMe" style="width:100%;")
         v-btn(blocked @click="call" v-if="questionBelongsToMe && !offerCallConnected && solverOnlineStatus" style="width:100%;")

@@ -169,7 +169,7 @@ v-container
       v-card.mt-4
         v-card-subtitle Rating as Solver
         v-card-text
-          User-Rating-As-Solver(v-if="profile.ratingAsSolver" :User="userAsSolver")           
+          User-Rating-As-Solver(v-if="profile.ratingAsSolver" :User="userAsSolver")
       //- v-card.mt-4
       //-   v-btn.ml-4(small rounted icon color="primary" @click="editProfile=false, editingProfileSection='contact'" v-if="editingProfileSection==null && makeProfileEditable" )
       //-     v-icon mdi-pencil
@@ -213,6 +213,12 @@ v-container
       //-       v-btn( target="_blank" v-if="profilelink" icon :href="profilelink")
       //-         v-icon(v-if="name=='Stackoverflow' || name=='Website' " color="indigo" large) mdi-web
       //-         v-icon(v-else color="indigo" large) mdi-{{name.toLowerCase()}}
+    v-col.col-sm-12.col-md-12
+      v-card.pa-2 Solution History
+        ul
+          li(v-for="sa in mySolutionAttemps" :key="sa._id" :class="{'green--text': sa.status == 'SOLVED', 'warning--text': sa.status=='ATTEMPTED'}") {{ sa.question[0].title}}
+            br
+            span.caption {{humanized_time_span(sa.createdAt)}}
 </template>
 
 <script lang="ts">
@@ -220,7 +226,7 @@ v-container
 import Treeselect from "@riophae/vue-treeselect";
 // import the styles
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-import { Component, Vue, Ref, Prop } from "vue-property-decorator";
+import { Component, Vue, Ref, Prop, Mixins } from "vue-property-decorator";
 import {
   topics_,
   topics,
@@ -235,6 +241,7 @@ import UserRating from "@/components/User/Rating.vue";
 import UserApiService from "@/services/user.api";
 import UserRatingAsSolver from "@/components/User/RatingAsSolver.vue";
 import { eventBus } from "@/mixins/event-bus";
+import { General } from "@/mixins/general";
 
 @Component({
   name: "UserProfile",
@@ -245,7 +252,7 @@ import { eventBus } from "@/mixins/event-bus";
     Treeselect,
   },
 })
-export default class UserProfileComponent extends Vue {
+export default class UserProfileComponent extends Mixins(General) {
   @Ref() userSkillForm!: HTMLFormElement;
 
   @Prop()
@@ -280,6 +287,7 @@ export default class UserProfileComponent extends Vue {
   userExperienceList: userExperience[] = [];
 
   profile: any = {};
+  mySolutionAttemps: any[] = [];
 
   get userAsQuestioner() {
     return {
@@ -331,6 +339,12 @@ export default class UserProfileComponent extends Vue {
 
   async mounted() {
     this.profile = await UserApiService.getProfile(
+      this.makeProfileEditable
+        ? this.$store.getters.loggedInUser._id
+        : this.$route.params.userId
+    );
+
+    this.mySolutionAttemps = await UserApiService.getSolutionAttempts(
       this.makeProfileEditable
         ? this.$store.getters.loggedInUser._id
         : this.$route.params.userId

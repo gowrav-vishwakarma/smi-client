@@ -10,8 +10,10 @@ div
           .d-flex.justify-space-between
             v-switch(v-model="offerFormData.solutionChannelMode" color="primary" label="Chat" value="Chat")
             v-switch(v-model="offerFormData.solutionChannelMode" color="primary" label="Video" value="Video")
-          .d-flex
+          .d-flex.justify-space-between
             v-switch(v-model="offerFormData.solutionChannelMode" color="primary" label="Screen Share" value="ScreenShare")
+          .d-flex.justify-space-between(v-if="isRecordingEnabled")
+            v-switch(v-model="offerFormData.solutionChannelMode" color="primary" label="Will Record Answer" value="Record")
           //- v-alert(border="top" color="red lighten-2" dark v-if="!offerFormData.solutionChannelMode.length") | Please Select at least one mode
         v-btn(color="primary" block rounded :disabled="myOffer" type="submit"  :loading="loading"	) {{caption}}
     v-card(v-else  :disabled="myOffer" )
@@ -55,7 +57,7 @@ export default class CreateOfferSolutionComponent extends Vue {
   offerFormValid = false;
   offerFormData = {
     offerAnswerDesc: null,
-    solutionChannelMode: ["Chat", "Video", "ScreenShare"],
+    solutionChannelMode: ["Chat", "Video", "ScreenShare", "Record"],
   };
 
   // snackbar = false;
@@ -64,6 +66,14 @@ export default class CreateOfferSolutionComponent extends Vue {
   // snackbarTimeout = "1000";
   // offerCreated = false;
   loading = false;
+
+  get isRecordingEnabled() {
+    console.log(
+      "process.env.VUE_APP_ENABLE_RECORDING",
+      process.env.VUE_APP_ENABLE_RECORDING
+    );
+    return process.env.VUE_APP_ENABLE_RECORDING == "true";
+  }
 
   async createOffer() {
     this.loading = true;

@@ -345,7 +345,9 @@ export default class UserProfileComponent extends Mixins(General) {
     );
 
     this.mySolutionAttemps = await UserApiService.getSolutionAttempts(
-      this.$route.params.userId
+      this.makeProfileEditable
+        ? this.$store.getters.loggedInUser._id
+        : this.$route.params.userId
     );
     if (!this.profile.experiences) {
       this.profile["experiences"] = this.userExperienceList;

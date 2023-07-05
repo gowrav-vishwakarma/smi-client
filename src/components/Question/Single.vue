@@ -10,7 +10,7 @@ v-card.mb-2.pa-5.question-single-card(v-if="question")
         v-icon(v-if="question.scope=='Private'" color="red" @click.stop="isMyProfileView && changeScope('Public')") mdi-lock
         v-icon(x-large color="red" size="100" v-if="!displayVideo" :disabled="!question.video || question.video ==''") mdi-youtube
     .question-description-text
-      v-card-subtitle.pt-0.text--secondary.text-justify(v-if="showDetail" v-html="question.detail")
+      v-card-subtitle.pt-0.text--secondary.text-justify.smi-question-detail(v-if="showDetail" v-html="question.detail")
       v-card-subtitle.pt-0.text--secondary.text-justify(v-else) {{shortdetail}}
       v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")
           v-img(src="@/assets/logo.png" max-height="350" contain)
@@ -202,9 +202,13 @@ export default class QuestionSingle extends Mixins(General) {
 }
 </script>
 
-<style scoped>
+<style>
 .question-heading:hover {
   color: var(--v-primary-base); /* Replace with the desired color variable */
   cursor: pointer; /* Add a cursor style on hover, if desired */
+}
+
+.smi-question-detail p{
+  margin-bottom: 0 !important;
 }
 </style>

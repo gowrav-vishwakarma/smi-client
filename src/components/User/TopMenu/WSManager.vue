@@ -95,7 +95,7 @@ export default class WSManager extends Vue {
           newPayload.from = payload.to;
           newPayload.callAccept = callAccept;
           if (callAccept && payload) {
-            const solutionOffer = await solutionsApi.createSolutionAttempt({
+            const solutionAttemptOffer = await solutionsApi.createSolutionAttempt({
               questionId: payload.questionId,
               questionerId: payload.from._id,
               questioner: {
@@ -108,15 +108,16 @@ export default class WSManager extends Vue {
                 ratingAsSolver: payload.offerer.ratingAsSolver,
               },
               notes: payload.eventDetail.name,
+              offerId:payload.offerId
             });
 
-            newPayload.solutionOfferId = solutionOffer._id;
+            newPayload.solutionOfferAttemptId = solutionAttemptOffer._id;
             SocketEmit("acceptCall", newPayload);
 
             await AuthStoreModule.updateUserOnlineStatusAction("BUSY");
             /** call accepted buy offerer end user - so redirecting to solution-attempt page*/
             this.$router.push(
-              "/solution-attempt/" + newPayload.solutionOfferId
+              "/solution-attempt/" + newPayload.solutionOfferAttemptId
             );
           } else {
             SocketEmit("denyCall", newPayload);
@@ -137,7 +138,7 @@ export default class WSManager extends Vue {
       userApi.setOnlineStatus("BUSY");
       await AuthStoreModule.updateUserOnlineStatusAction("BUSY");
       // this.offerCallConnected = true;
-      this.$router.push("/solution-attempt/" + payload.solutionOfferId);
+      this.$router.push("/solution-attempt/" + payload.solutionOfferAttemptId);
       // }
     });
 

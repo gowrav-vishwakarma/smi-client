@@ -14,4 +14,5 @@ export default class CreateSolutionAttemptDTO {
   questioner!: any;
   offerer!: any;
   notes!: string;
+  offerId!:string;
 }

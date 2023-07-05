@@ -5,7 +5,6 @@ import LoginResponseDTO from "@/dto/response/login-response.dto";
 import VerifyUserDTO from "@/dto/request/user-verify.dto";
 import VerifyUserOtpDTO from "@/dto/request/user-otp-verify.dto";
 import UserProfileDTO from "@/dto/user/profile.dto";
-import QuestionDetailResponseDTO from "@/dto/response/question-detail-response.dto";
 import QuestionListResponseDTO from "@/dto/response/question-list-response.dto";
 import RegisterUserResponseDTO from "@/dto/response/register-response.dto";
 import APIService from "./http-common";
@@ -85,6 +84,13 @@ class UserAPIService extends APIService {
       url: `/users/profile/${id}`,
     });
     return response;
+  }
+
+  async getSolutionAttempts(userId: string): Promise<any[]> {
+    return await this.axiosCall<any[]>({
+      method: "GET",
+      url: `/solution-attempt/by/${userId}`,
+    });
   }
 
   async updateProfile(

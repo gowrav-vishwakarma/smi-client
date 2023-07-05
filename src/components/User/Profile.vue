@@ -94,8 +94,12 @@ v-container
             v-card(flat v-else).pa-2
               v-card-subtitle Please update your topics of interest
           div(v-if="$store.getters.loggedInUser && profile._id == $store.getters.loggedInUser._id")
-            v-card 
-              v-card-text(@click="copyToClipBoard" style="cursor:pointer") Your ask me link (click to copy): {{ askMeLink }}
+            v-card.d-flex.flex-column
+              v-btn.primary.d-block(@click="addNewAskMeToken") Add new ask me token
+              v-card-text.d-flex.justify-space-between(v-for="(token, index) in profile.askMeTokens" :key="index" @click="copyToClipBoard(askMeLink(token))" style="cursor:pointer") {{ askMeLink(token) }}
+                div
+                  v-icon mdi-content-copy
+                  v-icon(color="red" @click.prevent.stop="removeToken(token)") mdi-delete
       //- div.userExperienceContainer.mt-4
       //-   v-form(ref="userExperienceForm")
       //-     .d-flex
@@ -319,25 +323,41 @@ export default class UserProfileComponent extends Mixins(General) {
     // : "https://cdn.vuetifyjs.com/images/profiles/marcus.jpg";
   }
 
-  get askMeLink() {
-    return (
-      process.env.VUE_APP_BASE_URL +
-      "/ask-question?to=" +
+  askMeLink(token) {
+    return process.env.VUE_APP_BASE_URL + "/ask-question?to=" + token.token;
+  }
+
+  async addNewAskMeToken() {
+    const token = await UserApiService.addNewAskMeToken(
       this.$store.getters.loggedInUser._id
     );
+
+    console.log("new token", token);
+    this.profile.askMeTokens.push({ name: "New Token", token: token });
+  }
+
+  async removeToken(token) {
+    const confirmRemove = confirm(
+      "Are you sure you want to remove this token?"
+    );
+    if (confirmRemove) {
+      await UserApiService.removeAskMeToken(token.token);
+      this.profile.askMeTokens = this.profile.askMeTokens.filter(
+        (t) => t.token !== token.token
+      );
+    }
   }
 
   goToQuestion(questionId: string) {
     this.$router.push("/question/" + questionId);
   }
 
-  copyToClipBoard() {
+  copyToClipBoard(url) {
     const clipboardData =
       navigator.clipboard ||
       window.Clipboard; /* IE support https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript */
-    const message = this.askMeLink;
 
-    clipboardData.writeText(message);
+    clipboardData.writeText(url);
     this.$vToastify.success("Copied to clipboard");
   }
 
@@ -357,7 +377,7 @@ export default class UserProfileComponent extends Mixins(General) {
       this.profile["experiences"] = this.userExperienceList;
     }
 
-    console.log("this.profile",this.profile);
+    console.log("this.profile", this.profile);
   }
 
   removeSkill(skill: string) {

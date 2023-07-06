@@ -232,7 +232,6 @@ import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { Component, Vue, Ref, Prop, Mixins } from "vue-property-decorator";
 import {
-  topics_,
   topics,
   getFlatTopics,
   languages,
@@ -272,7 +271,6 @@ export default class UserProfileComponent extends Mixins(General) {
   uploadCoverImage: File | null = null;
   uploadProfileImage: File | null = null;
 
-  skillList: string[] = getFlatTopics(topics_);
   topicsInterestedIn: Topic[] = topics;
   languages: string[] = languages;
 

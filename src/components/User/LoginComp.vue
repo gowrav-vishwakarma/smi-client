@@ -66,6 +66,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { AuthStoreModule, FilterStoreModule } from "@/store";
 import UserAPIService from "../../services/user.api";
 import { CurrentUserI } from "@/store/module/auth";
+import { FiltersI } from "@/store/module/filter";
 
 @Component({
   name: "LoginComponent",
@@ -108,11 +109,17 @@ export default class LoginComponent extends Vue {
       };
       await AuthStoreModule.setCurrentUserAction(user);
       // console.log(AuthStoreModule.token);
-      let filter = {
+      let filter: FiltersI = {
         topics: user.userToppics,
         tags: [],
         languages: user.userLanguages,
         sortBy: "newest",
+        availableOnAudioCall: true,
+        availableOnVideoCall: true,
+        availableOnChatChannel: true,
+        availableOnScreenShare: true,
+        hasComments: true,
+        query: "",
       };
       FilterStoreModule.setFilters(filter);
 

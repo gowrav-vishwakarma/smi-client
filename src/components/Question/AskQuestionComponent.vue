@@ -120,13 +120,7 @@
 </template>
 
 <script lang="ts">
-import {
-  topics_,
-  topics,
-  getFlatTopics,
-  languages,
-  Topic,
-} from "@/services/staticValues";
+import { topics, Topic } from "@/services/staticValues";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";

@@ -1,5 +1,6 @@
 <template lang="pug">
-v-card.mb-2.pa-5.question-single-card(v-if="question")
+v-card.mb-2.pa-5.question-single-card(v-if="question" style="overflow:hidden;")
+  Ribbon(headingLabel="Solved" v-if='question.status=="SOLVED"')
   v-card.pa-0.ma-0.question-detail-card(flat)
     //- .d-flex.justify-space-between
     //-   h4.text-subtitle-1.question-heading.primary--text( style="cursor:pointer" @click="gotoDetails") Q. {{question.title}}
@@ -61,6 +62,7 @@ import QuestionValueComponent from "@/components/Question/QuestionValueComponent
 import VotingComponent from "@/components/Common/VotingComponent.vue";
 import BookingComponent from "@/components/Common/BookmarkComponent.vue";
 import ShareButton from "@/components/Common/ShareButton.vue";
+import Ribbon from "@/components/UI/Ribbon.vue";
 import { AuthStoreModule } from "@/store";
 
 import QuestionsAPIService from "@/services/questions.api";
@@ -76,6 +78,7 @@ import QuestionsAPIService from "@/services/questions.api";
     VotingComponent,
     BookingComponent,
     ShareButton,
+    Ribbon,
   },
 })
 export default class QuestionSingle extends Mixins(General) {
@@ -208,7 +211,7 @@ export default class QuestionSingle extends Mixins(General) {
   cursor: pointer; /* Add a cursor style on hover, if desired */
 }
 
-.smi-question-detail p{
+.smi-question-detail p {
   margin-bottom: 0 !important;
 }
 </style>

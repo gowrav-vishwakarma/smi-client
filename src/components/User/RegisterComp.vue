@@ -92,6 +92,7 @@
           :multiple="true"
           :options="topicsInterestedIn"
           placeholder="Select Topics of Interests"
+          :defaultExpandLevel="1"
         ></treeselect>
         <v-autocomplete
           v-model="regForm.country"
@@ -301,11 +302,15 @@ export default class RegisterComponent extends Vue {
 </script>
 
 <style>
-.smi-register-component .vue-treeselect__control {
+.vue .smi-register-component .vue-treeselect__control {
   border: 1px solid rgba(0, 0, 0, 0.4) !important;
 }
 
 .smi-register-component .vue-treeselect__placeholder {
   color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.vue-treeselect__option-arrow-container {
+  color: black;
 }
 </style>

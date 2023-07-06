@@ -8,6 +8,7 @@
       :src="source"
       :autoplay="autoplay"
       :playsinline="playsinline"
+      muted="muted"
     />
     <img
       v-show="view == 'snapshot'"
@@ -106,7 +107,7 @@ export default /*#__PURE__*/ {
       default: () => {
         return [
           {
-            text: "Screen share",
+            text: "Screen Recording",
             value: "screenshare",
           },
         ];
@@ -118,7 +119,7 @@ export default /*#__PURE__*/ {
         return [
           {
             divider: true,
-            header: "Screen Sharing",
+            header: "Screen Recording",
           },
         ];
       },
@@ -171,13 +172,28 @@ export default /*#__PURE__*/ {
     },
     startScreenshare() {
       try {
+        // First get the audio stream from the microphone
         navigator.mediaDevices
-          .getDisplayMedia({ video: true, audio: true})
-          .then((stream) => this.loadSrcStream(stream));
+          .getUserMedia({ audio: true })
+          .then((audioStream) => {
+            // Then get the video stream from the screen share
+            navigator.mediaDevices
+              .getDisplayMedia({ video: true })
+              .then((videoStream) => {
+                // Combine audio and video streams
+                let combinedStream = new MediaStream([
+                  ...videoStream.getVideoTracks(),
+                  ...audioStream.getAudioTracks(),
+                ]);
+                this.loadSrcStream(combinedStream);
+              })
+              .catch((err) => console.error("Error: " + err));
+          });
       } catch (err) {
         console.error("Error: " + err);
       }
     },
+
     loadSrcStream(stream) {
       if ("srcObject" in this.$refs.video) {
         // new browsers api

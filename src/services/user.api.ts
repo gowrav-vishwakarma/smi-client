@@ -86,6 +86,14 @@ class UserAPIService extends APIService {
     return response;
   }
 
+  async getProfileByToken(token: string): Promise<UserProfileDTO> {
+    const response = await this.axiosCall<UserProfileDTO>({
+      method: "GET",
+      url: `/users/profile-by-token/${token}`,
+    });
+    return response;
+  }
+
   async getSolutionAttempts(userId: string): Promise<any[]> {
     return await this.axiosCall<any[]>({
       method: "GET",
@@ -208,6 +216,20 @@ class UserAPIService extends APIService {
       method: "GET",
     });
     return response;
+  }
+
+  async addNewAskMeToken(name: string): Promise<any> {
+    return await this.axiosCall<any>({
+      url: `/users/add-new-ask-me-token/${name}`,
+      method: "GET",
+    });
+  }
+
+  async removeAskMeToken(token: string): Promise<any> {
+    return await this.axiosCall<any>({
+      url: `/users/remove-ask-me-token/${token}`,
+      method: "GET",
+    });
   }
 }
 

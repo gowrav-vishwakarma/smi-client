@@ -120,13 +120,7 @@
 </template>
 
 <script lang="ts">
-import {
-  topics_,
-  topics,
-  getFlatTopics,
-  languages,
-  Topic,
-} from "@/services/staticValues";
+import { topics, Topic } from "@/services/staticValues";
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -192,7 +186,7 @@ export default class AskQuestionView extends Vue {
   @Watch("askTo")
   async askToChanged() {
     if (this.askTo) {
-      this.askToUser = await userApi.getProfile(this.askTo);
+      this.askToUser = await userApi.getProfileByToken(this.askTo);
       this.question.askTo = this.askTo;
     }
   }

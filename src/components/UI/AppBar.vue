@@ -30,11 +30,11 @@ v-app-bar(app='' color='white' flat='')
           //- v-chip(small='' v-for='l in $store.getters.filters.languages' :key="'l' + l")
           //-   | {{ l }}
           v-chip(small v-if="$store.getters.filters.tags && $store.getters.filters.tags.length" v-for='t in $store.getters.filters.tags' :key="'tag' + t" close @click:close="clearTag(t)" @click="clearTag(t)") {{ t }} 
-          v-chip(small v-if="solutionChannelFilterSelected")
-            v-icon(small class="icon mr-2" color="green" v-if="$store.getters.filters.availableOnAudioCall") mdi-phone-incoming
-            v-icon(small class="icon mr-2" color="green" v-if="$store.getters.filters.availableOnChatChannel") mdi-chat
-            v-icon(small v-if="$store.getters.filters.availableOnScreenShare" color="green" class="mr-2") mdi-monitor
-            v-icon(small color="green" class="mr-2" v-if="$store.getters.filters.availableOnVideoCall") mdi-video
+          v-chip(small)
+            v-icon(small class="icon mr-2" :color="$store.getters.filters.availableOnAudioCall? 'green':'red'") mdi-phone-incoming
+            v-icon(small class="icon mr-2" :color="$store.getters.filters.availableOnChatChannel? 'green':'red'") mdi-chat
+            v-icon(small class="icon mr-2" :color="$store.getters.filters.availableOnScreenShare?'green':'red'") mdi-monitor
+            v-icon(small class="icon mr-2" :color="$store.getters.filters.availableOnVideoCall?'green':'red'") mdi-video
 </template>
 
 <script lang="ts">

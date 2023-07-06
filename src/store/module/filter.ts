@@ -6,6 +6,11 @@ export class FiltersI {
   tags?: string[];
   languages?: string[];
   sortBy?: string;
+  hasComments?: boolean;
+  availableOnChatChannel?: boolean;
+  availableOnScreenShare?: boolean;
+  availableOnVideoCall?: boolean;
+  availableOnAudioCall?: boolean;
 }
 
 export interface IFilterState {
@@ -19,7 +24,17 @@ export default class Filter extends VuexModule implements IFilterState {
   get filters(): FiltersI | null {
     return this.filterState
       ? this.filterState
-      : { query: "", topics: [], tags: [], languages: [], sortBy: "newest" };
+      : {
+          query: "",
+          topics: [],
+          tags: [],
+          languages: [],
+          sortBy: "newest",
+          availableOnChatChannel: true,
+          availableOnScreenShare: true,
+          availableOnVideoCall: true,
+          availableOnAudioCall: true,
+        };
   }
 
   get isCleared(): boolean {

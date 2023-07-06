@@ -42,6 +42,7 @@ import Record from "videojs-record/dist/videojs.record.js";
 export default {
   data() {
     return {
+      triggerRecordingFinish: false,
       recording: false,
       player: "",
       options: {
@@ -130,5 +131,12 @@ export default {
       this.player.dispose();
     }
   },
+  // watch: {
+  //   async triggerRecordingFinish(newv, old) {
+  //     console.log(newv);
+  //     console.log(old);
+  //     await this.stopRecording();
+  //   },
+  // },
 };
 </script>

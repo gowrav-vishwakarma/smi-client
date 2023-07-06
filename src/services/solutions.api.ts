@@ -23,6 +23,7 @@ class SolutionsAPIService extends APIService {
       questionId: string;
       questionerId: string;
       markedSolved: boolean;
+      offerId: string;
 
       videoText: string | null;
     },

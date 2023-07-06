@@ -88,6 +88,7 @@ export default class SolutionRatingForm extends Vue {
         questionId: this.solutionAttemptDetail.questionId,
         questionerId: this.solutionAttemptDetail.questionerId,
         markedSolved: this.markSolved,
+        offerId: this.solutionAttemptDetail.offerId,
         // solutionAttemptDetail: this.solutionAttemptDetail,
 
         videoText: this.isSaveComment ? this.recordingText : null,

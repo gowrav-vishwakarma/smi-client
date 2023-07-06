@@ -7,10 +7,10 @@ div.question-answer-list.mt-2.pa-2
       solver-signature(:User="comment.User" disableName="true")
     div.pa-1
     div(style="width:100%;")
-      v-card.answer-card(style="width:100%;")
+      v-card.answer-card(style="width:100%;overflow:hidden;")
         .d-flex.pr-2
           solver-signature(:User="comment.User" disableAvatar="true")
-          div.ml-auto() ...
+          div.ml-auto()
         v-card-text.ma-0.pa-1.pb-0
           div.custom-html.pa-0.ma-0(v-html="comment.comment")
           v-icon(x-large color="red" size="100" v-if="!displayVideo && comment.video" @click="displayVideo=true") mdi-youtube
@@ -18,6 +18,8 @@ div.question-answer-list.mt-2.pa-2
             v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="comment.video")
               video(width="320" height="240" preload="none" controls)
                 source(:src="videoURL" type="video/webm")
+        v-card-actions
+          v-icon(v-if="comment.isQuestionSolved" color="green" ) mdi-check-all
       voting-component(:comment="comment")
         //- div(class="caption")
         //-   span(v-html="comment.comment")
@@ -31,6 +33,7 @@ import "reflect-metadata";
 import { Component, Mixins, Prop } from "vue-property-decorator";
 import SolverSignature from "@/components/User/Signature/AsSolver.vue";
 import VotingComponent from "@/components/Common/VotingComponent.vue";
+import Ribbon from "@/components/UI/Ribbon.vue";
 import { General } from "@/mixins/general";
 
 @Component({
@@ -38,6 +41,7 @@ import { General } from "@/mixins/general";
   components: {
     SolverSignature,
     VotingComponent,
+    Ribbon,
   },
 })
 export default class SingleCommentComponent extends Mixins(General) {

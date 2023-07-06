@@ -23,6 +23,8 @@ export default class SolutionAttemptDetailResponseDTO {
 
   offererId!: string;
 
+  offerId!: string;
+
   questionerId!: string;
 
   status!: string;

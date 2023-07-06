@@ -106,6 +106,7 @@ export default class CreateOfferSolutionComponent extends Vue {
         .createOffer(
           this.question.questionerId,
           this.question._id,
+          this.question.title,
           this.offerFormData.offerAnswerDesc
             ? this.offerFormData.offerAnswerDesc
             : "Interested",

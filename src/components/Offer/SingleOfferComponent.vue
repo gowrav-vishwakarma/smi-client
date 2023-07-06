@@ -14,7 +14,8 @@ v-card
           v-icon(small color="green" class="mr-2" ) mdi-video
         v-chip(small v-if="offer.solutionChannel.includes('Record')" tooltip="Record") Will record
           v-icon(small color="red" class="mr-2" ) mdi-record
-
+        v-chip(small v-if="offer.isQuestionSolved" tooltip="Question Solved By this Offer") Solved By this Offer
+          v-icon(small color="green" class="ml-2" ) mdi-check-all
     div(v-if="!isSolved" style="width:100%;")
       div(v-if="questionBelongsToMe" style="width:100%;")
         v-btn(blocked @click="call" v-if="questionBelongsToMe && !offerCallConnected && solverOnlineStatus" style="width:100%;")

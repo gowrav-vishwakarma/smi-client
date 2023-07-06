@@ -68,6 +68,7 @@ class QuestionsAPIService extends APIService {
   async createOffer(
     questionerId: string,
     questionId: string,
+    questionTitle: string,
     notes: string,
     solutionChannel: string[]
   ): Promise<any> {
@@ -77,6 +78,7 @@ class QuestionsAPIService extends APIService {
       data: {
         questionerId,
         questionId,
+        questionTitle,
         notes,
         solutionChannel,
       },

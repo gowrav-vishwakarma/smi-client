@@ -13,15 +13,12 @@ div.questionFilterComponent
     //- todo filters
     //- v-autocomplete(:items="languageList" dense small v-model="filterQuery.languages" multiple label="Language" outlined)
     //- v-checkbox(label="questions having answer" dense small v-model="filterQuery.hasComments") 
-    div Available for solution
-    .d-flex(style="align-items:center;flex-wrap:wrap;")
-      v-checkbox(style="width:50%;" label="Chat" dense v-model="filterQuery.availableOnChatChannel")
-        //- <template v-slot:prepend>
-        //-   v-icon(color="primary" v-show="true") mdi-chat
-        //- </template>
-      v-checkbox(style="width:50%;" label="Screen Share" dense v-model="filterQuery.availableOnScreenShare")
-      v-checkbox(style="width:50%;" label="Video Call" dense v-model="filterQuery.availableOnVideoCall")
-      v-checkbox(style="width:50%;" label="Audio Call" dense v-model="filterQuery.availableOnAudioCall")
+    //div Available for solution
+    //.d-flex(style="align-items:center;flex-wrap:wrap;")
+      //v-checkbox(style="width:50%;" label="Chat" dense v-model="filterQuery.availableOnChatChannel")
+      //v-checkbox(style="width:50%;" label="Screen Share" dense v-model="filterQuery.availableOnScreenShare")
+      //v-checkbox(style="width:50%;" label="Video Call" dense v-model="filterQuery.availableOnVideoCall")
+      //v-checkbox(style="width:50%;" label="Audio Call" dense v-model="filterQuery.availableOnAudioCall")
     v-row
       v-col(cols="6")
         v-btn(color="grey"  @click="dialogClose" :disabled="!valid" block) Close
@@ -30,10 +27,15 @@ div.questionFilterComponent
 </template>
 
 <script lang="ts">
-import { topics_, topics, languages, getFlatTopics, Topic } from "@/services/staticValues";
+import {
+  topics_,
+  topics,
+  languages,
+  getFlatTopics,
+  Topic,
+} from "@/services/staticValues";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-
 
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
@@ -46,7 +48,7 @@ import questionsApi from "@/services/questions.api";
   components: {
     VueEditor,
     MulticorderUI,
-    Treeselect
+    Treeselect,
   },
 })
 export default class AskQuestionView extends Vue {
@@ -79,8 +81,6 @@ export default class AskQuestionView extends Vue {
       await this.callback(this.filterQuery);
     }
 
-    
-
     // this.progress = 0;
     // var data = this.question;
     // data.languages = this.$store.getters.loggedInUser.userLanguages;
@@ -95,11 +95,11 @@ export default class AskQuestionView extends Vue {
   }
 
   @Watch("$store.getters.filters", { immediate: true })
-    onFilterChange() {
-      if (this.$store.getters.filters) {
-        this.filterQuery = this.$store.getters.filters;
-      }
+  onFilterChange() {
+    if (this.$store.getters.filters) {
+      this.filterQuery = this.$store.getters.filters;
     }
+  }
 
   dialogClose() {
     this.callback(undefined);

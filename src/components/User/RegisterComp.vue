@@ -1,5 +1,5 @@
 <template>
-  <div class="align-center">
+  <div class="align-center smi-register-component">
     <h3 class="text-h5 pa-3">Get Yourself Registered!</h3>
     <div class="mt-6">
       <v-form ref="form" v-model="valid" lazy-validation>
@@ -87,13 +87,12 @@
           small-chips
         ></v-autocomplete>
         <treeselect
-          class="mb-2 mt-n5"
+          class="mt-n1 mb-5"
           v-model="regForm.topics"
           :multiple="true"
           :options="topicsInterestedIn"
           placeholder="Select Topics of Interests"
         ></treeselect>
-
         <v-autocomplete
           v-model="regForm.country"
           :items="countries"
@@ -103,6 +102,7 @@
           class="field mt-2"
           label="Country"
           dense
+          item-text="name"
         ></v-autocomplete>
         <v-btn
           class="lgnbtn mt-2"
@@ -193,13 +193,14 @@
 </style>
 
 <script lang="ts">
+// countries,
 import {
   topics,
   languages,
-  countries,
   getFlatTopics,
   Topic,
 } from "@/services/staticValues";
+
 import { Component, Vue } from "vue-property-decorator";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -207,6 +208,7 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import UserAPIService from "../../services/user.api";
 import RegisterUserDTO from "../../dto/request/register.dto";
 // import { eventBus } from "@/mixins/event-bus";
+import { Country } from "country-state-city";
 
 @Component({
   components: {
@@ -245,7 +247,8 @@ export default class RegisterComponent extends Vue {
   ];
   topicsInterestedIn: Topic[] = topics;
   languages = languages;
-  countries = countries;
+  countries = Country.getAllCountries();
+  // countries = countries;
   verifySnack = false;
   loader = false;
 
@@ -296,3 +299,13 @@ export default class RegisterComponent extends Vue {
   }
 }
 </script>
+
+<style>
+.smi-register-component .vue-treeselect__control {
+  border: 1px solid rgba(0, 0, 0, 0.4) !important;
+}
+
+.smi-register-component .vue-treeselect__placeholder {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+</style>

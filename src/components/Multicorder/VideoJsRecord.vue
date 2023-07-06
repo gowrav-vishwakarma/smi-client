@@ -1,17 +1,19 @@
 <template lang="pug">
-  v-sheet
-    v-card(flat)
-      v-card-title
-      v-card-text
-        div(v-show="recording")
-          video(id="myVideo" class="video-js vjs-default-skin")
-      v-card-actions
-        v-btn(@click="startRecording" v-if="!recording")
-          v-icon(right dark color="red" class="mr-3") mdi-record
-          | Start Recording
-        v-btn(@click="stopRecording" v-else)
-          v-icon(right dark color="red" class="mr-3") mdi-pause
-          | Stop Recording
+  v-card.mt-10
+    v-row
+      v-col(cols="6" sm="6" md="6" lg="6" xs="6")
+        v-card.ml-5.mt-5(v-show="recording" flat)
+          v-card-text
+            video(id="myVideo" class="video-js vjs-default-skin" style="width:100%;height:150px;")
+      v-col.d-flex(cols="6" sm="12" md="6" lg="6" xs="12" style="align-items:center;")
+          v-card(flat)
+            v-card-actions
+              v-btn(@click="startRecording" v-if="!recording" block dark)
+                v-icon(right dark color="red" class="mr-3") mdi-record
+                | Start Recording
+              v-btn(@click="stopRecording" v-else block dark)
+                v-icon(right dark color="red" class="mr-3") mdi-pause
+                | Stop Recording
 </template>
 
 <script>
@@ -40,6 +42,7 @@ import Record from "videojs-record/dist/videojs.record.js";
 export default {
   data() {
     return {
+      triggerRecordingFinish: false,
       recording: false,
       player: "",
       options: {
@@ -128,5 +131,12 @@ export default {
       this.player.dispose();
     }
   },
+  // watch: {
+  //   async triggerRecordingFinish(newv, old) {
+  //     console.log(newv);
+  //     console.log(old);
+  //     await this.stopRecording();
+  //   },
+  // },
 };
 </script>

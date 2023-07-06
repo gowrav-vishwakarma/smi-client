@@ -16,10 +16,10 @@ v-container.smi-meeting-wrapper
             v-divider(vertical)
           v-col(cols="5" sm="12" md="5" lg="5" xs="12")
               SolutionRatingForm(:solutionAttemptDetail="solutionAttempt" :isMyQuestion="isMyQuestion" :recordingData="recordingData" :recordingText="recordingText")
+    v-alert
+      VideoJsRecord.mt-5(v-if="isRecordingEnabled" @recording-started="recordingStarted" @recording-finished="recordingFinished")
   div(v-else)
     P Meeting finished | Something went wrong
-  v-alert
-    VideoJsRecord.mt-5(v-if="isRecordingEnabled" @recording-started="recordingStarted" @recording-finished="recordingFinished")
 </template>
 
 <script lang="ts">

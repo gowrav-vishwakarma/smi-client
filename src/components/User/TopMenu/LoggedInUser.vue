@@ -3,9 +3,11 @@
     <ws-manager></ws-manager>
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn text small v-bind="attrs" v-on="on" class="pa-0">
-          <span class="hidden-sm-and-down">
-            {{ $store.getters.loggedInUser.name }}
+        <v-btn text small v-bind="attrs" v-on="on" class="pa-0 ma-0">
+          <span class="hidden-sm-and-down">{{
+            $store.getters.loggedInUser.name
+          }}</span>
+          <span>
             <v-icon>mdi-dots-vertical</v-icon>
           </span>
         </v-btn>

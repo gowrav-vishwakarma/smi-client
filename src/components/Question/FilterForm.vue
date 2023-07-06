@@ -2,15 +2,15 @@
 div.questionFilterComponent
   v-form(ref="filterForm" v-model="valid")
     v-text-field(label="Question Contains" placeholder="your search query" dense small outlined v-model="filterQuery.query")
-    treeselect.mb-2.mt-n5(v-model="filterQuery.topics" :multiple="true" :options="topicsInterestedIn" placeholder="Select Topics of Interests")
+    treeselect.mb-5(v-model="filterQuery.topics" :multiple="true" :options="topicsInterestedIn" placeholder="Select Topics of Interests")
     v-autocomplete(v-model="filterQuery.languages" dense small multiple :items="languageList" small-chips label="Languages" outlined)
     v-combobox(v-model="filterQuery.tags" dense small outlined label="Tags" multiple small-chips clearable :delimiters="[',']" deletable-chips)
-    div Filter Questions with following channels available
-    .d-flex(style="align-items:center;flex-wrap:wrap;")
-      v-checkbox(style="width:50%;" label="Chat" dense v-model="filterQuery.availableOnChatChannel")
-      v-checkbox(style="width:50%;" label="Screen Share" dense v-model="filterQuery.availableOnScreenShare")
-      v-checkbox(style="width:50%;" label="Video Call" dense v-model="filterQuery.availableOnVideoCall")
-      v-checkbox(style="width:50%;" label="Audio Call" dense v-model="filterQuery.availableOnAudioCall")
+    //div Filter Questions with following channels available
+    //.d-flex(style="align-items:center;flex-wrap:wrap;")
+    //  v-checkbox(style="width:50%;" label="Chat" dense v-model="filterQuery.availableOnChatChannel")
+    //  v-checkbox(style="width:50%;" label="Screen Share" dense v-model="filterQuery.availableOnScreenShare")
+    //  v-checkbox(style="width:50%;" label="Video Call" dense v-model="filterQuery.availableOnVideoCall")
+    //  v-checkbox(style="width:50%;" label="Audio Call" dense v-model="filterQuery.availableOnAudioCall")
     v-row
       v-col(cols="6")
         v-btn(color="grey"  @click="dialogClose" :disabled="!valid" block) Close
@@ -94,3 +94,17 @@ export default class AskQuestionView extends Vue {
   }
 }
 </script>
+
+<style>
+.questionFilterComponent .vue-treeselect__control {
+  border: 1px solid rgba(0, 0, 0, 0.4) !important;
+}
+
+.questionFilterComponent .vue-treeselect__placeholder {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.vue-treeselect__option-arrow-container {
+  color: black;
+}
+</style>

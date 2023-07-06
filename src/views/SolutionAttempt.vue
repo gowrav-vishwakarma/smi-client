@@ -1,22 +1,23 @@
 <template lang="pug">
-v-container.smi-meeting-wrapper
-  div(style="height: 80vh" v-if="solutionAttempt && solutionAttempt._id")
-    vue-jitsi-meet(ref="jitsiRef" domain="meet.jit.si" :options="jitsiOptions" v-if="!showRatingDialog")
-    v-dialog(v-model="showRatingDialog" width="70%")
-      v-card(flat width="100%")
-        v-row
-          v-col(cols="5" sm="12" md="5" lg="5" xs="12")
-            v-card.solution-video-comment-section(class="mx-auto" flat max-width="400px" )
-              v-card-title Describe your solution
-              v-card-subtitle Please take a few seconds to write your solution. It really helps other!
-              v-card-text
-                video(v-if="recordingData" id="recordingPlayer" class="video-js vjs-default-skin" style="width:100%;height:150px;")
-                vue-editor(v-model="recordingText" :editor-toolbar="editorToolbar")
-          v-col.pa-2(cols="2" sm="12" md="2" lg="2" xs="12" style="text-align:center;" )
-            v-divider(vertical)
-          v-col(cols="5" sm="12" md="5" lg="5" xs="12")
-              SolutionRatingForm(:solutionAttemptDetail="solutionAttempt" :isMyQuestion="isMyQuestion" :recordingData="recordingData" :recordingText="recordingText")
-    v-alert
+v-container(style="min-height:100vh;").smi-meeting-wrapper
+  v-card(v-if="solutionAttempt && solutionAttempt._id")
+    v-card(style="height: 60vh" )
+      vue-jitsi-meet(ref="jitsiRef" domain="meet.jit.si" :options="jitsiOptions" v-if="!showRatingDialog")
+      v-dialog(v-model="showRatingDialog" width="70%")
+        v-card(flat width="100%")
+          v-row.pa-0.ma-0
+            v-col(cols="5" sm="12" md="5" lg="5" xs="12")
+              v-card.solution-video-comment-section(class="mx-auto" flat max-width="400px" )
+                v-card-title Describe your solution
+                v-card-subtitle Please take a few seconds to write your solution. It really helps other!
+                v-card-text
+                  video(v-if="recordingData" id="recordingPlayer" class="video-js vjs-default-skin" style="width:100%;height:150px;")
+                  vue-editor(v-model="recordingText" :editor-toolbar="editorToolbar")
+                  v-checkbox( label="save solution video and comment" v-model="isSaveComment")
+            v-col.pa-2(cols="1" sm="12" md="1" lg="1" xs="12" style="text-align:center;" )
+              v-divider(vertical)
+            v-col(cols="5" sm="12" md="5" lg="5" xs="12")
+                SolutionRatingForm(:solutionAttemptDetail="solutionAttempt" :isMyQuestion="isMyQuestion" :recordingData="recordingData" :recordingText="recordingText" :isSaveComment="isSaveComment")
       VideoJsRecord.mt-5(v-if="isRecordingEnabled" @recording-started="recordingStarted" @recording-finished="recordingFinished")
   div(v-else)
     P Meeting finished | Something went wrong
@@ -47,6 +48,7 @@ export default class SolutionAttempt extends Mixins(General) {
   // eslint-disable-next-line
   @Ref("jitsiRef") private jitsiRefComponent!: HTMLIFrameElement;
 
+  isSaveComment = true;
   showRatingDialog = false;
   solutionAttempt: any | null = null;
   isRecordingOn = false;

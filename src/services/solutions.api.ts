@@ -24,7 +24,7 @@ class SolutionsAPIService extends APIService {
       questionerId: string;
       markedSolved: boolean;
 
-      videoText: string;
+      videoText: string | null;
     },
     solutionVideoBlob: Blob | null,
     onUploadProgress: (progressEvent: ProgressEvent) => void

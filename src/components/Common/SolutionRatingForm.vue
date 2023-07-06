@@ -3,12 +3,12 @@ div.text-center.solution-rating-form-component
     v-card(class="mx-auto" flat max-width="400px" )
         v-card-title(style="align-items:center;") {{title}}
         v-card-text Please take a few seconds to rate your experience. It really helps!
-          v-rating( v-model="rating" color="yellow darken-3" background-color="grey darken-1" active-color="yellow-accent-4" hover size="48" length="5")
+          v-rating( v-model="rating" color="yellow darken-3" background-color="grey darken-1" active-color="yellow-accent-4" hover size="40" length="5")
           v-textarea(label="comment" v-model="comment" outline prepend-icon="mdi-comment" rows="4")
           v-checkbox(v-if="isQuestioner" label="Mark Solved" v-model="markSolved")
         v-divider
         v-card-actions
-          v-btn(color="primary"  block @click="submitRating") Submit Solution & Rating Now
+          v-btn.pa-6(color="primary"  block  @click="submitRating") Submit Solution &<br/> Rating Now
 </template>
 
 <script lang="ts">
@@ -40,6 +40,9 @@ export default class SolutionRatingForm extends Vue {
   @Prop({ default: null })
   recordingText!: string;
 
+  @Prop({ default: true })
+  isSaveComment!: boolean;
+
   rating = 0;
   comment = "";
   markSolved = false;
@@ -67,6 +70,10 @@ export default class SolutionRatingForm extends Vue {
     );
   }
 
+  get recordingVideoData() {
+    return this.isSaveComment ? this.recordingData : null;
+  }
+
   async submitRating() {
     eventBus.$emit("show-loader");
 
@@ -83,15 +90,13 @@ export default class SolutionRatingForm extends Vue {
         markedSolved: this.markSolved,
         // solutionAttemptDetail: this.solutionAttemptDetail,
 
-        videoText: this.recordingText,
+        videoText: this.isSaveComment ? this.recordingText : null,
       },
-      this.recordingData,
+      this.recordingVideoData,
       (event) => {
         this.progress = Math.round((100 * event.loaded) / event.total);
       }
     );
-
-    // todo save video here
 
     eventBus.$emit("hide-loader");
     userApi.setOnlineStatus("ONLINE");

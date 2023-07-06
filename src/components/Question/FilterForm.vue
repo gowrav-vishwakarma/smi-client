@@ -14,11 +14,11 @@ div.questionFilterComponent
     //- v-autocomplete(:items="languageList" dense small v-model="filterQuery.languages" multiple label="Language" outlined)
     //- v-checkbox(label="questions having answer" dense small v-model="filterQuery.hasComments") 
     //div Available for solution
-    //.d-flex(style="align-items:center;flex-wrap:wrap;")
-      //v-checkbox(style="width:50%;" label="Chat" dense v-model="filterQuery.availableOnChatChannel")
-      //v-checkbox(style="width:50%;" label="Screen Share" dense v-model="filterQuery.availableOnScreenShare")
-      //v-checkbox(style="width:50%;" label="Video Call" dense v-model="filterQuery.availableOnVideoCall")
-      //v-checkbox(style="width:50%;" label="Audio Call" dense v-model="filterQuery.availableOnAudioCall")
+    .d-flex(style="align-items:center;flex-wrap:wrap;")
+      v-checkbox(style="width:50%;" label="Chat" dense v-model="filterQuery.availableOnChatChannel")
+      v-checkbox(style="width:50%;" label="Screen Share" dense v-model="filterQuery.availableOnScreenShare")
+      v-checkbox(style="width:50%;" label="Video Call" dense v-model="filterQuery.availableOnVideoCall")
+      v-checkbox(style="width:50%;" label="Audio Call" dense v-model="filterQuery.availableOnAudioCall")
     v-row
       v-col(cols="6")
         v-btn(color="grey"  @click="dialogClose" :disabled="!valid" block) Close

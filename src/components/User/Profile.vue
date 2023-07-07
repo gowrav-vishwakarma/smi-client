@@ -24,7 +24,7 @@ v-container
           v-card-title {{this.profile.name}}
             v-btn(small text)
               v-icon(color="red") mdi-map-marker
-              | {{this.profile.city}} {{this.profile.state}} {{this.profile.country}}
+              | {{this.profile.city}} {{this.stateName}} {{this.countryName}}
           v-card-subtitle
             .d-flex.caption
               span(v-if="this.profile.post") {{this.profile.post}}
@@ -47,17 +47,17 @@ v-container
                     v-col
                       v-text-field(v-model="profile.name" label="name")
                     v-col
-                      v-text-field(v-model="profile.city" label="city")
-                  v-row
-                    v-col
-                      v-text-field(v-model="profile.state" label="state")
-                    v-col
-                      v-text-field(v-model="profile.country" label="country")
-                  v-row
-                    v-col
                       v-text-field(v-model="profile.post" label="post")
+                  v-row
                     v-col
                       v-select(v-model="profile.jobType" label="jobType" :items="['Full Time','Part Time','Freelancer']" )
+                    v-col
+                      v-autocomplete(v-model="profile.country" :items="countries" item-text="name" return-object label="Country")
+                  v-row
+                    v-col
+                      v-autocomplete(v-model="profile.state" :items="states" item-text="name" return-object label="State")
+                    v-col
+                        v-autocomplete(v-model="profile.city" :items="cities" item-text="name" label="City")
                   v-row 
                     v-col 
                       v-text-field(v-model="profile.companyName" label="companyName")
@@ -245,6 +245,7 @@ import UserApiService from "@/services/user.api";
 import UserRatingAsSolver from "@/components/User/RatingAsSolver.vue";
 import { eventBus } from "@/mixins/event-bus";
 import { General } from "@/mixins/general";
+import { Country, State, City } from "country-state-city";
 
 @Component({
   name: "UserProfile",
@@ -291,6 +292,34 @@ export default class UserProfileComponent extends Mixins(General) {
   profile: any = {};
   mySolutionAttemps: any[] = [];
 
+  countries = Country.getAllCountries();
+  // states = State.getAllStates();
+  get states() {
+    if (this.profile.country && this.profile.country.isoCode)
+      return State.getStatesOfCountry(this.profile.country.isoCode);
+    else return State.getAllStates();
+  }
+
+  get cities() {
+    if (this.profile.state && this.profile.isoCode) {
+      return City.getCitiesOfState(
+        this.profile.state.countryCode,
+        this.profile.state.isoCode
+      );
+    } else return City.getAllCities();
+  }
+
+  get countryName() {
+    return typeof this.profile.country === "object" &&
+      this.profile.country !== null
+      ? this.profile.country.name
+      : this.profile.country;
+  }
+  get stateName() {
+    return typeof this.profile.state === "object" && this.profile.state !== null
+      ? this.profile.state.name
+      : this.profile.state;
+  }
   get userAsQuestioner() {
     return {
       reputationAsQuestioner: this.profile.reputationAsQuestioner,
@@ -395,8 +424,8 @@ export default class UserProfileComponent extends Mixins(General) {
           userId: this.$store.getters.loggedInUser._id,
           name: this.profile.name,
           city: this.profile.city,
-          state: this.profile.state,
-          country: this.profile.country,
+          state: this.stateName,
+          country: this.countryName,
           post: this.profile.post,
           jobType: this.profile.jobType,
           companyName: this.profile.companyName,

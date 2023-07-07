@@ -2,8 +2,9 @@
 div(style="width: 100%") 
   div(v-if="comments.length > 0" style="width: 100%")
     v-card.d-flex.flex-column.mb-2.pa-2(v-for="(comment,i) in comments" :key="i")
-      h4.blue--text(@click="gotoDetails(comment.questionId._id)" style="cursor:pointer") Q: {{ comment.questionId.title }}
-      .caption(v-html="comment.questionId.detail")
+      v-card-title.question-heading(style="cursor:pointer" @click="gotoDetails(comment.questionId._id)") Q. {{comment.questionId.title}}
+      //h4.blue--text(@click="gotoDetails(comment.questionId._id)" style="cursor:pointer") Q: {{ comment.questionId.title }}
+      .caption.comment-question-detail(v-html="comment.questionId.detail")
       v-divider
       .caption <b>My Comment:</b> {{ shortdetail(comment.comment) }}
       small.d-flex.justify-space-between
@@ -49,3 +50,15 @@ export default class UserCommentsComponent extends Mixins(General) {
   }
 }
 </script>
+
+<style scoped>
+.comment-question-detail {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3; /* Number of lines to show */
+  max-height: 6.5em;
+  margin-bottom: 10px;
+}
+</style>

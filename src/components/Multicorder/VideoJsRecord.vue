@@ -10,10 +10,10 @@
             v-card-actions
               v-btn(@click="startRecording" v-if="!recording" block dark)
                 v-icon(right dark color="red" class="mr-3") mdi-record
-                | Start Recording
+                | {{startBtnName}}
               v-btn(@click="stopRecording" v-else block dark)
                 v-icon(right dark color="red" class="mr-3") mdi-pause
-                | Stop Recording
+                | {{stopBtnName}}
 </template>
 
 <script>
@@ -45,6 +45,8 @@ export default {
       triggerRecordingFinish: false,
       recording: false,
       player: "",
+      startBtnName: "Start Recording",
+      stopBtnName: "Stop Recording",
       options: {
         controls: false,
         autoplay: false,

@@ -178,7 +178,7 @@ export default /*#__PURE__*/ {
           .then((audioStream) => {
             // Then get the video stream from the screen share
             navigator.mediaDevices
-              .getDisplayMedia({ video: true })
+              .getDisplayMedia({ video: true, audio: true })
               .then((videoStream) => {
                 // Combine audio and video streams
                 let combinedStream = new MediaStream([

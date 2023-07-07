@@ -13,14 +13,31 @@ class CommentsAPIService extends APIService {
     return response;
   }
 
-  async createComment(questionId: string, comment: string): Promise<any> {
+  async createComment(
+    questionId: string,
+    comment: string,
+    video: Blob | null,
+    onUploadProgress: (progressEvent: ProgressEvent) => void
+  ): Promise<any> {
+    const formData = new FormData();
+    // Object.entries(ratingParam).forEach(([key, value]) => {
+    //   let v = Array.isArray(value) ? value.join(",") : value;
+    //   if (typeof v === "object") v = JSON.stringify(v);
+    formData.append("questionId", questionId as string);
+    formData.append("comment", comment as string);
+    // });
+    if (video) {
+      formData.append("video", video);
+    }
+
     const response = await this.axiosCall<any>({
       method: "POST",
       url: "/comments/create",
-      data: {
-        questionId,
-        comment,
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
+      onUploadProgress,
     });
     return response;
   }

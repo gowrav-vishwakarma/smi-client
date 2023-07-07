@@ -24,7 +24,6 @@ class SolutionsAPIService extends APIService {
       questionerId: string;
       markedSolved: boolean;
       offerId: string;
-
       videoText: string | null;
     },
     solutionVideoBlob: Blob | null,

@@ -23,11 +23,15 @@
           class="blue--text"
           @click="gotoDetails(offer.questionId._id)"
         >
-          Q: {{ offer.questionId.title }}
+          Q:
+          {{ offer.questionId ? offer.questionId.title : "REMOVED QUESTION" }}
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text class="d-flex justify-space-between">
-          <div>By: {{ offer.offererId.name }}</div>
+          <div>
+            By:
+            {{ offer.offererId ? offer.offererId.name : "OFFERER NOT FOUND" }}
+          </div>
           <div>
             <v-btn
               x-small
@@ -47,7 +51,6 @@ import QuestionList from "@/components/Question/List.vue";
 import TopicList from "@/components/Topic/List.vue";
 import userApi from "@/services/user.api";
 import { Component, Vue, Watch } from "vue-property-decorator";
-import goTo from "vuetify/lib/services/goto";
 
 @Component({
   name: "UnReadQuestions",

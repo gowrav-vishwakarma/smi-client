@@ -1,25 +1,27 @@
 <template lang="pug">
 div.question-answer-list.mt-2.pa-2
-  .d-flex.answer-list-section
-    div
+  //.d-flex.answer-list-section
+    //div.flex-shrink-0
       //- v-avatar.mt-1(color="primary" size="40")
       //-   v-icon mdi-account
-      solver-signature(:User="comment.User" disableName="true")
-    div.pa-1
-    div(style="width:100%;")
-      v-card.answer-card(style="width:100%;overflow:hidden;")
-        .d-flex.pr-2
-          solver-signature(:User="comment.User" disableAvatar="true")
-          div.ml-auto()
-        v-card-text.ma-0.pa-1.pb-0
-          div.custom-html.pa-0.ma-0(v-html="comment.comment")
-          v-icon(x-large color="red" size="100" v-if="!displayVideo && comment.video" @click="displayVideo=true") mdi-youtube
-          div(v-else)
-            v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="comment.video")
-              video(width="320" height="240" preload="none" controls)
-                source(:src="videoURL" type="video/webm")
-        v-card-actions
-          v-icon(v-if="comment.isQuestionSolved" color="green" ) mdi-check-all
+      //solver-signature(:User="comment.User" disableName="true")
+    //div.pa-1
+    //div( style="overflow:auto;")
+  v-card.answer-card
+    .d-flex
+      solver-signature(:User="comment.User")
+      div.ml-auto()
+        v-card-subtitle
+          small.text--disabled {{ humanized_time_span(comment.createdAt) }}
+    v-card-text.ml-3
+      div.custom-html(v-html="comment.comment")
+      //v-icon(x-large color="red" size="100" v-if="!displayVideo && comment.video" @click="displayVideo=true") mdi-youtube
+      div
+        v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="comment.video")
+          video(width="320" style="max-width:90%;"  height="240" preload="none" controls)
+            source(:src="videoURL" type="video/webm")
+    v-card-actions
+      v-icon(v-if="comment.isQuestionSolved" color="green" ) mdi-check-all
       voting-component(:comment="comment")
         //- div(class="caption")
         //-   span(v-html="comment.comment")

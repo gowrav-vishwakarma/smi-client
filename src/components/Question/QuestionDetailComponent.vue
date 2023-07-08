@@ -19,6 +19,7 @@ v-container.grid-list-xs
     //- question section
     v-col.col-md-8.col-sm-8.col-xs-8
       question-single(:question="question" :key="question._id" disableAnswerSection="true" showDetail="true" videoControl="true" :isMyQuestion="isQuestionBelongsToLoginUser")
+      v-subheader Comments
       question-comments-list-component(:question="question" @event-new-comment-created="reloadData")
       //- .ml-1
       //-   .text-h6 {{ question.title }}

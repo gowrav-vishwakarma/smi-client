@@ -6,13 +6,20 @@ v-card.mb-2.pa-5.question-single-card(v-if="question" style="overflow:hidden;")
     //-   h4.text-subtitle-1.question-heading.primary--text( style="cursor:pointer" @click="gotoDetails") Q. {{question.title}}
     .d-flex.justify-space-between
       v-card-title.question-heading(style="cursor:pointer" @click="gotoDetails") Q. {{question.title}}
-      .d-flex.justify-end
-        v-icon(v-if="question.scope=='Public'" color="green" @click.stop="isMyProfileView && changeScope('Private')") mdi-earth
-        v-icon(v-if="question.scope=='Private'" color="red" @click.stop="isMyProfileView && changeScope('Public')") mdi-lock
-        v-icon(x-large color="red" size="100" v-if="!displayVideo" :disabled="!question.video || question.video ==''") mdi-youtube
+      //.d-flex.justify-end
+      //  v-icon(v-if="question.scope=='Public'" color="green" @click.stop="isMyProfileView && changeScope('Private')") mdi-earth
+      //  v-icon(v-if="question.scope=='Private'" color="red" @click.stop="isMyProfileView && changeScope('Public')") mdi-lock
+      //  v-icon(x-large color="red" size="100" v-if="!displayVideo" :disabled="!question.video || question.video ==''") mdi-youtube
     .question-description-text
       v-card-subtitle.pt-0.text--secondary.text-justify.smi-question-detail(v-if="showDetail" v-html="question.detail")
-      v-card-subtitle.pt-0.text--secondary.text-justify(v-else) {{shortdetail}}
+      v-row(v-else)
+        v-col(v-if="videoURL && question.video" cols="12" md="7" sm="12" xs="12" lg="7" xl="7" )
+          v-card-subtitle.pt-0.text--secondary.text-justify {{shortdetail}}
+        v-col(v-else cols="12")
+          v-card-subtitle.pt-0.text--secondary.text-justify {{shortdetail}}
+        v-col(v-if="videoURL && question.video" cols="12" md="5" sm="12" xs="12" lg="5" xl="5")
+          video.smi-video-player-component(width="100%" height="140" controls="true" preload="none")
+            source(:src="videoURL" type="video/webm")
       v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")
           v-img(src="@/assets/logo.png" max-height="350" contain)
       v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="question.video && displayVideo")
@@ -120,7 +127,7 @@ export default class QuestionSingle extends Mixins(General) {
   }
 
   get shortdetail() {
-    return S(this.question.detail).stripTags().truncate(350).s;
+    return S(this.question.detail).stripTags().truncate(200).s;
   }
 
   get topicFull() {
@@ -213,5 +220,13 @@ export default class QuestionSingle extends Mixins(General) {
 
 .smi-question-detail p {
   margin-bottom: 0 !important;
+}
+
+.smi-video-player-component {
+  box-shadow: 0px 5px 1px -2px rgba(255, 152, 0, 0.1),
+    0px 2px 5px 0px rgba(255, 152, 0, 0.1),
+    0px 1px 5px 0px rgba(255, 152, 0, 0.1);
+  //border: 2px solid #f3f3f3;
+  border-radius: 5px;
 }
 </style>

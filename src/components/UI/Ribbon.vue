@@ -1,6 +1,6 @@
 <template lang="pug">
-  .ribbon-container
-      .ribbon.green.darken-2.text-center {{headingLabel}}
+  .ribbon-container.green.darken-2.text-center
+      .ribbon {{headingLabel}}
 </template>
 
 <script lang="ts">
@@ -17,20 +17,23 @@ export default class Ribbon extends Vue {
 </script>
 
 <style>
+.ribbon {
+  //position: absolute;
+  //width: 100px;
+  //left: -60px;
+  font-size: 10px;
+  //text-align: center;
+  //padding: 1px;
+}
+
 .ribbon-container {
+  z-index: 1;
+  transform: rotate(315deg);
   position: absolute;
   display: inline-block;
-  z-index: 1;
-}
-.ribbon {
-  position: absolute;
-  top: 0;
-  left: -80px;
+  top: 10px;
   color: #ffffff;
-  //font-weight: bold;
-  transform: rotate(315deg);
-  z-index: 1;
-  width: 180px;
-  text-align: center;
+  left: -35px;
+  width: 100px;
 }
 </style>

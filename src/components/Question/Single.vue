@@ -1,5 +1,5 @@
 <template lang="pug">
-v-card.mb-2.pa-5.question-single-card(v-if="question" style="overflow:hidden;")
+v-card.mb-2.question-single-card(v-if="question" style="overflow:hidden;")
   Ribbon(headingLabel="Solved" v-if='question.status=="SOLVED"')
   v-card.pa-0.ma-0.question-detail-card(flat)
     //- .d-flex.justify-space-between
@@ -14,18 +14,18 @@ v-card.mb-2.pa-5.question-single-card(v-if="question" style="overflow:hidden;")
       v-card-subtitle.pt-0.text--secondary.text-justify.smi-question-detail(v-if="showDetail" v-html="question.detail")
       v-row(v-else)
         v-col(v-if="videoURL && question.video" cols="12" md="7" sm="12" xs="12" lg="7" xl="7" )
-          v-card-subtitle.pt-0.text--secondary.text-justify {{shortdetail}}
+          v-card-subtitle.pt-0.pb-0.text--secondary.text-justify {{shortdetail}}
         v-col(v-else cols="12")
-          v-card-subtitle.pt-0.text--secondary.text-justify {{shortdetail}}
+          v-card-subtitle.pt-0.pd-0.text--secondary.text-justify {{shortdetail}}
         v-col(v-if="videoURL && question.video" cols="12" md="5" sm="12" xs="12" lg="5" xl="5")
-          video.smi-video-player-component(width="100%" height="140" controls="true" preload="none")
+          video.smi-video-player-component(width="100%" controls="true" preload="none")
             source(:src="videoURL" type="video/webm")
       v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")
           v-img(src="@/assets/logo.png" max-height="350" contain)
       v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="question.video && displayVideo")
           video(width="320" height="240" :controls="videoControl" preload="none")
             source(:src="videoURL" type="video/webm")
-  .d-flex.mt-3
+  .d-flex.mt-3.pa-3
     .d-flex.flex-column.justify-space-between
       .caption.grey--text.lighten-4 Asked {{ humanized_time_span(question.createdAt) }} :
       questioner-signature(:User="question.byUser")
@@ -34,7 +34,7 @@ v-card.mb-2.pa-5.question-single-card(v-if="question" style="overflow:hidden;")
       .caption.primary--text.lighten-4.ml-auto.hidden-sm-and-down {{topicFull}}
       .caption.primary--text.lighten-4.ml-auto.hidden-md-and-up {{lastTopic}}
   v-divider
-  .d-flex.mt-1(style="align-items:center")
+  .d-flex.mt-1.pa-3(style="align-items:center")
     question-value-component(:question="question")
     voting-component.pr-3(v-if="!disableVotingAction" :question="question")
       //- booking-component(v-if="!disableBookmarkAction" :question="question")
@@ -226,7 +226,5 @@ export default class QuestionSingle extends Mixins(General) {
   box-shadow: 0px 5px 1px -2px rgba(255, 152, 0, 0.1),
     0px 2px 5px 0px rgba(255, 152, 0, 0.1),
     0px 1px 5px 0px rgba(255, 152, 0, 0.1);
-  //border: 2px solid #f3f3f3;
-  border-radius: 5px;
 }
 </style>

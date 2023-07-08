@@ -10,10 +10,11 @@
           div(v-else)
             v-avatar( size="40" v-if="!disableAvatar" style="border:2px solid;")
               user-avatar(:user="User")
-          //-     v-img(alt="Q DP" src="@/assets/logo.png" transition="scale-transition" to="/")
+          //     v-img(alt="Q DP" src="@/assets/logo.png" transition="scale-transition" to="/")
           v-list-item-content.ml-1.pa-0(v-if="!disableName")
             v-list-item-title.blue--text.lighten-3(@click="redirectToProfile" style="cursor:pointer").ma-0 {{User.name}}
-              //- span.ml-4.primary--text(v-if="!disableFollow") . Follow
+            //v-list-item-subtitle {{User}}
+              // span.ml-4.primary--text(v-if="!disableFollow") . Follow
             v-list-item-subtitle
               small {{User.post}}
     User-Rating-AsSolver(:User="User" v-if="enableRating")

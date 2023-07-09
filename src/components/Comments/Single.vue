@@ -13,12 +13,12 @@ div.question-answer-list.mt-2.pa-2
       div.ml-auto()
         v-card-subtitle
           small.text--disabled {{ humanized_time_span(comment.createdAt) }}
-    v-card-text.ml-3
+    v-card-text
       div.custom-html(v-html="comment.comment")
       //v-icon(x-large color="red" size="100" v-if="!displayVideo && comment.video" @click="displayVideo=true") mdi-youtube
       div
         v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="comment.video")
-          video(width="320" style="max-width:90%;"  height="240" preload="none" controls)
+          video(width="100%" height="240" preload="none" controls)
             source(:src="videoURL" type="video/webm")
     v-card-actions
       v-icon(v-if="comment.isQuestionSolved" color="green" ) mdi-check-all

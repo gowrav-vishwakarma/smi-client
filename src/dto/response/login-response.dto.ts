@@ -24,6 +24,8 @@ export class UserDetails {
   userToppics!: string[];
   userLanguages!: string[];
   onlineStatus!: "ONLINE" | "OFFLINE" | "BUSY";
+
+  profileImage!: string;
 }
 
 export default class LoginResponseDTO {

@@ -1,5 +1,5 @@
 <template lang="pug">
-div.question-answer-list.mt-2.pa-1
+div.question-answer-list.mt-2.pa-2
   //.d-flex.answer-list-section
     //div.flex-shrink-0
       //- v-avatar.mt-1(color="primary" size="40")
@@ -18,7 +18,7 @@ div.question-answer-list.mt-2.pa-1
       //v-icon(x-large color="red" size="100" v-if="!displayVideo && comment.video" @click="displayVideo=true") mdi-youtube
       div
         v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="comment.video")
-          video(width="100%"  preload="none" controls)
+          video(width="100%" height="240" preload="none" controls)
             source(:src="videoURL" type="video/webm")
     v-card-actions
       v-icon(v-if="comment.isQuestionSolved" color="green" ) mdi-check-all

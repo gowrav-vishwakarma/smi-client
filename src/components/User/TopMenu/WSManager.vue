@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  v-icon(small :color="statusColor") mdi-circle
+  v-icon(v-if="showOnlineIcon" small :color="statusColor") mdi-circle
   div.extra-component
     div.call-receive-ringing
       audio(ref="incomingCallRingingPlayer")
@@ -8,7 +8,7 @@ div
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from "vue-property-decorator";
+import { Component, Vue, Ref, Prop } from "vue-property-decorator";
 import socket, { SocketOn, SocketEmit } from "@/services/socket";
 import { SocketAuthDTO } from "@/dto/ws.dto";
 import solutionsApi from "@/services/solutions.api";
@@ -27,6 +27,14 @@ export default class WSManager extends Vue {
   isConnected = false;
   audioContext: any = null;
   audioBuffer: any = null;
+
+  @Prop({ default: true })
+  hideWSIcon!: boolean;
+
+  get showOnlineIcon() {
+    return this.hideWSIcon ? false : true;
+  }
+
   // callDialTone: callDialToneMP3;
 
   // userOnlineStatus = "Offline";
@@ -95,21 +103,22 @@ export default class WSManager extends Vue {
           newPayload.from = payload.to;
           newPayload.callAccept = callAccept;
           if (callAccept && payload) {
-            const solutionAttemptOffer = await solutionsApi.createSolutionAttempt({
-              questionId: payload.questionId,
-              questionerId: payload.from._id,
-              questioner: {
-                name: payload.from.name,
-                email: payload.from.email,
-              },
-              offererId: payload.to,
-              offerer: {
-                name: payload.offerer.name,
-                ratingAsSolver: payload.offerer.ratingAsSolver,
-              },
-              notes: payload.eventDetail.name,
-              offerId:payload.offerId
-            });
+            const solutionAttemptOffer =
+              await solutionsApi.createSolutionAttempt({
+                questionId: payload.questionId,
+                questionerId: payload.from._id,
+                questioner: {
+                  name: payload.from.name,
+                  email: payload.from.email,
+                },
+                offererId: payload.to,
+                offerer: {
+                  name: payload.offerer.name,
+                  ratingAsSolver: payload.offerer.ratingAsSolver,
+                },
+                notes: payload.eventDetail.name,
+                offerId: payload.offerId,
+              });
 
             newPayload.solutionOfferAttemptId = solutionAttemptOffer._id;
             SocketEmit("acceptCall", newPayload);

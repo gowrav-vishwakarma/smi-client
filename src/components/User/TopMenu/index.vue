@@ -1,7 +1,7 @@
 <template lang="pug">
-div
-  logged-in-top-menu(v-if="$store.getters.isAuthenticated")
-  guest-top-menu(v-else)
+  div
+    logged-in-top-menu(v-if="$store.getters.isAuthenticated")
+    guest-top-menu(v-else)
 </template>
 
 <script lang="ts">

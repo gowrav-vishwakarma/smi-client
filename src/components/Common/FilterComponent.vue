@@ -46,7 +46,7 @@ export default class FilterComponent extends Vue {
     //   this.$store.commit("setFilters", filter);
     //   eventBus.$emit("filterQuestions", filter);
     // } else
-    
+
     if (filters != undefined) {
       this.queryString = filters.query;
       console.log("filters",filters);
@@ -72,7 +72,7 @@ export default class FilterComponent extends Vue {
     )
   }
 
-  
+
   get isFilterSelected() {
     let found = 0;
     if (this.$store.getters.filters) {

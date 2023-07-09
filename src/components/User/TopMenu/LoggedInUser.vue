@@ -1,15 +1,34 @@
 <template>
   <div class="d-flex">
-    <ws-manager></ws-manager>
+    <ws-manager :hideWSIcon="true"></ws-manager>
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn text small v-bind="attrs" v-on="on" class="pa-0 ma-0">
+        <v-btn
+          text
+          small
+          v-bind="attrs"
+          v-on="on"
+          class="pa-0 ma-0"
+          style="min-width: auto !important"
+        >
           <span class="hidden-sm-and-down">{{
             $store.getters.loggedInUser.name
           }}</span>
-          <span>
-            <v-icon>mdi-dots-vertical</v-icon>
-          </span>
+          <v-badge
+            bordered
+            bottom
+            :color="onlineColor"
+            dot
+            offset-x="10"
+            offset-y="10"
+            v-bind="attrs"
+            v-on="on"
+            class="pa-0 ma-0"
+          >
+            <v-avatar size="40" style="border: 4px solid" :color="onlineColor">
+              <user-avatar :user="loggedInUser"></user-avatar>
+            </v-avatar>
+          </v-badge>
         </v-btn>
       </template>
 
@@ -26,8 +45,14 @@
 
         <v-list-item to="/unread-offers" style="min-height: 28px">
           <v-list-item-title>
+            <v-icon small>mdi-message-outline </v-icon>
             UnRead Offers
-            <v-chip color="red" x-small v-if="unreadOffers > 0"
+            <v-chip
+              color="red"
+              text-color="white"
+              x-small
+              class="pa-2"
+              v-if="unreadOffers > 0"
               >{{ unreadOffers }}
             </v-chip>
           </v-list-item-title>
@@ -54,11 +79,13 @@ import { Component, Vue } from "vue-property-decorator";
 import WsManager from "@/components/User/TopMenu/WSManager.vue";
 import { AuthStoreModule } from "@/store";
 import userApi from "@/services/user.api";
+import UserAvatar from "@/components/User/Avatar.vue";
 
 @Component({
   name: "LoggedInUserTopMenu",
   components: {
     WsManager,
+    UserAvatar,
   },
 })
 export default class LoggedInUserTopMenu extends Vue {
@@ -78,6 +105,22 @@ export default class LoggedInUserTopMenu extends Vue {
 
   updateOnlineStatus(status: "ONLINE" | "OFFLINE" | "BUSY") {
     AuthStoreModule.updateUserOnlineStatusAction(status);
+  }
+
+  get onlineColor() {
+    return this.$store.getters.userOnlineStatus == "BUSY"
+      ? "orange darken-3"
+      : this.$store.getters.userOnlineStatus == "ONLINE"
+      ? "green lighten-1"
+      : "red lighten-1";
+  }
+
+  get loggedInUser() {
+    return {
+      name: this.$store.getters.loggedInUser.name,
+      email: this.$store.getters.loggedInUser.email,
+      profileImage: this.$store.getters.loggedInUser.profileImage,
+    };
   }
 }
 </script>

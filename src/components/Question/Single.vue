@@ -111,7 +111,11 @@ export default class QuestionSingle extends Mixins(General) {
   @Prop({ default: false }) showDetail!: boolean;
 
   gotoDetails() {
-    this.$router.push("/question/" + this.question._id);
+    this.$router.push("/question/" + this.question._id).catch((err) => {
+      if (err.name !== "NavigationDuplicated") {
+        throw err;
+      }
+    });
   }
 
   get isMyQuestion() {

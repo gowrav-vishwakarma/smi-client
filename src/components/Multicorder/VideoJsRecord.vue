@@ -63,9 +63,9 @@ export default {
           record: {
             maxLength: 300,
             audio: true,
-            video: false,
+            video: true,
             debug: true,
-            screen: true,
+            screen: false,
           },
         },
       },

@@ -187,7 +187,7 @@ export default class AskQuestionView extends Vue {
   async askToChanged() {
     if (this.askTo) {
       this.askToUser = await userApi.getProfileByToken(this.askTo);
-      this.question.askTo = this.askTo;
+      this.question.askTo = this.askToUser._id;
     }
   }
 

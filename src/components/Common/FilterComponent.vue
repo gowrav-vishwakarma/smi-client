@@ -55,6 +55,13 @@ export default class FilterComponent extends Vue {
     }
 
     this.filterFormDialog = false;
+
+    // this.$router.push("/");
+    // this.$router.push('/').catch(err => {
+    //   if (err.name !== 'NavigationDuplicated') {
+    //     throw err;
+    //   }
+    // });
   }
 
   clearFilter(){

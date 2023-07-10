@@ -1,8 +1,8 @@
 <template lang="pug">
-    v-app-bar(dense app)
+    v-app-bar(app)
       router-link.d-flex.align-center(to="/" class="logo-link")
         v-toolbar-title(to='/')
-          span.pt-1.pb-1(style="background-color: rgb(255, 152, 0) !important; border-radius: 15%; color: white; font-weight: 400;" ) [SMI]
+          span.pt-1.pb-1(style=" border-radius: 15%;font-weight: 400;" ) [SMI]
           small.hidden-sm-and-down(class="ml-2") Solve My Issue
       v-spacer
       filter-component
@@ -17,24 +17,24 @@
       top-menu
       auth-dialog(:show-dialog.sync='AuthDialogState')
       // selected filter options
-      template(v-slot:extension='' v-if='isFilterSelected')
-        v-container.d-flex.justify-space-between.grey.lighten-5.pa-0.mt-1(style='width: 100%; align-items: center')
-          div(style='width: 100%')
-            v-chip-group( style='width: 100%')
-              v-chip(small color='red lighten-1 white--text' @click='clearFilter') {{ $store.getters.isCleared ? 'Default':'Clear' }}
-              v-chip(small='' v-if='$store.getters.filters.query' close @click:close="clearQuery" @click="clearQuery")
-                | {{ $store.getters.filters.query }}
-              v-chip(small='' v-for='t in $store.getters.filters.languages' :key="'t' + t" close @click:close="clearLanguage(t)" @click="clearLanguage(t)")
-                | {{ t }}
-              v-chip(small v-if="$store.getters.filters.topics && $store.getters.filters.topics.length" v-for='t in $store.getters.filters.topics' :key="'topic' + t" close @click:close="clearTopic(t)" @click="clearTopic(t)" ) {{ t.split("/").reverse()[0] }}
-              //- v-chip(small='' v-for='l in $store.getters.filters.languages' :key="'l' + l")
-              //-   | {{ l }}
-              v-chip(small v-if="$store.getters.filters.tags && $store.getters.filters.tags.length" v-for='t in $store.getters.filters.tags' :key="'tag' + t" close @click:close="clearTag(t)" @click="clearTag(t)") {{ t }}
-              //v-chip(small)
-              //  v-icon(small class="icon mr-2" :color="$store.getters.filters.availableOnAudioCall? 'green':'red'") mdi-phone-incoming
-              //  v-icon(small class="icon mr-2" :color="$store.getters.filters.availableOnChatChannel? 'green':'red'") mdi-chat
-              //  v-icon(small class="icon mr-2" :color="$store.getters.filters.availableOnScreenShare?'green':'red'") mdi-monitor
-              //  v-icon(small class="icon mr-2" :color="$store.getters.filters.availableOnVideoCall?'green':'red'") mdi-video
+      //template(v-slot:extension='' v-if='isFilterSelected')
+      //  v-container.d-flex.justify-space-between.grey.lighten-5.pa-0.mt-1(style='width: 100%; align-items: center')
+      //    div(style='width: 100%')
+      //      v-chip-group( style='width: 100%')
+      //        v-chip(small color='red lighten-1 white--text' @click='clearFilter') {{ $store.getters.isCleared ? 'Default':'Clear' }}
+      //        v-chip(small='' v-if='$store.getters.filters.query' close @click:close="clearQuery" @click="clearQuery")
+      //          | {{ $store.getters.filters.query }}
+      //        v-chip(small='' v-for='t in $store.getters.filters.languages' :key="'t' + t" close @click:close="clearLanguage(t)" @click="clearLanguage(t)")
+      //          | {{ t }}
+      //        v-chip(small v-if="$store.getters.filters.topics && $store.getters.filters.topics.length" v-for='t in $store.getters.filters.topics' :key="'topic' + t" close @click:close="clearTopic(t)" @click="clearTopic(t)" ) {{ t.split("/").reverse()[0] }}
+      //        //- v-chip(small='' v-for='l in $store.getters.filters.languages' :key="'l' + l")
+      //        //-   | {{ l }}
+      //        v-chip(small v-if="$store.getters.filters.tags && $store.getters.filters.tags.length" v-for='t in $store.getters.filters.tags' :key="'tag' + t" close @click:close="clearTag(t)" @click="clearTag(t)") {{ t }}
+      //        //v-chip(small)
+      //        //  v-icon(small class="icon mr-2" :color="$store.getters.filters.availableOnAudioCall? 'green':'red'") mdi-phone-incoming
+      //        //  v-icon(small class="icon mr-2" :color="$store.getters.filters.availableOnChatChannel? 'green':'red'") mdi-chat
+      //        //  v-icon(small class="icon mr-2" :color="$store.getters.filters.availableOnScreenShare?'green':'red'") mdi-monitor
+      //        //  v-icon(small class="icon mr-2" :color="$store.getters.filters.availableOnVideoCall?'green':'red'") mdi-video
 </template>
 
 <script lang="ts">

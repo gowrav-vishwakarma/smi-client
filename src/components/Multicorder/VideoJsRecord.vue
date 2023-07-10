@@ -1,11 +1,11 @@
 <template lang="pug">
   v-card.mt-10
     v-row
-      v-col(cols="6" sm="6" md="6" lg="6" xs="6")
+      v-col(cols="12" sm="12" md="6" lg="6" xs="12")
         v-card.ml-5.mt-5(v-show="recording" flat)
           v-card-text
             video(id="myVideo" class="video-js vjs-default-skin" style="width:100%;height:150px;")
-      v-col.d-flex(cols="6" sm="12" md="6" lg="6" xs="12" style="align-items:center;")
+      v-col(cols="12" sm="12" md="6" lg="6" xs="12" style="align-items:center;")
           v-card(flat)
             v-card-actions
               v-btn(@click="startRecording" v-if="!recording" block dark)

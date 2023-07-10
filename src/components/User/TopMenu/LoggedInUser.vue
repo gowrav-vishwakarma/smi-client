@@ -16,14 +16,14 @@
           }}</span>
           <v-badge
             bordered
-            bottom
             :color="onlineColor"
-            dot
-            offset-x="10"
-            offset-y="10"
+            offset-x="15"
+            offset-y="15"
             v-bind="attrs"
             v-on="on"
             class="pa-0 ma-0"
+            :content="unreadOffers"
+            left
           >
             <v-avatar size="40" style="border: 4px solid" :color="onlineColor">
               <user-avatar :user="loggedInUser"></user-avatar>

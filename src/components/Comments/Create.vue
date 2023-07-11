@@ -3,7 +3,7 @@ div
   v-card.d-flex.flex-column(tile)
       v-card-text Your answer/comment
         vue-editor.mt-2(v-model="comment" :editor-toolbar="editorToolbar")
-        VideoJsRecord.mt-5(ref="VideoJsRecordCommentRef" v-if="isRecordingEnabled" @recording-started="recordingStarted"  @recording-finished="recordingFinished")
+        VideoJsRecord.mt-5(ref="VideoJsRecordCommentRef" v-if="isRecordingEnabled" @recording-started="recordingStarted"  @recording-finished="recordingFinished" :defaultRecordingMode="recordingMode")
       v-card-actions.pl-3.pr-3
         v-btn(block v-if="this.$store.getters.loggedInUser" @click="submitComment" color="primary") Submit Answer
         v-btn(v-else block color="secondary" @click="redirectToLogin" ) Login to Answer
@@ -16,6 +16,7 @@ import { VueEditor } from "vue2-editor";
 import commentsAPIService from "@/services/comments.api";
 import { AuthStoreModule } from "@/store";
 import VideoJsRecord from "@/components/Multicorder/VideoJsRecord.vue";
+import { eventBus } from "@/mixins/event-bus";
 
 @Component({
   name: "CreateCommentComponent",
@@ -38,6 +39,9 @@ export default class CreateCommentComponent extends Vue {
   get isRecordingEnabled() {
     return process.env.VUE_APP_ENABLE_RECORDING == "true";
   }
+  get recordingMode() {
+    return null;
+  }
 
   comment = "";
   editorToolbar = [
@@ -57,6 +61,8 @@ export default class CreateCommentComponent extends Vue {
     ["clean"], // remove formatting button
   ];
   async submitComment() {
+    eventBus.$emit("show-loader");
+
     if (this.isRecordingOn) {
       await (this.VideoJsRecordCommentRef as any).stopRecording();
       this.videoAutoStop = true;
@@ -81,6 +87,7 @@ export default class CreateCommentComponent extends Vue {
           this.recordingData = null;
           this.isRecordingOn = false;
           this.$emit("event-new-comment-created");
+          eventBus.$emit("hide-loader");
         });
     }
   }

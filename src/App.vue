@@ -4,13 +4,14 @@
     v-main(class="grey lighten-3")
       SMILoader(v-if="isLoading")
       router-view
-    v-footer.mt-5(padless dark)
-      v-flex.text-center
-        v-card-text
-          b [smi]
-          | &nbsp; Solve My Issue
-        v-card(flat tile)
-          router-link(to="/about" class="redirect-link") About
+      v-footer.mt-5.pa-5.text-center(padless elevation="5" )
+        v-row(style="width:100%;")
+          v-col(cols="12" sm="12" lg="6")
+            b [smi]
+            | &nbsp; Solve My Issue
+          v-col(cols="12" sm="12" lg="6")
+            router-link.ml-5(to="/" class="redirect-link") Home
+            router-link.ml-5(to="/about" class="redirect-link") About
 </template>
 
 <script lang="ts">

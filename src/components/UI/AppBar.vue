@@ -1,16 +1,18 @@
 <template lang="pug">
     v-app-bar(app)
+      //v-btn(fab small dark top left style="position: absolute;")
+      //  v-icon mdi-plus
       router-link.d-flex.align-center(to="/" class="logo-link")
         v-toolbar-title(to='/')
           span.pt-1.pb-1(style=" border-radius: 15%;font-weight: 400;" ) [SMI]
           small.hidden-sm-and-down(class="ml-2") Solve My Issue
       v-spacer
       filter-component
-      //v-spacer
-      //v-btn(rounded='' color='orange' v-if='!$store.getters.isAuthenticated' dark='' @click='askquestion')
-      //  v-icon  mdi-plus
-      //  span.hidden-sm-and-down Ask Question
-      //v-btn(rounded='' color='orange' v-else='' dark='' to='/ask-question')
+      v-spacer
+      v-btn(color='orange' dark='' @click='askquestion' small style="min-width:auto;")
+        v-icon  mdi-plus
+        span.hidden-sm-and-down Ask Question
+      //v-btn(sm rounded='' color='orange' v-else='' dark='' to='/ask-question')
       //  v-icon  mdi-plus
       //  span.hidden-sm-and-down Ask Question
       v-spacer
@@ -102,6 +104,12 @@ export default class App extends Vue {
       this.AuthDialogState = true;
       return;
     }
+
+    this.$router.push("/ask-question").catch((err) => {
+      if (err.name !== "NavigationDuplicated") {
+        throw err;
+      }
+    });
   }
 
   clearQuery() {

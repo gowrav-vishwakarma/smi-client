@@ -18,7 +18,7 @@ v-container(style="min-height:100vh;").smi-meeting-wrapper
               v-divider(vertical)
             v-col(cols="5" sm="12" md="5" lg="5" xs="12")
                 SolutionRatingForm(:solutionAttemptDetail="solutionAttempt" :isMyQuestion="isMyQuestion" :recordingData="recordingData" :recordingText="recordingText" :isSaveComment="isSaveComment")
-      VideoJsRecord.mt-5(ref="VideoJsRecordRef" v-if="isRecordingEnabled" @recording-started="recordingStarted"  @recording-finished="recordingFinished")
+      VideoJsRecord.mt-5(ref="VideoJsRecordRef" v-if="isRecordingEnabled" @recording-started="recordingStarted"  @recording-finished="recordingFinished" defaultRecordingMode="screen")
   div(v-else)
     P Meeting finished | Something went wrong
 </template>

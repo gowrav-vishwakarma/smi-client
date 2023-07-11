@@ -275,6 +275,23 @@ export const topics = [
               },
             ],
           },
+          {
+            id: "SEO",
+            label: "SEO",
+            children: [
+              { id: "Keyword Research", label: "Keyword Research" },
+              { id: "On-Page SEO", label: "On-Page SEO" },
+              { id: "Off-Page SEO", label: "Off-Page SEO" },
+              { id: "Technical SEO", label: "Technical SEO" },
+              {
+                id: "SEO Analytics and Reporting",
+                label: "SEO Analytics and Reporting",
+              },
+              { id: "Local SEO", label: "Local SEO" },
+              { id: "Mobile SEO", label: "Mobile SEO" },
+              { id: "SEO Tools", label: "SEO Tools" },
+            ],
+          },
         ],
       },
       {
@@ -392,6 +409,50 @@ export const topics = [
           {
             id: "Blockchain and Cryptocurrency",
             label: "Blockchain and Cryptocurrency",
+          },
+          {
+            id: "UX/UI Design",
+            label: "UX/UI Design",
+            children: [
+              { id: "Prototyping", label: "Prototyping" },
+              { id: "User Research", label: "User Research" },
+              {
+                id: "Information Architecture",
+                label: "Information Architecture",
+              },
+              { id: "Interaction Design", label: "Interaction Design" },
+              { id: "Visual Design", label: "Visual Design" },
+            ],
+          },
+          {
+            id: "Agile Methodologies",
+            label: "Agile Methodologies",
+            children: [
+              { id: "Scrum", label: "Scrum" },
+              { id: "Kanban", label: "Kanban" },
+              { id: "Lean", label: "Lean" },
+              { id: "XP", label: "XP" },
+            ],
+          },
+          {
+            id: "Project Management",
+            label: "Project Management",
+            children: [
+              { id: "Project Planning", label: "Project Planning" },
+              { id: "Risk Management", label: "Risk Management" },
+              { id: "Quality Management", label: "Quality Management" },
+              { id: "Stakeholder Management", label: "Stakeholder Management" },
+            ],
+          },
+          {
+            id: "DevOps",
+            label: "DevOps",
+            children: [
+              { id: "Continuous Integration", label: "Continuous Integration" },
+              { id: "Continuous Deployment", label: "Continuous Deployment" },
+              { id: "Infrastructure as Code", label: "Infrastructure as Code" },
+              { id: "Monitoring and Logging", label: "Monitoring and Logging" },
+            ],
           },
         ],
       },

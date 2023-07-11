@@ -2,7 +2,7 @@
   v-card.mt-10
     v-row
       v-col(cols="12" sm="12" md="6" lg="6" xs="12")
-        v-card.ml-5(v-show="recording" flat)
+        v-card.ml-5(flat)
           v-card-text
             video(ref="videoPlayer" id="myVideo" class="video-js vjs-default-skin" style="width:100%;height:150px;")
       v-col(cols="12" sm="12" md="6" lg="6" xs="12" style="align-items:center;")
@@ -106,7 +106,7 @@ export default {
 
   methods: {
     async stopRecording() {
-      // if (this.defaultRecordingMode == null) this.recording = false;
+      this.recording = false;
       await this.player.record().stop();
     },
 

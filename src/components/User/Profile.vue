@@ -165,7 +165,7 @@ v-container
       //-       v-card(flat).pa-2.mb-4
       //-         v-card-subtitle my experience not be updated at the moment
 
-    v-col.col-sm-12.col-md-4
+    v-col.col-sm-12.col-md-4.col-xs-12(cols="12")
       v-card.mt-4
         v-card-subtitle Rating as Questioner
         v-card-text
@@ -217,7 +217,7 @@ v-container
       //-       v-btn( target="_blank" v-if="profilelink" icon :href="profilelink")
       //-         v-icon(v-if="name=='Stackoverflow' || name=='Website' " color="indigo" large) mdi-web
       //-         v-icon(v-else color="indigo" large) mdi-{{name.toLowerCase()}}
-    v-col.col-sm-12.col-md-12
+    v-col.col-sm-12.col-md-12.col-xs-12
       v-card.pa-2 Solution History
         ul
           li(v-for="sa in mySolutionAttemps" :key="sa._id" :class="{'green--text': sa.status == 'SOLVED', 'warning--text': sa.status=='ATTEMPTED'}" style="cursor:pointer;" @click="goToQuestion(sa.questionId)") {{ sa.question[0].title}}

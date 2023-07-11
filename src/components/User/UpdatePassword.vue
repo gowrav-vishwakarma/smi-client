@@ -1,16 +1,17 @@
 <template lang="pug">
     v-container(v-if="isAuthenticated")
-      .d-flex
-        v-container(style="width:70%")
-          h3.mb-5 Reset your password
-          v-form(ref="changePasswordForm" v-model="valid" lazy-validation)
-            v-text-field(v-model="new_password" outlined label="New Password" :type="showPassword ? 'text' : 'password'" :rules="passwordRules" required :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" @click:append="showPassword = !showPassword")
-            v-text-field(v-model="confirm_password" outlined label="Confirm Password" type="password" :rules="[v => v === new_password || 'Passwords must match']" required)
-            div.pa-3
-              small Password strength 
-              v-progress-linear(:value="passwordStrength" :color="passwordStrengthColor" height="5")
-            v-btn.mt-5(:disabled="!formValid" color="primary"  @click="submitForm") Update Password
-        div(style="width:30%;")
+      v-row
+        v-col(cols="12" sm="12" xs="12" lg="8" md="8")
+          v-container
+            h3.mb-5 Reset your password
+            v-form(ref="changePasswordForm" v-model="valid" lazy-validation)
+              v-text-field(v-model="new_password" outlined label="New Password" :type="showPassword ? 'text' : 'password'" :rules="passwordRules" required :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" @click:append="showPassword = !showPassword")
+              v-text-field(v-model="confirm_password" outlined label="Confirm Password" type="password" :rules="[v => v === new_password || 'Passwords must match']" required)
+              div.pa-3
+                small Password strength
+                v-progress-linear(:value="passwordStrength" :color="passwordStrengthColor" height="5")
+              v-btn.mt-5(:disabled="!formValid" color="primary"  @click="submitForm") Update Password
+        v-col(cols="12" sm="12" xs="12" lg="4" md="4")
           v-card
             v-card-title Password Hints
             v-card-text

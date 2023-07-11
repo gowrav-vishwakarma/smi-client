@@ -6,7 +6,7 @@ v-container(style="min-height:100vh;").smi-meeting-wrapper
       v-dialog(v-model="showRatingDialog" width="70%")
         v-card(flat width="100%")
           v-row.pa-0.ma-0
-            v-col(cols="5" sm="12" md="5" lg="5" xs="12")
+            v-col(cols="12" sm="12" md="5" lg="5" xs="12")
               v-card.solution-video-comment-section(class="mx-auto" flat max-width="400px" )
                 v-card-title Describe your solution
                 v-card-subtitle Please take a few seconds to write your solution. It really helps other!
@@ -14,9 +14,9 @@ v-container(style="min-height:100vh;").smi-meeting-wrapper
                   video(v-if="recordingData" id="recordingPlayer" class="video-js vjs-default-skin" style="width:100%;height:150px;")
                   vue-editor(v-model="recordingText" :editor-toolbar="editorToolbar")
                   v-checkbox( label="save solution video and comment" v-model="isSaveComment")
-            v-col.pa-2(cols="1" sm="12" md="1" lg="1" xs="12" style="text-align:center;" )
+            v-col.pa-2(cols="12" sm="12" md="1" lg="1" xs="12" style="text-align:center;" )
               v-divider(vertical)
-            v-col(cols="5" sm="12" md="5" lg="5" xs="12")
+            v-col(cols="12" sm="12" md="5" lg="5" xs="12")
                 SolutionRatingForm(:solutionAttemptDetail="solutionAttempt" :isMyQuestion="isMyQuestion" :recordingData="recordingData" :recordingText="recordingText" :isSaveComment="isSaveComment")
       VideoJsRecord.mt-5(ref="VideoJsRecordRef" v-if="isRecordingEnabled" @recording-started="recordingStarted"  @recording-finished="recordingFinished" defaultRecordingMode="screen")
   div(v-else)

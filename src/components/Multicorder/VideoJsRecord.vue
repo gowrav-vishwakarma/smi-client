@@ -106,7 +106,7 @@ export default {
 
   methods: {
     async stopRecording() {
-      if (!this.defaultRecordingMode) this.recording = false;
+      // if (this.defaultRecordingMode == null) this.recording = false;
       await this.player.record().stop();
     },
 

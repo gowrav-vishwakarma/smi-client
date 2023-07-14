@@ -11,6 +11,8 @@ div(style="width: 100%")
     v-flex(xs12)
       v-btn.primary(@click="prevPage" :disabled="!hasPrevPage" :class="{disabled: !hasPrevPage,active: hasPrevPage}" :style="{'margin-right': '10px'}") Previous
       v-btn.primary(@click="nextPage" :disabled="!hasNextPage" :class="{disabled: !hasNextPage,active: hasNextPage}" :style="{'margin-left': '10px'}") Next
+  v-btn.orange.hidden-sm-and-up(dark fixed fab class="transition-swing v-btn v-btn--bottom v-btn--is-elevated v-btn--fab v-btn--fixed v-btn--round theme--light orange" aria-label="Scroll to top" title="Scroll to top" style="z-index: 6; margin-bottom: 0px; transform-origin: center center;" to="/ask-question")
+      v-icon mdi-plus
 </template>
 
 <script lang="ts">

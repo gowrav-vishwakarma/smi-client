@@ -1,17 +1,17 @@
 <template lang="pug">
   v-app
     ui-app-bar
-    v-main(class="grey lighten-3")
+    v-main(class="grey lighten-3" style="display: flex;flex-direction: column;min-height: 100vh;")
       SMILoader(v-if="isLoading")
       router-view
-      v-footer.mt-5.pa-5.text-center(padless elevation="5" )
-        v-row(style="width:100%;")
-          v-col(cols="12" sm="12" lg="6")
-            b [smi]
-            | &nbsp; Solve My Issue
-          v-col(cols="12" sm="12" lg="6")
-            router-link.ml-5(to="/" class="redirect-link") Home
-            router-link.ml-5(to="/about" class="redirect-link") About
+    v-footer.mt-5.pa-5.text-center(padless elevation="5" )
+      v-row(style="width:100%;")
+        v-col(cols="12" sm="12" lg="6")
+          b [smi]
+          | &nbsp; Solve My Issue
+        v-col(cols="12" sm="12" lg="6")
+          router-link.ml-5(to="/" class="redirect-link") Home
+          router-link.ml-5(to="/about" class="redirect-link") About
 </template>
 
 <script lang="ts">

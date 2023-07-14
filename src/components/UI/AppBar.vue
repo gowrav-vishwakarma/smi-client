@@ -9,7 +9,7 @@
       v-spacer
       filter-component
       v-spacer
-      v-btn(color='orange' dark='' @click='askquestion' small style="min-width:auto;")
+      v-btn.pa-1(color='orange' dark='' @click='askquestion' small style="min-width:auto;")
         v-icon  mdi-plus
         span.hidden-sm-and-down Ask Question
       //v-btn(sm rounded='' color='orange' v-else='' dark='' to='/ask-question')

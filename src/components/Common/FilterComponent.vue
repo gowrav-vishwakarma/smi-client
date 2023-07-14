@@ -1,13 +1,13 @@
 <template lang="pug">
-div.filter-component
-  .d-flex(style="align-items:center;" rounded)
-    v-text-field.filter-component-input(placeholder="search query" @click:append.prevent="filterFormDialog=true" dense	 @keydown.enter.prevent="setQueryFilter" v-model="queryString" class="white--text" prepend-inner-icon="mdi-magnify" append-icon="mdi-filter-multiple" hide-details="auto" clearable filled rounded @click:clear="clearFilter")
-      //- <template v-slot:append-outer v-if="isFilterSelected">
-      //-   v-chip(small color="primary") {{isFilterSelected}} Filter
-      //- </template>
-  v-dialog(v-model="filterFormDialog" width="600")
-    v-card.pa-4
-      Question-Filters(:callback="setFilter")
+  div.filter-component
+    .d-flex(style="align-items:center;")
+      v-text-field.filter-component-input(placeholder="search query" @click:append.prevent="filterFormDialog=true" dense	 @keydown.enter.prevent="setQueryFilter" v-model="queryString" class="white--text" prepend-inner-icon="mdi-magnify" append-icon="mdi-filter-multiple" hide-details="auto" clearable filled rounded @click:clear="clearFilter")
+        //- <template v-slot:append-outer v-if="isFilterSelected">
+        //-   v-chip(small color="primary") {{isFilterSelected}} Filter
+        //- </template>
+    v-dialog(v-model="filterFormDialog" width="600")
+      v-card.pa-4
+        Question-Filters(:callback="setFilter")
 </template>
 
 <script lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <v-card class="mb-12" color="">
+  <v-card class="mb-12 smi-askquestion-compo" color="">
     <v-card-title>
       <span class="headline"
         >New Question: Ask
@@ -26,7 +26,7 @@
         ></vue-editor>
 
         <treeselect
-          class="mb-2 mt-2"
+          class="mb-4 mt-5"
           :multiple="true"
           v-model="question.topic"
           :options="topicsInterestedIn"
@@ -88,9 +88,10 @@
               <v-card-text>
                 Record your issue for better explanation
                 <MulticorderUI
-                  ref="MulticoderUI"
+                  ref="MulticoderUIParent"
                   @recorderOndataavailable="recorderOndataavailable"
                   @delete-recording="deleteRecording"
+                  @video-change="videoRecordingStarted"
                 />
               </v-card-text>
             </v-card>
@@ -112,6 +113,7 @@
         @click="createQuestion"
         :disabled="!valid"
         block
+        :loader="progress"
       >
         Create
       </v-btn>
@@ -121,7 +123,7 @@
 
 <script lang="ts">
 import { topics, Topic } from "@/services/staticValues";
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch, Ref } from "vue-property-decorator";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
@@ -129,6 +131,7 @@ import { VueEditor } from "vue2-editor";
 import MulticorderUI from "@/components/Multicorder/MulticorderUI.vue";
 import questionsApi from "@/services/questions.api";
 import userApi from "@/services/user.api";
+import { eventBus } from "@/mixins/event-bus";
 
 @Component({
   components: {
@@ -138,6 +141,8 @@ import userApi from "@/services/user.api";
   },
 })
 export default class AskQuestionView extends Vue {
+  @Ref("MulticoderUIParent") private MulticoderUIParent!: HTMLElement;
+
   @Prop({ default: null }) askTo!: string | null;
 
   askToUser: any = null;
@@ -183,6 +188,8 @@ export default class AskQuestionView extends Vue {
     ["clean"], // remove formatting button
   ];
 
+  recordingStarted = false;
+
   @Watch("askTo")
   async askToChanged() {
     if (this.askTo) {
@@ -219,6 +226,11 @@ export default class AskQuestionView extends Vue {
     this.blob = blob;
   }
 
+  videoRecordingStarted(data: any) {
+    console.log("videoRecordingStarted", data);
+    this.recordingStarted = true;
+  }
+
   removeSkill(item: string) {
     this.question.topic = [
       ...this.question.topic.filter((x: string) => x !== item),
@@ -235,17 +247,48 @@ export default class AskQuestionView extends Vue {
       this.valid = false;
       return;
     }
+    // eventBus.$emit("show-loader");
+
+    if (this.recordingStarted) {
+      await (this.MulticoderUIParent as any).videoStopRecording();
+      while (!this.blob) {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+    }
+
+    // this.$nextTick(async () => {
     this.progress = 0;
     var data = this.question;
     data.languages = this.$store.getters.loggedInUser.userLanguages;
-    const newQuestion = await questionsApi.createQuestion(
-      this.question,
-      this.blob,
-      (event) => {
+
+    await questionsApi
+      .createQuestion(this.question, this.blob, (event) => {
         this.progress = Math.round((100 * event.loaded) / event.total);
-      }
-    );
-    this.$router.push("question/" + newQuestion._id);
+      })
+      .then((res) => {
+        console.log("question created ", res.data);
+        this.recordingStarted = false;
+        this.blob = null;
+        this.$router.push("question/" + res._id);
+      });
+    // });
+
+    // eventBus.$emit("hide-loader");
+    // this.$router.push("question/" + newQuestion._id);
   }
 }
 </script>
+
+<style>
+.smi-askquestion-compo .vue-treeselect__control {
+  border: 1px solid rgba(0, 0, 0, 0.6) !important;
+}
+
+.smi-askquestion-compo .vue-treeselect__placeholder {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.vue-treeselect__option-arrow-container {
+  color: black;
+}
+</style>

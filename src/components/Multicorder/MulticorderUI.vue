@@ -12,6 +12,7 @@
             @new-recording="onNewRecording"
             @delete-recording="onDeleteRecording"
             @player-loaded="onPlayerLoaded"
+            @video-change="onVideoChange"
             @recorderOndataavailable="recorderOndataavailable"
             ref="multicorder"
             :videoTypes="videoTypes"
@@ -223,7 +224,7 @@ export default {
     },
     onVideoLive() {
       this.controls = "liveVideo";
-      this.$nextTick(()=>this.videoRecord())
+      this.$nextTick(() => this.videoRecord());
     },
     onViewChange(view) {
       this.view = view;
@@ -319,6 +320,10 @@ export default {
     },
     togglePlayerMuted() {
       this.isPlayerMuted = !this.isPlayerMuted;
+    },
+    onVideoChange(data) {
+      console.log("Video recording started", data);
+      this.$emit("video-change", data);
     },
   },
 };

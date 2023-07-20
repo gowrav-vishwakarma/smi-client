@@ -16,10 +16,11 @@ div.question-answer-list.mt-2.pa-2
     v-card-text
       div.custom-html(v-html="comment.comment")
       //v-icon(x-large color="red" size="100" v-if="!displayVideo && comment.video" @click="displayVideo=true") mdi-youtube
-      div
-        v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="comment.video")
-          video(width="100%" height="240" preload="none" controls)
-            source(:src="videoURL" type="video/webm")
+      div(v-if="comment.video")
+        //v-card.mt-2.d-flex.justify-center.question-description-video(flat v-if="comment.video")
+          //video(width="100%" height="240" preload="none" controls)
+          //  source(:src="videoURL" type="video/webm")
+        BunnyVideoPlayer(:videoPath="comment.video")
     v-card-actions
       v-icon(v-if="comment.isQuestionSolved" color="green" ) mdi-check-all
       voting-component(:comment="comment")
@@ -35,6 +36,7 @@ import "reflect-metadata";
 import { Component, Mixins, Prop } from "vue-property-decorator";
 import SolverSignature from "@/components/User/Signature/AsSolver.vue";
 import VotingComponent from "@/components/Common/VotingComponent.vue";
+import BunnyVideoPlayer from "@/components/Common/BunnyVideoPlayer.vue";
 import Ribbon from "@/components/UI/Ribbon.vue";
 import { General } from "@/mixins/general";
 
@@ -44,6 +46,7 @@ import { General } from "@/mixins/general";
     SolverSignature,
     VotingComponent,
     Ribbon,
+    BunnyVideoPlayer,
   },
 })
 export default class SingleCommentComponent extends Mixins(General) {

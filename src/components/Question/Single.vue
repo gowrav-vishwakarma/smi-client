@@ -1,10 +1,10 @@
 <template lang="pug">
-v-card.mb-2.question-single-card(v-if="question" style="overflow:hidden;")
-  Ribbon(headingLabel="Solved" v-if='question.status=="SOLVED"')
+v-card.mb-2.question-single-card(v-if="question")
   v-card.pa-0.ma-0.question-detail-card(flat)
     //- .d-flex.justify-space-between
     //-   h4.text-subtitle-1.question-heading.primary--text( style="cursor:pointer" @click="gotoDetails") Q. {{question.title}}
-    .d-flex.justify-space-between
+    .d-flex.justify-space-between(style="overflow:hidden;")
+      Ribbon(headingLabel="Solved" v-if='question.status=="SOLVED"')
       v-card-title.question-heading(style="cursor:pointer" @click="gotoDetails") Q. {{question.title}}
       //.d-flex.justify-end
       //  v-icon(v-if="question.scope=='Public'" color="green" @click.stop="isMyProfileView && changeScope('Private')") mdi-earth
@@ -18,13 +18,13 @@ v-card.mb-2.question-single-card(v-if="question" style="overflow:hidden;")
         v-col(v-else cols="12")
           v-card-subtitle.pt-0.pd-0.text--secondary.text-justify {{shortdetail}}
         v-col(v-if="videoURL && question.video" cols="12" md="5" sm="12" xs="12" lg="5" xl="5")
-          v-card-subtitle.pt-0.pb-0.text--secondary.text-justify
+          v-card-subtitle
             //video.smi-video-player-component(width="100%" controls="true" preload="none")
             //  source(:src="videoURL" type="video/webm")
             BunnyVideoPlayer(:videoPath="question.video")
       v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")
           v-img(src="@/assets/logo.png" max-height="350" contain)
-      div.mt-2.pa-2.question-description-video(v-if="question.video && displayVideo")
+      div.mt-2.question-description-video(v-if="question.video && displayVideo")
         BunnyVideoPlayer(:videoPath="question.video")
           //video(width="320" height="240" :controls="videoControl" preload="none")
           //  source(:src="videoURL" type="video/webm")

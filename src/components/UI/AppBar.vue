@@ -1,17 +1,20 @@
 <template lang="pug">
-    v-app-bar(app)
+    v-app-bar.smi-menu-bar(app)
       //v-btn(fab small dark top left style="position: absolute;")
       //  v-icon mdi-plus
       router-link.d-flex.align-center(to="/" class="logo-link")
         v-toolbar-title(to='/')
-          span.pt-1.pb-1(style=" border-radius: 15%;font-weight: 400;" ) [SMI]
+          //span.pt-1.pb-1(style=" border-radius: 15%;font-weight: 400;" ) [SMI]
+          |[
+          span(style="color: white;background: linear-gradient(135deg, #FF6A3D, #FFA643);padding: 4px;border-radius: 50%;box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);font-size: 20px;") SMI
+          |]
           small.hidden-sm-and-down(class="ml-2") Solve My Issue
       v-spacer
-      filter-component
+      filter-component(:style="{ maxWidth: $vuetify.breakpoint.smAndDown ? '180px' : 'unset' }")
       v-spacer
-      v-btn.pa-1(color='orange' dark='' @click='askquestion' small style="min-width:auto;")
+      v-btn.pa-1(color='orange' dark='' @click='askquestion' small style="min-width:auto;" v-if="$vuetify.breakpoint.smAndUp")
         v-icon  mdi-plus
-        span.hidden-sm-and-down Ask Question
+        span Ask Question
       //v-btn(sm rounded='' color='orange' v-else='' dark='' to='/ask-question')
       //  v-icon  mdi-plus
       //  span.hidden-sm-and-down Ask Question
@@ -194,4 +197,9 @@ export default class App extends Vue {
   text-decoration: none; /* Remove underline */
   color: black !important; /* Inherit color from parent */
 }
+
+.smi-menu-bar {
+  background-color: white !important;
+}
 </style>
+//button-background color // linear-gradient(135deg, #FF6A3D, #FFA643)

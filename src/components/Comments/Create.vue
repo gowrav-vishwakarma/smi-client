@@ -8,7 +8,7 @@ div
         MulticorderUI(style="max-width:300px;margin:10px auto 0 auto !important;" ref="MulticoderUIComment" v-if="isRecordingEnabled" @recorderOndataavailable="recordingFinished" @delete-recording="deleteRecording" @video-change="recordingStarted")
       v-alert.ml-4.mr-4(dense type="error" v-if="showError")  answer/comment is mandatory
       v-card-actions.pl-3.pr-3
-        v-btn(block :loading="progress > 0" v-if="this.$store.getters.loggedInUser" @click="submitComment" color="primary") Submit Answer
+        v-btn(block :loading="progress > 0" v-if="this.$store.getters.loggedInUser" @click="submitComment" color="orange darken-2" dark) Submit Answer
         v-btn(v-else block color="secondary" @click="redirectToLogin" ) Login to Answer
 </template>
 

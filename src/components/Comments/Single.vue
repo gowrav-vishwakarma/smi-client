@@ -13,7 +13,7 @@ div.question-answer-list.mt-2
       div.ml-auto()
         v-card-subtitle
           small.text--disabled {{ humanized_time_span(comment.createdAt) }}
-    v-card-text
+    v-card-text.pt-1
       div.custom-html(v-html="comment.comment")
       //v-icon(x-large color="red" size="100" v-if="!displayVideo && comment.video" @click="displayVideo=true") mdi-youtube
       div(v-if="comment.video")

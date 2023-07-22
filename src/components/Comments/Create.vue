@@ -115,6 +115,7 @@ export default class CreateCommentComponent extends Vue {
           this.recordingData = null;
           this.isRecordingOn = false;
           this.progress = 0;
+          this.showError = false;
           this.key++;
           this.$emit("event-new-comment-created");
         });

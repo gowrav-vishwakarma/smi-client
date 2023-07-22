@@ -1,5 +1,5 @@
 <template lang="pug">
-div.question-answer-list.mt-2.pa-2
+div.question-answer-list.mt-2
   //.d-flex.answer-list-section
     //div.flex-shrink-0
       //- v-avatar.mt-1(color="primary" size="40")

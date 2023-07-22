@@ -7,7 +7,7 @@
       >
     </v-card-title>
     <v-card-text>
-      <v-form ref="form" v-model="valid">
+      <v-form ref="questionform" v-model="valid">
         <v-text-field
           label="Question Title"
           v-model="question.title"
@@ -19,45 +19,52 @@
           dense
         ></v-text-field>
 
-        <div>Question Detail</div>
-        <vue-editor
-          :editorToolbar="editorToolbar"
-          v-model="question.detail"
-        ></vue-editor>
+        <v-row>
+          <v-col cols="12" md="12" sm="12" lg="6" xs="12">
+            <div>
+              <div>Question Detail</div>
+              <vue-editor
+                :editorToolbar="editorToolbar"
+                v-model="question.detail"
+              ></vue-editor>
+            </div>
+          </v-col>
+          <v-col>
+            <treeselect
+              class="mb-4 mt-5"
+              :multiple="true"
+              v-model="question.topic"
+              :options="topicsInterestedIn"
+              value-consists-of="ALL_WITH_INDETERMINATE"
+              sort-value-by="LEVEL"
+              :rules="[(v) => !!v || 'Required']"
+              placeholder="Select Topics"
+            ></treeselect>
 
-        <treeselect
-          class="mb-4 mt-5"
-          :multiple="true"
-          v-model="question.topic"
-          :options="topicsInterestedIn"
-          value-consists-of="ALL_WITH_INDETERMINATE"
-          sort-value-by="LEVEL"
-          :rules="[(v) => !!v || 'Required']"
-          placeholder="Select Topics"
-        ></treeselect>
-
-        <v-combobox
-          v-model="question.tags"
-          label="Tags"
-          multiple
-          small-chips
-          clearable
-          :delimiters="[',']"
-          deletable-chips
-          outlined
-          dense
-          hint="you can associate multiple tags with your question. for multiple tag `type your tag name and end with comma(,) ie. tech, `"
-        ></v-combobox>
-        <v-autocomplete
-          v-model="question.scope"
-          :items="['Private', 'Public']"
-          label="Question Visibility"
-          required
-          :rules="[(v) => !!v || 'Question Visibility is required']"
-          outlined
-          dense
-          class="mt-4"
-        ></v-autocomplete>
+            <v-combobox
+              v-model="question.tags"
+              label="Tags"
+              multiple
+              small-chips
+              clearable
+              :delimiters="[',']"
+              deletable-chips
+              outlined
+              dense
+              hint="you can associate multiple tags with your question. for multiple tag `type your tag name and end with comma(,) ie. tech, `"
+            ></v-combobox>
+            <v-autocomplete
+              v-model="question.scope"
+              :items="['Private', 'Public']"
+              label="Question Visibility"
+              required
+              :rules="[(v) => !!v || 'Question Visibility is required']"
+              outlined
+              dense
+              class="mt-4"
+            ></v-autocomplete>
+          </v-col>
+        </v-row>
 
         <v-row class="mt-2">
           <v-col cols="12" sm="6">
@@ -100,12 +107,9 @@
       </v-form>
       <v-progress-linear class="mt-2" v-model="progress"></v-progress-linear>
     </v-card-text>
-    <div
-      v-if="showDetailError"
-      class="v-messages d-flex justify-center theme--light error--text"
-    >
+    <v-alert v-if="showDetailError" class="ma-5" color="red" type="error">
       {{ ErrorText }}
-    </div>
+    </v-alert>
     <v-card-actions>
       <v-btn
         color="success"
@@ -113,9 +117,9 @@
         @click="createQuestion"
         :disabled="!valid"
         block
-        :loader="progress"
+        :loading="progress > 0"
       >
-        Create
+        Submit
       </v-btn>
     </v-card-actions>
   </v-card>
@@ -142,6 +146,7 @@ import { eventBus } from "@/mixins/event-bus";
 })
 export default class AskQuestionView extends Vue {
   @Ref("MulticoderUIParent") private MulticoderUIParent!: HTMLElement;
+  @Ref("questionform") private askQuestionform!: HTMLFormElement;
 
   @Prop({ default: null }) askTo!: string | null;
 
@@ -247,7 +252,7 @@ export default class AskQuestionView extends Vue {
       this.valid = false;
       return;
     }
-    // eventBus.$emit("show-loader");
+    eventBus.$emit("show-loader", { title: "Submitting Question..." });
 
     if (this.recordingStarted) {
       await (this.MulticoderUIParent as any).videoStopRecording();
@@ -256,9 +261,8 @@ export default class AskQuestionView extends Vue {
       }
     }
 
-    // this.$nextTick(async () => {
-    this.progress = 0;
-    var data = this.question;
+    this.progress = 1;
+    let data = this.question;
     data.languages = this.$store.getters.loggedInUser.userLanguages;
 
     await questionsApi
@@ -269,12 +273,9 @@ export default class AskQuestionView extends Vue {
         console.log("question created ", res.data);
         this.recordingStarted = false;
         this.blob = null;
+        eventBus.$emit("hide-loader");
         this.$router.push("question/" + res._id);
       });
-    // });
-
-    // eventBus.$emit("hide-loader");
-    // this.$router.push("question/" + newQuestion._id);
   }
 }
 </script>

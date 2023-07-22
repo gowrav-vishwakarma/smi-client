@@ -18,13 +18,13 @@ v-card.mb-2.question-single-card(v-if="question")
         v-col(v-else cols="12")
           v-card-subtitle.pt-0.pd-0.text--secondary.text-justify {{shortdetail}}
         v-col(v-if="videoURL && question.video" cols="12" md="5" sm="12" xs="12" lg="5" xl="5")
-          v-card-subtitle
+          v-card-subtitle.pa-2
             //video.smi-video-player-component(width="100%" controls="true" preload="none")
             //  source(:src="videoURL" type="video/webm")
             BunnyVideoPlayer(:videoPath="question.video")
       v-card.question-description-image(color="primary lighten-3" flat v-if="question.image")
           v-img(src="@/assets/logo.png" max-height="350" contain)
-      div.mt-2.question-description-video(v-if="question.video && displayVideo")
+      div.question-description-video(v-if="question.video && displayVideo")
         BunnyVideoPlayer(:videoPath="question.video")
           //video(width="320" height="240" :controls="videoControl" preload="none")
           //  source(:src="videoURL" type="video/webm")

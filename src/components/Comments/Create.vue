@@ -1,32 +1,38 @@
 <template lang="pug">
 div
-  v-card.d-flex.flex-column(tile)
+  v-card.d-flex.flex-column.smi-comment-create-card(tile :key="key")
       v-card-text Your answer/comment
+        span.ml-1(style="color:red;") *
         vue-editor.mt-2(v-model="comment" :editor-toolbar="editorToolbar")
-        VideoJsRecord.mt-5(ref="VideoJsRecordCommentRef" v-if="isRecordingEnabled" @recording-started="recordingStarted"  @recording-finished="recordingFinished" :defaultRecordingMode="recordingMode")
+        //VideoJsRecord.mt-5(ref="VideoJsRecordCommentRef" v-if="isRecordingEnabled" @recording-started="recordingStarted"  @recording-finished="recordingFinished" :defaultRecordingMode="recordingMode")
+        MulticorderUI(style="max-width:300px;margin:10px auto 0 auto !important;" ref="MulticoderUIComment" v-if="isRecordingEnabled" @recorderOndataavailable="recordingFinished" @delete-recording="deleteRecording" @video-change="recordingStarted")
+      v-alert.ml-4.mr-4(dense type="error" v-if="showError")  answer/comment is mandatory
       v-card-actions.pl-3.pr-3
-        v-btn(block v-if="this.$store.getters.loggedInUser" @click="submitComment" color="primary") Submit Answer
+        v-btn(block :loading="progress > 0" v-if="this.$store.getters.loggedInUser" @click="submitComment" color="primary") Submit Answer
         v-btn(v-else block color="secondary" @click="redirectToLogin" ) Login to Answer
 </template>
 
 <script lang="ts">
 import "reflect-metadata";
-import { Component, Prop, Vue, Ref } from "vue-property-decorator";
+import { Component, Prop, Vue, Ref, Watch } from "vue-property-decorator";
 import { VueEditor } from "vue2-editor";
 import commentsAPIService from "@/services/comments.api";
 import { AuthStoreModule } from "@/store";
-import VideoJsRecord from "@/components/Multicorder/VideoJsRecord.vue";
+// import VideoJsRecord from "@/components/Multicorder/VideoJsRecord.vue";
 import { eventBus } from "@/mixins/event-bus";
+import MulticorderUI from "@/components/Multicorder/MulticorderUI.vue";
 
 @Component({
   name: "CreateCommentComponent",
   components: {
     VueEditor,
-    VideoJsRecord,
+    // VideoJsRecord,
+    MulticorderUI,
   },
 })
 export default class CreateCommentComponent extends Vue {
   @Ref("VideoJsRecordCommentRef") private VideoJsRecordCommentRef!: HTMLElement;
+  @Ref("MulticoderUIComment") private MulticoderUIComment!: HTMLElement;
 
   @Prop({ default: null })
   readonly question!: any;
@@ -35,6 +41,8 @@ export default class CreateCommentComponent extends Vue {
   recordingData: any = null;
   progress = 0;
   videoAutoStop = false;
+  showError = false;
+  key = 0;
 
   get isRecordingEnabled() {
     return process.env.VUE_APP_ENABLE_RECORDING == "true";
@@ -60,16 +68,36 @@ export default class CreateCommentComponent extends Vue {
     ["link"], // temp remove image and video it has a hook for image upload also ["link", "image", "video"],
     ["clean"], // remove formatting button
   ];
-  async submitComment() {
-    eventBus.$emit("show-loader");
 
-    if (this.isRecordingOn) {
-      await (this.VideoJsRecordCommentRef as any).stopRecording();
-      this.videoAutoStop = true;
-      console.log("auto stopping recording");
+  @Watch("comment")
+  onDetailsChanged(newValue: string) {
+    this.showError = newValue.trim() === "";
+  }
+
+  async submitComment() {
+    if (this.comment == "" || this.comment.length == 0) {
+      this.showError = true;
       return;
     }
 
+    eventBus.$emit("show-loader");
+    // if (this.isRecordingOn) {
+    //   await (this.VideoJsRecordCommentRef as any).stopRecording();
+    //   this.videoAutoStop = true;
+    //   console.log("auto stopping recording");
+    //   return;
+    // }
+
+    if (this.isRecordingOn) {
+      await (this.MulticoderUIComment as any).videoStopRecording();
+      while (!this.recordingData) {
+        this.videoAutoStop = true;
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+      return;
+    }
+
+    this.progress = 1;
     if (!this.videoAutoStop) {
       await commentsAPIService
         .createComment(
@@ -86,10 +114,13 @@ export default class CreateCommentComponent extends Vue {
           this.comment = "";
           this.recordingData = null;
           this.isRecordingOn = false;
+          this.progress = 0;
+          this.key++;
           this.$emit("event-new-comment-created");
-          eventBus.$emit("hide-loader");
         });
     }
+
+    eventBus.$emit("hide-loader");
   }
 
   redirectToLogin() {
@@ -134,5 +165,15 @@ export default class CreateCommentComponent extends Vue {
       await this.submitComment();
     }
   }
+
+  deleteRecording(index: number) {
+    if (index === 0) this.recordingData = null;
+  }
 }
 </script>
+
+<style>
+.smi-comment-create-card .ql-editor {
+  min-height: 100px !important;
+}
+</style>

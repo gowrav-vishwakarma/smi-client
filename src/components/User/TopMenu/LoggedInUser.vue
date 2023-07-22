@@ -63,6 +63,12 @@
             Profile
           </v-list-item-title>
         </v-list-item>
+        <v-list-item to="/ask-question" style="min-height: 28px">
+          <v-list-item-title>
+            <v-icon small color="orange darken-2"> mdi-plus</v-icon>
+            ASk Question
+          </v-list-item-title>
+        </v-list-item>
         <v-list-item @click="logout" style="min-height: 28px">
           <v-list-item-title>
             <v-icon small> mdi-logout</v-icon>

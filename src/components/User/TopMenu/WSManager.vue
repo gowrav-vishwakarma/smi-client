@@ -1,22 +1,23 @@
 <template lang="pug">
 div
   v-icon(v-if="showOnlineIcon" small :color="statusColor") mdi-circle
+  div.notifymesnackbar
+    v-snackbar(app v-model="snackbar" :timeout="5000" absolute bottom centered color="primary" ) Notifiy me about offer
+      template(v-slot:action="{ attrs }")
+        v-btn(color="orange" v-bind="attrs" @click="snackbar = false;") OK
   div.extra-component
     div.call-receive-ringing
-      audio(ref="incomingCallRingingPlayer")
+      audio(ref="incomingCallRingingPlayer" loop="true")
         source(src="@/assets/audio/callRingingTone.mp3" type="audio/mpeg" preload="auto")
 </template>
 
 <script lang="ts">
 import { Component, Vue, Ref, Prop } from "vue-property-decorator";
 import socket, { SocketOn, SocketEmit } from "@/services/socket";
-import { SocketAuthDTO } from "@/dto/ws.dto";
 import solutionsApi from "@/services/solutions.api";
 import { AuthStoreModule } from "@/store";
 import userApi from "@/services/user.api";
-
-import callDialToneMP3 from "@/assets/audio/callDialTone.mp3";
-const callDialTone: string = callDialToneMP3;
+// import { SocketAuthDTO } from "@/dto/ws.dto";
 
 @Component({
   name: "WSManager",
@@ -24,9 +25,9 @@ const callDialTone: string = callDialToneMP3;
 export default class WSManager extends Vue {
   @Ref() incomingCallRingingPlayer!: HTMLAudioElement;
 
+  snackbar = true;
   isConnected = false;
-  audioContext: any = null;
-  audioBuffer: any = null;
+  isAudioPlaying = false;
 
   @Prop({ default: true })
   hideWSIcon!: boolean;
@@ -34,10 +35,6 @@ export default class WSManager extends Vue {
   get showOnlineIcon() {
     return this.hideWSIcon ? false : true;
   }
-
-  // callDialTone: callDialToneMP3;
-
-  // userOnlineStatus = "Offline";
 
   created() {
     this.socketConnect();
@@ -88,6 +85,7 @@ export default class WSManager extends Vue {
       console.log("call-receive", payload);
       // when ringing remove previous toast
       this.$vToastify.removeToast();
+      this.playSound();
 
       this.$vToastify
         .prompt({
@@ -120,6 +118,7 @@ export default class WSManager extends Vue {
                 offerId: payload.offerId,
               });
 
+            this.pauseSound();
             newPayload.solutionOfferAttemptId = solutionAttemptOffer._id;
             SocketEmit("acceptCall", newPayload);
 
@@ -129,6 +128,7 @@ export default class WSManager extends Vue {
               "/solution-attempt/" + newPayload.solutionOfferAttemptId
             );
           } else {
+            this.pauseSound();
             SocketEmit("denyCall", newPayload);
           }
         });
@@ -136,6 +136,7 @@ export default class WSManager extends Vue {
 
     SocketOn("callAccepted", async (payload) => {
       console.log("callAccepted at single offer component", payload);
+      this.pauseSound();
       //temporary commenting condition
       // if (
       //   payload.offerId == this.offer._id &&
@@ -152,15 +153,18 @@ export default class WSManager extends Vue {
     });
 
     SocketOn("callDenied", (payload) => {
+      this.pauseSound();
       this.callReset();
     });
 
     SocketOn("callDisconnected", (payload) => {
+      this.pauseSound();
       this.callReset();
       console.log("callDisconnected", payload);
     });
 
     SocketOn("callHanguped", (payload) => {
+      this.pauseSound();
       this.callReset();
       console.log("call Hanguped", payload);
     });
@@ -202,31 +206,6 @@ export default class WSManager extends Vue {
     // this.callDialPlayer.pause();
   }
 
-  playSound(forType: string) {
-    this.incomingCallRingingPlayer.play();
-
-    // if (forType == "ringing") {
-    //   console.log("Play Sound in ws manager");
-    //   let data = {
-    //     soundurl:
-    //       "http://soundbible.com/mp3/analog-watch-alarm_daniel-simion.mp3",
-    //   };
-    //   var audio = new Audio(data.soundurl);
-    //   audio.play();
-    // }
-  }
-
-  async loadAudio() {
-    try {
-      const response = await fetch(callDialTone);
-      const arrayBuffer = await response.arrayBuffer();
-      this.audioContext = new window.AudioContext();
-      this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   get statusColor() {
     return this.isConnected && this.$store.getters.userOnlineStatus == "BUSY"
       ? "orange"
@@ -235,17 +214,42 @@ export default class WSManager extends Vue {
       : "red";
   }
 
-  async playSoundWithNotification() {
-    if (!this.audioBuffer) return;
-
-    if (!this.audioContext) {
-      this.audioContext = new window.AudioContext();
-    }
-
-    const source = this.audioContext.createBufferSource();
-    source.buffer = this.audioBuffer;
-    source.connect(this.audioContext.destination);
-    source.start(0);
+  playSound() {
+    this.isAudioPlaying = true;
+    this.incomingCallRingingPlayer.play();
   }
+
+  pauseSound() {
+    // Clean up the audio when the component is about to be destroyed
+    if (this.isAudioPlaying) {
+      this.incomingCallRingingPlayer.currentTime = 0;
+      this.isAudioPlaying = false;
+      this.incomingCallRingingPlayer.pause();
+    }
+  }
+
+  // async loadAudio() {
+  //   try {
+  //     const response = await fetch(callDialTone);
+  //     const arrayBuffer = await response.arrayBuffer();
+  //     this.audioContext = new window.AudioContext();
+  //     this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+
+  // async playSoundWithNotification() {
+  //   if (!this.audioBuffer) return;
+  //
+  //   if (!this.audioContext) {
+  //     this.audioContext = new window.AudioContext();
+  //   }
+  //
+  //   const source = this.audioContext.createBufferSource();
+  //   source.buffer = this.audioBuffer;
+  //   source.connect(this.audioContext.destination);
+  //   source.start(0);
+  // }
 }
 </script>

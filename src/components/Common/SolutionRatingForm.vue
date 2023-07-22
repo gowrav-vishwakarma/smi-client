@@ -1,13 +1,13 @@
 <template lang="pug">
-div.text-center.solution-rating-form-component
+div.solution-rating-form-component
     v-card(class="mx-auto" flat max-width="400px" )
         v-card-title(style="align-items:center;") {{title}}
-        v-card-text Please take a few seconds to rate your experience. It really helps!
-          v-rating( v-model="rating" color="yellow darken-3" background-color="grey darken-1" active-color="yellow-accent-4" hover size="40" length="5")
-          v-textarea(label="comment" v-model="comment" outline prepend-icon="mdi-comment" rows="4")
+        v-card-subtitle Please take a few seconds to rate your experience. It really helps!
+        v-card-text
+          v-rating( v-model="rating" color="yellow darken-3" background-color="grey darken-1" active-color="yellow-accent-4" hover :size="$vuetify.breakpoint.smAndDown ? 30 : 40" length="5")
+          //v-textarea(label="comment for solver" v-model="comment" outline filled prepend-icon="mdi-comment" rows="3")
           v-checkbox(v-if="isQuestioner" label="Mark Solved" v-model="markSolved")
-        v-divider
-        v-card-actions
+        v-card-actions.mt-4
           v-btn.pa-6(color="primary"  block  @click="submitRating") Submit Solution &<br/> Rating Now
 </template>
 
@@ -44,7 +44,7 @@ export default class SolutionRatingForm extends Vue {
   isSaveComment!: boolean;
 
   rating = 0;
-  comment = "";
+  comment = "comment for solver";
   markSolved = false;
   progress = 0;
 

@@ -3,7 +3,7 @@ v-container(style="min-height:100vh;").smi-meeting-wrapper
   v-card(v-if="solutionAttempt && solutionAttempt._id")
     v-card(style="height: 60vh" )
       vue-jitsi-meet(ref="jitsiRef" domain="jitsi.solvemyissue.online" :options="jitsiOptions" v-if="!showRatingDialog")
-      v-dialog(v-model="showRatingDialog" width="70%")
+      v-dialog(v-model="showRatingDialog" :width="$vuetify.breakpoint.mdAndDown ? '100%' : '70%'" persistent)
         v-card(flat width="100%")
           v-row.pa-0.ma-0
             v-col(cols="12" sm="12" md="5" lg="5" xs="12")
@@ -15,12 +15,12 @@ v-container(style="min-height:100vh;").smi-meeting-wrapper
                   vue-editor(v-model="recordingText" :editor-toolbar="editorToolbar")
                   v-checkbox( label="save solution video and comment" v-model="isSaveComment")
             v-col.pa-2(cols="12" sm="12" md="1" lg="1" xs="12" style="text-align:center;" )
-              v-divider(vertical)
+              v-divider(:vertical="!$vuetify.breakpoint.smAndDown")
             v-col(cols="12" sm="12" md="5" lg="5" xs="12")
                 SolutionRatingForm(:solutionAttemptDetail="solutionAttempt" :isMyQuestion="isMyQuestion" :recordingData="recordingData" :recordingText="recordingText" :isSaveComment="isSaveComment")
       VideoJsRecord.mt-5(ref="VideoJsRecordRef" v-if="isRecordingEnabled" @recording-started="recordingStarted"  @recording-finished="recordingFinished" defaultRecordingMode="screen")
   div(v-else)
-    P Meeting finished | Something went wrong
+    v-alert.mt-5(type="warning") Meeting finished | Something went wrong
 </template>
 
 <script lang="ts">
@@ -62,12 +62,12 @@ export default class SolutionAttempt extends Mixins(General) {
   editorToolbar = [
     [{ header: [false, 1, 2, 3, 4, 5, 6] }],
     ["bold", "italic", "underline", "strike"], // toggled buttons
-    [
-      { align: "" },
-      { align: "center" },
-      { align: "right" },
-      { align: "justify" },
-    ],
+    // [
+    //   { align: "" },
+    //   { align: "center" },
+    //   { align: "right" },
+    //   { align: "justify" },
+    // ],
     ["blockquote", "code-block"],
     [{ list: "ordered" }, { list: "bullet" }, { list: "check" }],
     [{ indent: "-1" }, { indent: "+1" }], // outdent/indent

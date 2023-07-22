@@ -19,8 +19,20 @@
             :recorderMode="recorderMode"
           />
         </div>
+        <v-btn
+          @click="getVideoList()"
+          color="red"
+          dark
+          elevation="2"
+          rounded
+          x-small
+          v-if="!this.videoSourceList.length"
+          :loading="loader"
+        >
+          Allow Video Permission
+        </v-btn>
         <v-select
-          v-if="videoSource == null"
+          v-if="videoSource == null && this.videoSourceList.length"
           v-show="view == 'video'"
           :items="videoSourceList"
           :return-object="true"
@@ -206,6 +218,7 @@ export default {
       isPlayerMuted: true,
       view: "video",
       recordings: [], // local sparsed list of recording data
+      loader: false,
     };
   },
   methods: {
@@ -221,6 +234,7 @@ export default {
        * The Multicorder component maintains a list of `cameras` if we need them independently.
        */
       this.videoSourceList = this.$refs.multicorder.listFromCameras(cameras);
+      this.loader = false;
     },
     onVideoLive() {
       this.controls = "liveVideo";
@@ -324,6 +338,10 @@ export default {
     onVideoChange(data) {
       console.log("Video recording started", data);
       this.$emit("video-change", data);
+    },
+    getVideoList() {
+      this.loader = true;
+      this.$refs.multicorder.initVideoOptions();
     },
   },
 };

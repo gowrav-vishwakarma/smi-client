@@ -2,7 +2,7 @@
 v-container.grid-list-xs
   v-row.no-gutter
     //- offer section
-    v-col.col-md-4.col-sm-4.col-xs-4
+    v-col(cols="12" md="4" sm="12" lg="4" xs="12")
       div.hidden-sm-and-down(style="position:sticky;top:70px;")
         create-offer-component(:question="question" v-if="!isQuestionBelongsToLoginUser" :isSolved="isSolved")
         v-card(v-else)
@@ -17,7 +17,7 @@ v-container.grid-list-xs
             create-offer-component(:showTitle="false" :question="question" v-if="!isQuestionBelongsToLoginUser" :isSolved="isSolved")
             question-offer-list.mt-3(:question="question" :isSolved="isSolved" )
     //- question section
-    v-col.col-md-8.col-sm-8.col-xs-8
+    v-col(cols="12" md="8" sm="12" lg="8" xs="12")
       question-single(:question="question" :key="question._id" disableAnswerSection="true" showDetail="true" videoControl="true" :isMyQuestion="isQuestionBelongsToLoginUser")
       v-subheader Comments
       question-comments-list-component(:question="question" @event-new-comment-created="reloadData")

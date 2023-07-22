@@ -126,7 +126,7 @@ export default /*#__PURE__*/ {
     },
   },
   mounted() {
-    this.initVideoOptions();
+    // this.initVideoOptions();
   },
   beforeDestroy() {
     this.stopVideo();

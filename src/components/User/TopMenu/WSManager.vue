@@ -1,10 +1,6 @@
 <template lang="pug">
 div
   v-icon(v-if="showOnlineIcon" small :color="statusColor") mdi-circle
-  div.notifymesnackbar
-    v-snackbar(app v-model="snackbar" :timeout="5000" absolute bottom centered color="primary" ) Notifiy me about offer
-      template(v-slot:action="{ attrs }")
-        v-btn(color="orange" v-bind="attrs" @click="snackbar = false;") OK
   div.extra-component
     div.call-receive-ringing
       audio(ref="incomingCallRingingPlayer" loop="true")
@@ -25,7 +21,6 @@ import userApi from "@/services/user.api";
 export default class WSManager extends Vue {
   @Ref() incomingCallRingingPlayer!: HTMLAudioElement;
 
-  snackbar = true;
   isConnected = false;
   isAudioPlaying = false;
 
@@ -33,7 +28,7 @@ export default class WSManager extends Vue {
   hideWSIcon!: boolean;
 
   get showOnlineIcon() {
-    return this.hideWSIcon ? false : true;
+    return !this.hideWSIcon;
   }
 
   created() {

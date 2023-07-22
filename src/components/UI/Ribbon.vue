@@ -1,5 +1,5 @@
 <template lang="pug">
-  .ribbon-container.green.darken-2.text-center
+  .ribbon-container.green.darken-2.text-center.gradient-bg
       .ribbon {{headingLabel}}
 </template>
 
@@ -36,5 +36,20 @@ export default class Ribbon extends Vue {
   //left: -35px;
   //width: 100px;
   width: 50px;
+  border-radius: 0 10px 10px 0;
+}
+
+.gradient-bg {
+  background: linear-gradient(45deg, #4caf50, #2e7d32);
+  animation: changeRibbonColor 1s infinite alternate;
+}
+
+@keyframes changeRibbonColor {
+  0% {
+    background: linear-gradient(135deg, #00ff00, #2e7d32);
+  }
+  100% {
+    background: linear-gradient(135deg, #00aa00, #ff9800);
+  }
 }
 </style>

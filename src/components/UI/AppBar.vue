@@ -12,9 +12,15 @@
       v-spacer
       filter-component(:style="{ maxWidth: $vuetify.breakpoint.smAndDown ? '180px' : 'unset' }")
       v-spacer
-      v-btn.pa-1(color='orange' dark='' @click='askquestion' small style="min-width:auto;" v-if="$vuetify.breakpoint.smAndUp")
+      v-btn.pa-1(color='orange' dark @click='askquestion' small style="min-width:auto;" v-if="$vuetify.breakpoint.smAndUp")
         v-icon  mdi-plus
         span Ask Question
+      v-spacer(v-if="$vuetify.breakpoint.smAndUp")
+      v-tooltip(bottom v-if="!allowBell")
+        template(v-slot:activator="{ on, attrs }" )
+          v-btn(v-bind="attrs" v-on="on" dark :color="allowBell?'green':'red'" elevation="2" fab small @click="allowBell=true")
+            v-icon mdi-bell
+        span Click to allow ring bell
       //v-btn(sm rounded='' color='orange' v-else='' dark='' to='/ask-question')
       //  v-icon  mdi-plus
       //  span.hidden-sm-and-down Ask Question
@@ -63,6 +69,7 @@ import { AuthStoreModule } from "@/store";
 export default class App extends Vue {
   AuthDialogState = false;
 
+  allowBell = false;
   get isFilterSelected() {
     let found = 0;
     if (this.$store.getters.filters) {

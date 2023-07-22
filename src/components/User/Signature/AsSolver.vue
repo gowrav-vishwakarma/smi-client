@@ -1,6 +1,6 @@
 <template lang="pug">
 .signature.assolver
-  .d-flex.justify-space-between
+  .d-flex.justify-space-between(style="flex-wrap: wrap")
     v-card.solver-avatar-card(flat tile)
       v-list.pa-0
         v-list-item.pa-0.pl-1

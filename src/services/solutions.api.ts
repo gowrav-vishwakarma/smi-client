@@ -35,7 +35,6 @@ class SolutionsAPIService extends APIService {
     Object.entries(ratingParam).forEach(([key, value]) => {
       let v = Array.isArray(value) ? value.join(",") : value;
       if (typeof v === "object") v = JSON.stringify(v);
-
       formData.append(key, v as string);
     });
     if (solutionVideoBlob) {

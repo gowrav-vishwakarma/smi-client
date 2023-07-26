@@ -15,7 +15,7 @@ class SolutionsAPIService extends APIService {
   async createSolutionRating(
     ratingParam: {
       rating: number;
-      comment: string;
+      comment: string | null;
       solutionAttemptId: string;
       forOfferer: boolean;
       forQuestioner: boolean;

@@ -28,14 +28,13 @@ export default class Ribbon extends Vue {
 
 .ribbon-container {
   z-index: 1;
-  //transform: rotate(315deg);
+  transform: rotate(315deg);
   position: absolute;
   display: inline-block;
-  //top: 10px;
+  top: 10px;
   color: #ffffff;
-  //left: -35px;
-  //width: 100px;
-  width: 50px;
+  left: -35px;
+  width: 100px;
   border-radius: 0 10px 10px 0;
 }
 

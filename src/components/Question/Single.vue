@@ -3,7 +3,7 @@ v-card.mb-2.question-single-card(v-if="question")
   v-card.pa-0.ma-0.question-detail-card(flat)
     //- .d-flex.justify-space-between
     //-   h4.text-subtitle-1.question-heading.primary--text( style="cursor:pointer" @click="gotoDetails") Q. {{question.title}}
-    .d-flex.justify-space-between(style="overflow:hidden;")
+    .justify-space-between(style="overflow:hidden;")
       Ribbon(headingLabel="Solved" v-if='question.status=="SOLVED"')
       v-card-title.question-heading(style="cursor:pointer" @click="gotoDetails") Q. {{question.title}}
       //.d-flex.justify-end
@@ -222,6 +222,9 @@ export default class QuestionSingle extends Mixins(General) {
 </script>
 
 <style>
+.question-detail-card {
+  overflow: auto;
+}
 .question-heading:hover {
   color: var(--v-primary-base); /* Replace with the desired color variable */
   cursor: pointer; /* Add a cursor style on hover, if desired */

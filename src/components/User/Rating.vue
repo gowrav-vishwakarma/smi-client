@@ -1,6 +1,6 @@
 <template lang="pug">
 .d-flex
-    span.caption.ml-1.primary--text(style="font-size:1em")  {{reputation}}
+    span.caption.primary--text(style="font-size:1em")  {{reputation}}
     v-icon(x-small color="yellow darken-2") mdi-star
     small.caption (By {{User.reputationAsQuestioner.totalRatingsCount}} user)
 </template>

@@ -14,9 +14,9 @@ v-card.mb-2.question-single-card(v-if="question")
       v-card-subtitle.pt-0.text--secondary.text-justify.smi-question-detail(v-if="showDetail" v-html="question.detail")
       v-row(no-gutters v-else)
         v-col(v-if="videoURL && question.video" cols="12" md="7" sm="12" xs="12" lg="7" xl="7" )
-          v-card-subtitle.pt-0.pb-0.text--secondary.text-justify {{shortdetail}}
+          v-card-subtitle.pt-0.pb-0.text--secondary.text-justify.smi-question-detail {{shortdetail}}
         v-col(v-else cols="12")
-          v-card-subtitle.pt-0.pd-0.text--secondary.text-justify {{shortdetail}}
+          v-card-subtitle.pt-0.pd-0.text--secondary.text-justify.smi-question-detail {{shortdetail}}
         v-col(v-if="videoURL && question.video" cols="12" md="5" sm="12" xs="12" lg="5" xl="5")
           v-card-subtitle.pa-2
             //video.smi-video-player-component(width="100%" controls="true" preload="none")
@@ -28,11 +28,20 @@ v-card.mb-2.question-single-card(v-if="question")
         BunnyVideoPlayer(:videoPath="question.video")
           //video(width="320" height="240" :controls="videoControl" preload="none")
           //  source(:src="videoURL" type="video/webm")
-  .d-flex.pa-3
-    .d-flex.flex-column.justify-space-between
-      .caption.grey--text.lighten-4 Asked {{ humanized_time_span(question.createdAt) }} :
+  div.text-right.mr-3
+    span.caption.grey--text Asked:&nbsp;
+    span.caption.text--secondary
+      v-icon(x-small) mdi-clock
+      | &nbsp;{{ humanized_time_span(question.createdAt) }}
+  .d-flex.pl-3.pr-3
+    .d-flex.justify-space-between
+      //span
+      //  span.caption.grey--text Asked:&nbsp;
+      //  span.caption.text--secondary
+      //    v-icon(x-small) mdi-clock
+      //    | &nbsp;{{ humanized_time_span(question.createdAt) }}
       questioner-signature(:User="question.byUser")
-    .d-flex.flex-column.ml-auto
+    .d-flex.flex-column.ml-auto(style="overflow:auto")
       .caption.primary--text.lighten-4.ml-auto {{convertTotag(question.tags)}}
       .caption.primary--text.lighten-4.ml-auto.hidden-sm-and-down {{topicFull}}
       .caption.primary--text.lighten-4.ml-auto.hidden-md-and-up {{lastTopic}}
@@ -73,6 +82,7 @@ import VotingComponent from "@/components/Common/VotingComponent.vue";
 import BookingComponent from "@/components/Common/BookmarkComponent.vue";
 import ShareButton from "@/components/Common/ShareButton.vue";
 import Ribbon from "@/components/UI/Ribbon.vue";
+import FlatRibbon from "@/components/UI/FlatRibbon.vue";
 import { AuthStoreModule } from "@/store";
 import BunnyVideoPlayer from "@/components/Common/BunnyVideoPlayer.vue";
 
@@ -91,6 +101,7 @@ import QuestionsAPIService from "@/services/questions.api";
     ShareButton,
     Ribbon,
     BunnyVideoPlayer,
+    FlatRibbon,
   },
 })
 export default class QuestionSingle extends Mixins(General) {

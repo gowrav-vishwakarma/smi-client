@@ -51,21 +51,21 @@ v-card.mb-2.question-single-card(v-if="question")
     voting-component.pr-3(v-if="!disableVotingAction" :question="question")
       //- booking-component(v-if="!disableBookmarkAction" :question="question")
       //- share-button(v-if="!disableShareAction" :question="question")
-    solution-channels-component(v-if="question.solutionChannels" :solutionChannels="question.solutionChannels")
-      v-menu(bottom left v-if="isMyProfileView")
-        template(v-slot:activator='{ on, attrs }')
-          v-btn( x-small color="primary" v-bind='attrs' v-on='on')
-            | {{question.status}}
-            v-icon(x-small) mdi-dots-vertical
-        v-list
-          v-list-item(v-if="question.status!=='OPEN'" @click="changeStatus('OPEN')")
-            v-list-item-title.caption Open
-          v-list-item(v-if="question.status!=='CLOSED'" @click="changeStatus('CLOSED')")
-            v-list-item-title.caption Closed
-          v-list-item(v-if="question.status!=='SOLVED'" @click="changeStatus('SOLVED')")
-            v-list-item-title.caption Solved
-          v-list-item(color="red" @click="deleteQuestion")
-            v-list-item-title.caption Delete
+    //solution-channels-component(v-if="question.solutionChannels" :solutionChannels="question.solutionChannels")
+    v-menu(bottom left v-if="isMyProfileView")
+      template(v-slot:activator='{ on, attrs }')
+        v-btn( x-small color="primary" v-bind='attrs' v-on='on')
+          | {{question.status}}
+          v-icon(x-small) mdi-dots-vertical
+      v-list
+        v-list-item(v-if="question.status!=='OPEN'" @click="changeStatus('OPEN')" style="min-height:30px;")
+          v-list-item-title.caption Open
+        v-list-item(v-if="question.status!=='CLOSED'" @click="changeStatus('CLOSED')" style="min-height:30px;")
+          v-list-item-title.caption Closed
+        v-list-item(v-if="question.status!=='SOLVED'" @click="changeStatus('SOLVED')" style="min-height:30px;")
+          v-list-item-title.caption Solved
+        v-list-item(color="red" @click="deleteQuestion" style="min-height:30px;")
+          v-list-item-title.caption Delete
 
 </template>
 

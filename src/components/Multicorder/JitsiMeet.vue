@@ -22,8 +22,8 @@ export default class JitsiMeet extends Vue {
   jitsiApi: any;
 
   mounted() {
-    // this.loadScript("https://meet.jit.si/external_api.js");
-    this.loadScript("https://jitsi.solvemyissue.online/external_api.js");
+    this.loadScript("https://meet.jit.si/external_api.js");
+    // this.loadScript("https://jitsi.solvemyissue.online/external_api.js");
   }
 
   beforeDestroy() {
